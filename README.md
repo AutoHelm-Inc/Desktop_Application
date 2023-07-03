@@ -24,17 +24,34 @@ Open up `Visual Studio Installer` to modify the file and install
 - Windows 10 SDK (10.0.17763.0)
 - C++ CMake tools for Windows
 
-You Should be Running the commands from the `X64 Native Tools Command Prompt for VS2019`.
+You Should be Running the commands from the `X64 Native Tools Command Prompt for VS2019` as Administrator.
 
 With that being said, you can install the official Swift VSCode extension [here](https://marketplace.visualstudio.com/items?itemName=sswg.swift-lang).
+## Install CMAKE
+Download CMake from [here](https://cmake.org/download/) and **CHECK ADD TO PATH** in the installer.
+## Install Swift
+Download the Windows version [here](https://www.swift.org/download/)
 ### How to Run Swift
 
+#### Hardcore Mode (recommended)
+
+Run the run script, by typing `run.bat` 
+
+**or**
+
+We want to follow these commands:
+1. `swift build`
+2. `mt -nologo -manifest Sources\Application\Application.exe.manifest -outputresource:.build\x86_64-unknown-windows-msvc\debug\Application.exe
+`
+1. `copy Sources\Application\Info.plist .build\x86_64-unknown-windows-msvc\debug\`
+2. `swift run` or any other debugging command
+
+
+**NOTE:** if console stays hung, hit `enter`
+
 #### Simple Way
-In the project directory run, `swiftc "file_name"`.
-`swiftc` is the compiler function, that will compile and create a `.exe` to run
+In the project directory run, `swiftc [file_name]`
+The key word `swiftc` is the compiler function, that will compile and create a `.exe` to run
 
 #### Useless Way
 Swift has it's own interpreter that is similar to python, however, its buggy on Windows. We should never need to use this. `swift`. There is also `swift repl` which is like coding on terminal in Python.
-
-#### Hardcore Mode
-`swift package --help`
