@@ -4,11 +4,9 @@ C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\Aut
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\bin\Debug\net6.0-windows\AutoHelm.dll
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\bin\Debug\net6.0-windows\AutoHelm.pdb
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm.csproj.AssemblyReference.cache
-C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\MainWindow.g.cs
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\App.g.cs
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm_MarkupCompile.cache
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm_MarkupCompile.lref
-C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\MainWindow.baml
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm.g.resources
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm.AssemblyInfoInputs.cache
@@ -20,3 +18,5 @@ C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\Aut
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm.genruntimeconfig.cache
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\ref\AutoHelm.dll
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\Styles\Colours.baml
+C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\pages\MainWindow\MainWindow.g.cs
+C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\pages\MainWindow\MainWindow.baml
