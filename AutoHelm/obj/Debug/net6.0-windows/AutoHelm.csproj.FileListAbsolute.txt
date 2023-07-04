@@ -19,3 +19,4 @@ C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\Aut
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm.pdb
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\AutoHelm.genruntimeconfig.cache
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\ref\AutoHelm.dll
+C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\Styles\Colours.baml

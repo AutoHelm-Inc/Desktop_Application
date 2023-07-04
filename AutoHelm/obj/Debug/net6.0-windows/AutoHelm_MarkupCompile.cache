@@ -1,20 +1,20 @@
 ﻿AutoHelm
-1.0.0.0
+
 
 winexe
 C#
 .cs
-c:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\
+C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\
 AutoHelm
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-c:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\App.xaml
-11407045341
+C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\App.xaml
+2-1257947342
 
-5519068771
+3-1233169557
 1941675070116
-MainWindow.xaml;
+MainWindow.xaml;Styles\Colours.xaml;
 
-True
+False
 
