@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoHelm.user_controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,22 @@ namespace AutoHelm.pages.MainWindow
         public MainWindow()
         {
             InitializeComponent();
+            TopBar.HomeButton_Click_Page += TopBar_HomeButton_Click_Page;
+            TopBar.CreateButton_Click_Page += TopBar_CreateButton_Click_Page;
+            TopBar.ExecuteButton_Click_Page += TopBar_ExecuteButton_Click_Page;
         }
+        private void TopBar_HomeButton_Click_Page(object source, EventArgs e)
+        {
+            mainFrame.Content = new HomePage();
+        }
+        private void TopBar_CreateButton_Click_Page(object source, EventArgs e)
+        {
+            mainFrame.Content = new CreatePage();
+        }
+        private void TopBar_ExecuteButton_Click_Page(object source, EventArgs e)
+        {
+            mainFrame.Content = new ExecutePage();
+        }
+
     }
 }
