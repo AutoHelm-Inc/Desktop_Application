@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource PrimaryBackgroundColor}">
         <UC:TopBar/>
         <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>

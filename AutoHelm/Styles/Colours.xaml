@@ -5,6 +5,7 @@
     <SolidColorBrush x:Key="OneDarkerThanPrimary" Color="#18181C" />
     <SolidColorBrush x:Key="OneLighterThanPrimary" Color="#28282C" />
     <SolidColorBrush x:Key="TwoLighterThanPrimary" Color="#303034" />
+    <SolidColorBrush x:Key="LightGreyForText" Color="#B6C2CF" />
     <SolidColorBrush x:Key="BlueAccent" Color="#5298FA" />
     <SolidColorBrush x:Key="BlueAlternateAccent" Color="#3486DF" />
     

@@ -24,6 +24,9 @@ namespace AutoHelm.pages.MainWindow
         public MainWindow()
         {
             InitializeComponent();
+
+            mainFrame.Content = new LoginPage();
+
             TopBar.HomeButton_Click_Page += TopBar_HomeButton_Click_Page;
             TopBar.CreateButton_Click_Page += TopBar_CreateButton_Click_Page;
             TopBar.ExecuteButton_Click_Page += TopBar_ExecuteButton_Click_Page;
