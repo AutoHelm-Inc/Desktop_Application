@@ -1,0 +1,31 @@
+﻿<UserControl x:Name="___No_Name_" x:Class="AutoHelm.user_controls.TopBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:UC="clr-namespace:AutoHelm.user_controls"
+             xmlns:local="clr-namespace:AutoHelm"
+             mc:Ignorable="d" >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Colours.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+ <!-- These buttons will be changed to Menu Items if they ever need drop downs, this will also fix that OverFlow on the right (there is no actual way to remove it)-->
+
+    <Grid Background="{StaticResource PrimaryBackgroundColor}">
+        <ToolBarPanel>
+            <ToolBarTray DockPanel.Dock="Top" Background="{StaticResource OneDarkerThanPrimary}">
+                <ToolBar ToolBarTray.IsLocked="True" Name="MyToolbar" Width="150" Height="30" Background="{x:Null}"     >
+                    <Button Content="Home" Name="HomeButton" Click="HomeButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" />
+                    <Button Content="Create" Name="CreateButton" Click="CreateButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" />
+                    <Button Content="Execute" Name="ExecuteButton" Click="ExecuteButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" />
+                </ToolBar>
+            </ToolBarTray>
+        </ToolBarPanel>
+    </Grid>
+</UserControl>

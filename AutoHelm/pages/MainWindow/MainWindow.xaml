@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoHelm"
+        xmlns:UC="clr-namespace:AutoHelm.user_controls"
         mc:Ignorable="d"
         Title="AutoHelm" Height="765" Width="1360"
         Background="Transparent">
-
+    
+    
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,7 +18,8 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Background="{StaticResource PrimaryBackgroundColor}">
-
+    <Grid>
+        <UC:TopBar/>
+        <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
