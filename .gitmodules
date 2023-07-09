@@ -1,0 +1,3 @@
+[submodule "Automation_Framework"]
+	path = Automation_Framework
+	url = git@github.com:AutoHelm-Inc/Automation_Framework.git
