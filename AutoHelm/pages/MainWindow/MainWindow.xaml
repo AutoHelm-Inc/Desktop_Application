@@ -20,6 +20,6 @@
 
     <Grid>
         <UC:TopBar/>
-        <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
+        <Frame Margin="0,40,0,0" x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

@@ -7,10 +7,18 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UserControls\RecentFiles.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="pages\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\Colours.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\RecentFiles.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

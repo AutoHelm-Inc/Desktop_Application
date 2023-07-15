@@ -1,20 +1,20 @@
 ﻿AutoHelm
 1.0.0.0
 
-winexe
+exe
 C#
 .cs
-C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\
+C:\Users\braul\Desktop\School\FYDP\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\
 AutoHelm
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\App.xaml
-2-1708905013
+C:\Users\braul\Desktop\School\FYDP\Desktop_Application\AutoHelm\App.xaml
+7362837346
 
-5-577926650
-1941675070116
-pages\MainWindow\MainWindow.xaml;Styles\Colours.xaml;
+10-1767757111
+196-85827444
+pages\CreatePage.xaml;pages\ExecutePage.xaml;pages\HomePage.xaml;pages\MainWindow\MainWindow.xaml;Styles\Colours.xaml;UserControls\RecentFiles.xaml;UserControls\TopBar.xaml;
 
 True
 

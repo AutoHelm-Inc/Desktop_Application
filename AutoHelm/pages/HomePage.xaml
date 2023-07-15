@@ -4,10 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AutoHelm.pages"
+      xmlns:UC="clr-namespace:AutoHelm.user_controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePage">
-    
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,11 +17,29 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="48">
-            <TextBlock.Text>
-                Home
-            </TextBlock.Text>
-        </TextBlock>
+    <Grid Margin="10,10,10,10" HorizontalAlignment="Center" x:Name="HomePageGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Button Background="{x:Null}" Grid.Column="0" Grid.Row="0" Name="NewAHILButton" Click="NewAHILPage_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" >
+            <Grid>
+                <Rectangle Fill="{StaticResource TwoLighterThanPrimary}"  RadiusX="10" RadiusY="10"
+               Width="200" Height="150" Margin="2"  HorizontalAlignment="Center"></Rectangle>
+                <TextBlock Text="New" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource BlueAccent}" FontSize="30"></TextBlock>
+            </Grid>
+        </Button>
     </Grid>
 </Page>
