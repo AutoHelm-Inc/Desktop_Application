@@ -1,4 +1,10 @@
-AutoHelm/obj/
-AutoHelm/bin
-AutoHelm/.vs
-.vs/
+/AutoHelm/obj
+/AutoHelm/bin
+/AutoHelm/.vs
+/.vs
+
+
+/AutoHelm/obj/*
+/AutoHelm/bin/*
+/AutoHelm/.vs/*
+/.vs/*
