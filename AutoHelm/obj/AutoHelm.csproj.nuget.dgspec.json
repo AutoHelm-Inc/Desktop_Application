@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\AutoHelm.csproj": {}
+    "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\AutoHelm.csproj": {}
   },
   "projects": {
-    "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\AutoHelm.csproj": {
+    "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\AutoHelm.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
+        "projectUniqueName": "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
         "projectName": "AutoHelm",
-        "projectPath": "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
-        "packagesPath": "C:\\Users\\zaidl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\obj\\",
+        "projectPath": "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
+        "packagesPath": "C:\\Users\\braul\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\zaidl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\braul\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -43,6 +43,12 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "System.Runtime.Caching": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
