@@ -17,10 +17,11 @@
     </Page.Resources>
 
     <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="48">
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="48" x:Name="createTitle">
             <TextBlock.Text>
                 Create
             </TextBlock.Text>
         </TextBlock>
+        <TextBox x:Name="TempTxt" Height="30" Width="200" Background="{x:Null}" Foreground="{DynamicResource BlueAccent}" Margin="300,258,300,162"></TextBox>
     </Grid>
 </Page>

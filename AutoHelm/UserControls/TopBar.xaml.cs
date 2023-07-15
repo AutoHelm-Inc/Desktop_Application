@@ -1,6 +1,9 @@
-﻿using AutoHelm.pages.MainWindow;
+﻿using AutoHelm.pages;
+using AutoHelm.pages.MainWindow;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +30,9 @@ namespace AutoHelm.user_controls
         public static event MyEventHandler CreateButton_Click_Page;
         public static event MyEventHandler ExecuteButton_Click_Page;
 
+        public static event MyEventHandler SaveAs_Click;
+        public static event MyEventHandler Save_Click;
+
         public TopBar()
         {
             InitializeComponent();
@@ -42,6 +48,14 @@ namespace AutoHelm.user_controls
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)
         {
             ExecuteButton_Click_Page(this, null);
+        }
+        private void SaveFileAs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAs_Click(this, null);
+        }
+        private void SaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            Save_Click(this, null);
         }
     }
 }
