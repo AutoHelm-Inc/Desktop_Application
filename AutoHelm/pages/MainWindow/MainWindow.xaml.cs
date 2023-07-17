@@ -13,6 +13,7 @@ using Automation_Project.src.parser;
 using Automation_Project.src.ast;
 using System.Windows.Media;
 using System.Linq;
+using AutoHelm.Shortcuts;
 
 namespace AutoHelm.pages.MainWindow
 {
@@ -24,6 +25,20 @@ namespace AutoHelm.pages.MainWindow
         public MainWindow()
         {
             InitializeComponent();
+           this.WindowState = WindowState.Maximized;
+
+            this.Visibility = Visibility.Collapsed;
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.NoResize;
+            this.WindowState = WindowState.Maximized;
+            this.Topmost = true;
+            this.Topmost = false;
+            //this.UseNoneWindowStyle = true;
+            //this.IgnoreTaskbarOnMaximize = true;
+            this.Visibility = Visibility.Visible;
+            //this.FormBorderStyle = FormBorderStyle.None;
+            //this.TopMost = true;
+
             getPathsFromFile();
 
             // LoadingPageAnimation();
@@ -40,7 +55,11 @@ namespace AutoHelm.pages.MainWindow
             HomePage.NewAHILPage += CreateButton_Click_Page;
             HomePage.OpenAHILPage += OpenButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
+
+            //Setup global shortcut manager
+            ShortcutManager.systemHookSetup();
         }
+
         private void LoadingPageAnimation()
         {
             LoadingPage loadingPage = new LoadingPage();
@@ -70,7 +89,8 @@ namespace AutoHelm.pages.MainWindow
                     fadeOutAnimation.Completed += (sender, e) =>
                     {
                         topBar.Visibility = Visibility.Visible;
-                        TopBar_HomeButton_Click_Page(this, null);
+                        mainFrame.Content = new LoginPopUp();
+                        //TopBar_HomeButton_Click_Page(this, null);
                     };
                         logo.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
                     title.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
@@ -351,6 +371,8 @@ namespace AutoHelm.pages.MainWindow
                     writetext.WriteLine(descriptions[i]);
                 }
             }
+
+            ShortcutManager.turnOffSystemHook();
         }
 
     }
