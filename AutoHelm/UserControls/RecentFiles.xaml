@@ -15,7 +15,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <Rectangle Fill="{StaticResource OneLighterThanPrimary}"  RadiusX="10" RadiusY="10"
+        <Rectangle Fill="{StaticResource TwoLighterThanPrimary}"  RadiusX="10" RadiusY="10"
                Width="200" Height="150" Margin="2"  HorizontalAlignment="Center"></Rectangle>
         <TextBlock x:Name="recTempBox" Text="Temp" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource BlueAccent}"> </TextBlock>
     </Grid>
