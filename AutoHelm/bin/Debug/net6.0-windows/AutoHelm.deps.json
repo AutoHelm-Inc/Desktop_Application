@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "AutoHelm/1.0.0": {
         "dependencies": {
+          "Automation_Project": "1.0.0",
           "System.Runtime.Caching": "7.0.0"
         },
         "runtime": {
@@ -125,6 +126,11 @@
             "fileVersion": "7.0.22.51805"
           }
         }
+      },
+      "Automation_Project/1.0.0": {
+        "runtime": {
+          "Automation_Project.dll": {}
+        }
       }
     }
   },
@@ -182,6 +188,11 @@
       "sha512": "sha512-bR4qdCmssMMbo9Fatci49An5B1UaVJZHKNq70PRgzoLYIlitb8Tj7ns/Xt5Pz1CkERiTjcVBDU2y1AVrPBYkaw==",
       "path": "system.windows.extensions/7.0.0",
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
+    },
+    "Automation_Project/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

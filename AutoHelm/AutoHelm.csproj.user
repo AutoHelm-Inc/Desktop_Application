@@ -7,6 +7,18 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UserControls\DragAndDrop\DraggingStatementBlock.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\DragAndDrop\BlockLandingArea.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\DragAndDrop\ParameterInputWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\DragAndDrop\ParamInputField.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\RecentFiles.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -15,7 +27,22 @@
     <Page Update="pages\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Styles\BlockColors.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Styles\Colours.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DragAndDrop\DraggingStatementBlock.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DragAndDrop\BlockLandingArea.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DragAndDrop\ParameterInputWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DragAndDrop\ParamInputField.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\RecentFiles.xaml">

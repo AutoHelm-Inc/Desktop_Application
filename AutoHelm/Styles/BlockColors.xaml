@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="BlockColor0" Color="#264653" />
+    <SolidColorBrush x:Key="BlockColor1" Color="#264653" />
+    <SolidColorBrush x:Key="BlockColor2" Color="#2A9D8F" />
+    <SolidColorBrush x:Key="BlockColor3" Color="#514B23" />
+    <SolidColorBrush x:Key="BlockColor4" Color="#F4A261" />
+    <SolidColorBrush x:Key="BlockColor5" Color="#E76F51" />
+    <SolidColorBrush x:Key="BlockColor6" Color="#3A3335" />
+    <SolidColorBrush x:Key="BlockColor7" Color="#D81E5B" />
+    <SolidColorBrush x:Key="BlockColor8" Color="#481620" />
+    <SolidColorBrush x:Key="BlockColor9" Color="#0075A2" />
+    <SolidColorBrush x:Key="BlockColor10" Color="#4B4A67" />
+    <SolidColorBrush x:Key="BlockColor11" Color="#7A8B99" />
+    <SolidColorBrush x:Key="BlockColor12" Color="#0D5C63" />
+    <SolidColorBrush x:Key="BlockColor13" Color="#3D315B" />
+    <SolidColorBrush x:Key="BlockColor14" Color="#023e8a" />
+    <SolidColorBrush x:Key="BlockColor15" Color="#c1121f" />
+    <SolidColorBrush x:Key="BlockColor16" Color="#758bfd" />
+    <SolidColorBrush x:Key="BlockColor17" Color="#27187e" />
+    <SolidColorBrush x:Key="BlockColor18" Color="#6096ba" />
+    <SolidColorBrush x:Key="BlockColor19" Color="#1d2d44" />
+    
+    
+</ResourceDictionary>

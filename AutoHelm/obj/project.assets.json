@@ -156,6 +156,16 @@
             "rid": "win"
           }
         }
+      },
+      "Automation_Project/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Automation_Project.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Automation_Project.dll": {}
+        }
       }
     }
   },
@@ -375,31 +385,37 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Automation_Project/1.0.0": {
+      "type": "project",
+      "path": "../../Automation_Framework/Automation_Project/Automation_Project.csproj",
+      "msbuildProject": "../../Automation_Framework/Automation_Project/Automation_Project.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
+      "Automation_Project >= 1.0.0",
       "System.Runtime.Caching >= 7.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\braul\\.nuget\\packages\\": {},
+    "C:\\Users\\zaidl\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
+      "projectUniqueName": "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
       "projectName": "AutoHelm",
-      "projectPath": "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
-      "packagesPath": "C:\\Users\\braul\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\braul\\Desktop\\School\\FYDP\\Desktop_Application\\AutoHelm\\obj\\",
+      "projectPath": "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\AutoHelm.csproj",
+      "packagesPath": "C:\\Users\\zaidl\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\braul\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zaidl\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -413,7 +429,11 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Automation_Framework\\Automation_Project\\Automation_Project.csproj": {
+              "projectPath": "C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Automation_Framework\\Automation_Project\\Automation_Project.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

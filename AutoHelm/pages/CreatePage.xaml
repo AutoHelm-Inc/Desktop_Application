@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:AutoHelm.pages"
+      xmlns:local="clr-namespace:AutoHelm.pages" xmlns:local1="clr-namespace:AutoHelm.UserControls.DragAndDrop"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CreatePage">
@@ -22,6 +22,37 @@
                 Create
             </TextBlock.Text>
         </TextBlock>
-        <TextBox x:Name="TempTxt" Height="30" Width="200" Background="{x:Null}" Foreground="{DynamicResource BlueAccent}" Margin="300,258,300,162"></TextBox>
+        <TextBox x:Name="TempTxt" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="200" Background="{x:Null}" Foreground="{DynamicResource BlueAccent}" Margin="295,0,0,0"></TextBox>
+
+        <ScrollViewer x:Name="LandingAreaScrollable" PanningMode="None" >
+            <StackPanel x:Name="LandingAreaPanel" HorizontalAlignment="Stretch">
+                <!--<local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
+                <local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>-->
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!--<ScrollViewer x:Name="DraggingBlocksScorllable" PanningMode="None" >-->
+        <StackPanel x:Name="StatementBlocksStackPanel" Width="230" HorizontalAlignment="Left" Background="{DynamicResource OneDarkerThanPrimary}">
+            <!--<local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15" Width="auto" Height="auto"/>-->
+            <!--<local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
+            <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
+            <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
+            <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
+            <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
+            <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
+            <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
+            <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>-->
+        </StackPanel>
+        <!--</ScrollViewer>-->
     </Grid>
 </Page>

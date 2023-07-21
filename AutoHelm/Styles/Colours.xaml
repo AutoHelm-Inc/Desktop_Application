@@ -7,5 +7,10 @@
     <SolidColorBrush x:Key="TwoLighterThanPrimary" Color="#303034" />
     <SolidColorBrush x:Key="BlueAccent" Color="#5298FA" />
     <SolidColorBrush x:Key="BlueAlternateAccent" Color="#3486DF" />
-    
+
+    <SolidColorBrush x:Key="BlockColor0" Color="#2D6A4F" />
+    <SolidColorBrush x:Key="BlockColor1" Color="#066496" />
+    <SolidColorBrush x:Key="BlockColor2" Color="#A71E34" />
+    <SolidColorBrush x:Key="BlockColor3" Color="#5A189A" />
+
 </ResourceDictionary>
