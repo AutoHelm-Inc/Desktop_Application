@@ -32,6 +32,7 @@ namespace AutoHelm.pages.MainWindow
             TopBar.Save_Click += Save_Click;
 
             HomePage.NewAHILPage += CreateButton_Click_Page;
+            HomePage.OpenAHILPage += OpenButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
         }
 
@@ -43,6 +44,18 @@ namespace AutoHelm.pages.MainWindow
         {
             mainFrame.Content = new CreatePage();
         }
+        private void OpenButton_Click_Page(object source, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "AHIL file (*.ahil)|*.ahil|Text file (*.txt)|*.txt";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                saveToCache(filePath);
+                SavedEventArgs savedArgs = new SavedEventArgs(filePath);
+                Load_Saved_Page(this, savedArgs);
+            }
+        }
         private void TopBar_ExecuteButton_Click_Page(object source, EventArgs e)
         {
             mainFrame.Content = new ExecutePage();
@@ -50,12 +63,12 @@ namespace AutoHelm.pages.MainWindow
         private void Load_Saved_Page(object source, EventArgs e)
         {
             SavedEventArgs savedArgs = e as SavedEventArgs;
-            string fileName = savedArgs.getFileName;
+            string filePath = savedArgs.getfilePath;
             CreatePage createPage = new CreatePage();
             mainFrame.Content = createPage;
             Grid grid = (Grid)createPage.Content;
             TextBlock textBlock = (TextBlock)grid.FindName("createTitle");
-            textBlock.Text = fileName;
+            textBlock.Text = filePath;
 
         }
         private void SaveAs_Click(object source, EventArgs e)

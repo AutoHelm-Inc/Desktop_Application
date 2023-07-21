@@ -12,16 +12,16 @@ namespace AutoHelm.pages
 {
     public class SavedEventArgs : EventArgs
     {
-        private readonly string fileName;
+        private readonly string filePath;
 
-        public SavedEventArgs(string fileName)
+        public SavedEventArgs(string filePath)
         {
-            this.fileName = fileName;
+            this.filePath = filePath;
         }
 
-        public string getFileName
+        public string getfilePath
         {
-            get { return this.fileName; }
+            get { return this.filePath; }
         }
     }
 
@@ -30,6 +30,7 @@ namespace AutoHelm.pages
 
         public delegate void MyEventHandler(object source, EventArgs e);
         public static event MyEventHandler NewAHILPage;
+        public static event MyEventHandler OpenAHILPage;
         public static event MyEventHandler Load_Saved_Page;
         public HomePage()
         {
@@ -40,11 +41,15 @@ namespace AutoHelm.pages
         {
             NewAHILPage(this, null);
         }
+        private void OpenAHILPage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenAHILPage(this, null);
+        }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = (Button)sender;
-            string fileName = (string)clickedButton.Tag;
-            SavedEventArgs savedArgs = new SavedEventArgs(fileName);
+            string filePath = (string)clickedButton.Tag;
+            SavedEventArgs savedArgs = new SavedEventArgs(filePath);
             Load_Saved_Page?.Invoke(this, savedArgs);
         }
 
