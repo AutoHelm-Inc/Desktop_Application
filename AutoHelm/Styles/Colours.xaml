@@ -12,5 +12,7 @@
     <SolidColorBrush x:Key="BlockColor1" Color="#066496" />
     <SolidColorBrush x:Key="BlockColor2" Color="#A71E34" />
     <SolidColorBrush x:Key="BlockColor3" Color="#5A189A" />
+    <SolidColorBrush x:Key="BlockColor4" Color="#deb564" />
+    <SolidColorBrush x:Key="BlockColor5" Color="#78b09b" />
 
 </ResourceDictionary>

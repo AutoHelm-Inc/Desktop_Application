@@ -27,9 +27,6 @@
     <Page Update="pages\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\BlockColors.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Styles\Colours.xaml">
       <SubType>Designer</SubType>
     </Page>

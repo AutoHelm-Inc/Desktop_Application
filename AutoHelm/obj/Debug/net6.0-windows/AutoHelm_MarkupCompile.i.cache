@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\App.xaml
-121370783306
+11-835704439
 
 141391812838
 197-851495153
-pages\CreatePage.xaml;pages\ExecutePage.xaml;pages\HomePage.xaml;pages\MainWindow\MainWindow.xaml;Styles\BlockColors.xaml;Styles\Colours.xaml;UserControls\DragAndDrop\BlockLandingArea.xaml;UserControls\DragAndDrop\DraggingStatementBlock.xaml;UserControls\DragAndDrop\ParameterInputWindow.xaml;UserControls\DragAndDrop\ParamInputField.xaml;UserControls\RecentFiles.xaml;UserControls\TopBar.xaml;
+pages\CreatePage.xaml;pages\ExecutePage.xaml;pages\HomePage.xaml;pages\MainWindow\MainWindow.xaml;Styles\Colours.xaml;UserControls\DragAndDrop\BlockLandingArea.xaml;UserControls\DragAndDrop\DraggingStatementBlock.xaml;UserControls\DragAndDrop\ParameterInputWindow.xaml;UserControls\DragAndDrop\ParamInputField.xaml;UserControls\RecentFiles.xaml;UserControls\TopBar.xaml;
 
 True
 

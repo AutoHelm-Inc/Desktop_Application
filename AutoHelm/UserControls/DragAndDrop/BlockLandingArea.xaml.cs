@@ -14,7 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 using static AutoHelm.UserControls.DragAndDrop.DraggingStatementBlock;
+using System.Configuration.Internal;
 
 namespace AutoHelm.UserControls.DragAndDrop
 {
@@ -24,12 +26,14 @@ namespace AutoHelm.UserControls.DragAndDrop
         private Keywords? keyword;
         private Boolean dropabble;
         private BlockLandingArea? parentBlock;
+        private int depth;
         public BlockLandingArea()
         {
             this.function = null; 
             this.keyword = null;
             this.AllowDrop = true;
             this.parentBlock = null;
+            depth = 0;
             InitializeComponent();
         }
 
@@ -39,6 +43,17 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.keyword = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
+            this.depth = 0;
+            InitializeComponent();
+        }
+
+        public BlockLandingArea(BlockLandingArea parentBlock, int depth)
+        {
+            this.function = null;
+            this.keyword = null;
+            this.AllowDrop = true;
+            this.parentBlock = parentBlock;
+            this.depth = 0;
             InitializeComponent();
         }
 
@@ -99,8 +114,9 @@ namespace AutoHelm.UserControls.DragAndDrop
                 editButton.HorizontalAlignment = HorizontalAlignment.Right;
                 editButton.Margin = new Thickness(10);
                 Image editButtonImage = new Image();
-                editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));
-                //editButtonImage.Source = new BitmapImage(new Uri(@"../../Assets/gear.png", UriKind.Relative));
+                //editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));
+                editButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/gear.png")));
+                //editButtonImage.Source = new BitmapImage(new Uri(@"Assets/gear.png", UriKind.Relative));
                 editButtonImage.Width = 18;
                 editButtonImage.Height = 18;
                 editButton.Content = editButtonImage;
@@ -118,6 +134,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                         landingAreaGrid.Width = landingAreaGrid.Width + 35;
                         borderRect.Height = borderRect.Height + 150;
                         borderRect.Width = borderRect.Width + 35;
+                        updateDepth(1); 
                         NestedStatemetnsPanel.Children.Add(new BlockLandingArea(this));
                     }
                     changeParentDimensions(1);
@@ -136,6 +153,16 @@ namespace AutoHelm.UserControls.DragAndDrop
 
         }
 
+        private void updateDepth(int factor )
+        {
+            BlockLandingArea? temp = this.parentBlock;
+            while (temp != null)
+            {
+                temp.depth += factor;
+                temp = temp.parentBlock;
+            }
+        }
+
         private void changeParentDimensions(int factor)
         {
             if(this.parentBlock != null)
@@ -150,8 +177,8 @@ namespace AutoHelm.UserControls.DragAndDrop
                     if (this.keyword == Keywords.For)
                     {
 
-                        tempGrid.Width = tempGrid.Width + 35 * factor;
-                        tempRect.Width = tempRect.Width + 35 * factor;
+                        tempGrid.Width = tempGrid.Width + 35 * factor * (depth + 1);
+                        tempRect.Width = tempRect.Width + 35 * factor * (depth + 1);
                         
                         
                     }
@@ -166,6 +193,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     }
 
                 } while (tempParentBlock != null);
+
             }
         }
 
@@ -188,6 +216,7 @@ namespace AutoHelm.UserControls.DragAndDrop
         {
             StackPanel parentStackPanel = this.Parent as StackPanel;
             parentStackPanel.Children.Remove(this);
+            updateDepth(-1*(depth+1));
             changeParentDimensions(-1);
         }
 

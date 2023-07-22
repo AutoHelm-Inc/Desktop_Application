@@ -99,7 +99,6 @@ C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\Aut
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\bin\Debug\net6.0-windows\Automation_Project.exe
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\bin\Debug\net6.0-windows\Automation_Project.dll
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\bin\Debug\net6.0-windows\Automation_Project.pdb
-C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\Styles\BlockColors.baml
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\UserControls\DragAndDrop\ParameterInputWindow.g.cs
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\UserControls\DragAndDrop\ParamInputField.g.cs
 C:\Users\zaidl\Documents\School\Year 4\ECE 498A\AutoHelm\Desktop_Application\AutoHelm\obj\Debug\net6.0-windows\UserControls\DragAndDrop\ParameterInputWindow.baml
