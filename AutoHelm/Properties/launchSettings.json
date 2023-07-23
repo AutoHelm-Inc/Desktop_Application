@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AutoHelm": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\AyaanAnishaFamily\\Documents\\University\\FYDP\\Desktop_Application\\AutoHelm\\bin\\Debug\\net6.0-windows\\AutoHelm.exe"
+    },
+    "newProfile1": {
+      "commandName": "Executable"
+    }
+  }
+}

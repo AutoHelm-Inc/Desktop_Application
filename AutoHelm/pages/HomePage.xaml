@@ -43,6 +43,13 @@
                 </Grid>
             </Button>
         </Grid>
+        <Button Background="{x:Null}" Name="SyncAHILButton" Click="SyncAHIL_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <Grid>
+                <Rectangle Fill="{StaticResource OneLighterThanPrimary}"  RadiusX="10" RadiusY="10"
+               Width="100" Height="75" Margin="2"  HorizontalAlignment="Center"></Rectangle>
+                <TextBlock Text="Sync" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource BlueAccent}" FontSize="30"></TextBlock>
+            </Grid>
+        </Button>
         <Button Background="{x:Null}" Name="OpenAHILButton" Click="OpenAHILPage_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Grid>
                 <Rectangle Fill="{StaticResource OneLighterThanPrimary}"  RadiusX="10" RadiusY="10"

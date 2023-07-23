@@ -6,7 +6,9 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Media;
 using AutoHelm.UserControls;
-using System.IO;
+    using System.IO;
+using Firebase.Auth;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoHelm.pages
 {
@@ -32,6 +34,8 @@ namespace AutoHelm.pages
         public static event MyEventHandler NewAHILPage;
         public static event MyEventHandler OpenAHILPage;
         public static event MyEventHandler Load_Saved_Page;
+        public static event MyEventHandler SyncAHIL;
+
         public HomePage()
         {
             InitializeComponent();
@@ -44,6 +48,11 @@ namespace AutoHelm.pages
         private void OpenAHILPage_Click(object sender, RoutedEventArgs e)
         {
             OpenAHILPage(this, null);
+        }
+        private void SyncAHIL_Click(object sender, RoutedEventArgs e)
+        {
+            AutoHelm.Firebase.FirebaseFunctions.UploadFileWithAuth("z2omer@gmail.com", "z2omer", "C:\\Users\\AyaanAnishaFamily\\Downloads\\test.ahil");
+            AutoHelm.Firebase.FirebaseFunctions.UpdateDatabase("\"z2omer@gmail.com\"", "", "C:\\Users\\AyaanAnishaFamily\\Downloads\\test.ahil");
         }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
