@@ -1,0 +1,32 @@
+﻿<Window x:Class="AutoHelm.UserControls.DragAndDrop.ParameterInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutoHelm.UserControls.DragAndDrop"
+        mc:Ignorable="d"
+        Title="Input Parameters" Height="430" Width="300">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Colours.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Background="{DynamicResource OneDarkerThanPrimary}">
+        <StackPanel Height="400">
+            <Label x:Name="paramWindowTitle" FontSize="25" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,15,0,0">
+                Title
+            </Label>
+
+            <StackPanel x:Name="InputParamsPanel" Height="270" Background="{DynamicResource OneDarkerThanPrimary}">
+
+            </StackPanel>
+            <Button x:Name="SubmitButton" Click="saveButtonCLick" Background="{DynamicResource BlueAccent}" Width="200" VerticalAlignment="Bottom">
+                <Label FontSize="16" FontWeight="Bold" Foreground="White" Content="Save"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
