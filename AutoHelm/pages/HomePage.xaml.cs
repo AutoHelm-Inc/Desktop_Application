@@ -9,6 +9,8 @@ using AutoHelm.UserControls;
     using System.IO;
 using Firebase.Auth;
 using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace AutoHelm.pages
 {
@@ -51,8 +53,19 @@ namespace AutoHelm.pages
         }
         private void SyncAHIL_Click(object sender, RoutedEventArgs e)
         {
-            AutoHelm.Firebase.FirebaseFunctions.UploadFileWithAuth("z2omer@gmail.com", "z2omer", "C:\\Users\\AyaanAnishaFamily\\Downloads\\test.ahil");
-            AutoHelm.Firebase.FirebaseFunctions.UpdateDatabase("\"z2omer@gmail.com\"", "", "C:\\Users\\AyaanAnishaFamily\\Downloads\\test.ahil");
+            if (Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 1) == 0)
+            {
+                new Thread(() =>
+                {
+                    Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 1);
+                    AutoHelm.Firebase.FirebaseFunctions.CloudUpload("", "");
+                    MessageBox.Show("All applicable files have been saved to the cloud.",
+                                     "Cloud Saving Complete");
+                    Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 0);
+
+                }).Start();
+            }
+            
         }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
