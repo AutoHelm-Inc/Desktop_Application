@@ -6,7 +6,11 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Media;
 using AutoHelm.UserControls;
-using System.IO;
+    using System.IO;
+using Firebase.Auth;
+using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace AutoHelm.pages
 {
@@ -32,6 +36,8 @@ namespace AutoHelm.pages
         public static event MyEventHandler NewAHILPage;
         public static event MyEventHandler OpenAHILPage;
         public static event MyEventHandler Load_Saved_Page;
+        public static event MyEventHandler SyncAHIL;
+
         public HomePage()
         {
             InitializeComponent();
@@ -44,6 +50,22 @@ namespace AutoHelm.pages
         private void OpenAHILPage_Click(object sender, RoutedEventArgs e)
         {
             OpenAHILPage(this, null);
+        }
+        private void SyncAHIL_Click(object sender, RoutedEventArgs e)
+        {
+            if (Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 1) == 0)
+            {
+                new Thread(() =>
+                {
+                    Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 1);
+                    AutoHelm.Firebase.FirebaseFunctions.CloudUpload("", "");
+                    MessageBox.Show("All applicable files have been saved to the cloud.",
+                                     "Cloud Saving Complete");
+                    Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 0);
+
+                }).Start();
+            }
+            
         }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
