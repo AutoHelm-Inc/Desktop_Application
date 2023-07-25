@@ -83,7 +83,7 @@ namespace AutoHelm.pages.MainWindow
                 {
                     string filePath = saveAsDialog.FileName;
                     CreatePage createPage = (CreatePage)mainFrame.Content;
-                    File.WriteAllText(filePath, createPage.TempTxt.Text);
+                    File.WriteAllText(filePath, createPage.GetProgram().generateProgramAHILCode());
                     saveToCache(filePath);
                 }
             }
@@ -100,7 +100,7 @@ namespace AutoHelm.pages.MainWindow
 
                 if (File.Exists(filePath))
                 {
-                    File.WriteAllText(filePath, createPage.TempTxt.Text);
+                    File.WriteAllText(filePath, createPage.GetProgram().generateProgramAHILCode());
                     saveToCache(filePath);
                 }
                 else

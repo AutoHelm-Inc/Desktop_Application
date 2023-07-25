@@ -26,6 +26,10 @@ namespace AutoHelm.pages
         private int numBlocksPerCycle;
         private AHILProgram program;
 
+        public AHILProgram GetProgram() {
+            return program;
+        }
+
         public CreatePage()
         {
             InitializeComponent();
