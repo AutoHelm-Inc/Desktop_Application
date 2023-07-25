@@ -41,6 +41,8 @@
             </StackPanel>
         </ScrollViewer>
 
+
+
         <!--<ScrollViewer x:Name="DraggingBlocksScorllable" PanningMode="None" >-->
         <StackPanel x:Name="StatementBlocksStackPanel" Width="230" HorizontalAlignment="Left" Background="{DynamicResource OneDarkerThanPrimary}">
             <!--<local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15" Width="auto" Height="auto"/>-->
@@ -53,6 +55,9 @@
             <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>
             <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>-->
         </StackPanel>
+        <Button Click="runButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="82,0,0,43" Background="{DynamicResource BlueAlternateAccent}" Foreground="{DynamicResource  OneLighterThanPrimary}" FontFamily="Arial Black" FontSize="30">
+            Run
+        </Button>
         <!--</ScrollViewer>-->
     </Grid>
 </Page>

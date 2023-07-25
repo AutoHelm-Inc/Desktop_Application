@@ -68,6 +68,11 @@ namespace AutoHelm.pages
             LandingAreaPanel.Children.Add(new BlockLandingArea(program));
         }
 
+        private void runButtonClick(object sender, RoutedEventArgs e) {
+            program.saveToFile();
+            program.execute();
+        }
+
         private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)
         {
             updateBlocks(true);
