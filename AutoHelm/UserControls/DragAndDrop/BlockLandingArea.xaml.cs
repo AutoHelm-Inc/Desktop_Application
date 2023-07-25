@@ -30,14 +30,13 @@ namespace AutoHelm.UserControls.DragAndDrop
         private static AHILProgram? program;
         private Statement? _statement;
 
-        public BlockLandingArea(AHILProgram program)
-        {
-            this.function = null; 
+        public BlockLandingArea(AHILProgram program) {
+            this.function = null;
             this.keyword = null;
             this.AllowDrop = true;
             this.parentBlock = null;
             depth = 0;
-            if (BlockLandingArea.program == null) { 
+            if (BlockLandingArea.program == null) {
                 BlockLandingArea.program = program;
             }
             InitializeComponent();
@@ -83,8 +82,12 @@ namespace AutoHelm.UserControls.DragAndDrop
                     dropZoneLabel.Content = blockDataFromDrag.function.ToString();
                     this.function = blockDataFromDrag.function;
                     this.keyword = null;
-                    if (program != null) {
-                        SimpleStatement statement = new SimpleStatement(blockDataFromDrag.function);
+                    SimpleStatement statement = new SimpleStatement(blockDataFromDrag.function);
+                    if (parentBlock != null) {
+                        ((NestedStructure)parentBlock._statement).addStatement(statement);
+                        _statement = statement;
+                    }
+                    else if (program != null) {
                         program.addStatement(statement);
                         _statement = statement;
                     }
@@ -94,11 +97,15 @@ namespace AutoHelm.UserControls.DragAndDrop
                     dropZoneLabel.Content = blockDataFromDrag.keyword.ToString();
                     this.keyword = blockDataFromDrag.keyword;
                     this.function = null;
-                    if (program != null) {
-                        Statement statement = keyword switch {
-                            Keywords.For => new ForLoop(),
-                            _ => throw new NotImplementedException("Other keywords are not implemented"),
-                        };
+                    Statement statement = keyword switch {
+                        Keywords.For => new ForLoop(),
+                        _ => throw new NotImplementedException("Other keywords are not implemented"),
+                    };
+                    if (parentBlock != null) {
+                        ((NestedStructure)parentBlock._statement).addStatement(statement);
+                        _statement = statement;
+                    } 
+                    else if (program != null) {
                         program.addStatement(statement);
                         _statement = statement;
                     }
@@ -240,6 +247,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             parentStackPanel.Children.Remove(this);
             updateDepth(-1*(depth+1));
             changeParentDimensions(-1);
+            Console.WriteLine(program.generateProgramAHILCode());
         }
 
         private void EditStatementButton(object sender, RoutedEventArgs routedEventArgs)
