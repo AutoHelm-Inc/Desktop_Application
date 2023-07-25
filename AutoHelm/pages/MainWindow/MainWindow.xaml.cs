@@ -217,29 +217,37 @@ namespace AutoHelm.pages.MainWindow
                     string fileName;
                     fileName = "cachedValues - " + i + ".xml";
                     filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm", fileName);
-                    using (var fileStream = File.OpenRead(filePath))
-                    using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
-                    {
-                        string line;
-                        string des = "";
-                        bool dis = true;
-                        while ((line = streamReader.ReadLine()) != null)
-                        {
-                            if (dis)
-                            {
-                                displayNames.Add(line);
-                            }
-                            else
-                            {
-                                des += line + "\n";
-                            }
-                            dis = false;
-                        }
-                        Console.WriteLine(des);
-                        descriptions.Add(des);
-                    }
 
-                    saveToCache(filePaths[i], displayNames[i], descriptions[i]);
+                    if (File.Exists(filePath))
+                    {
+                        using (var fileStream = File.OpenRead(filePath))
+                        using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+                        {
+                            string line;
+                            string des = "";
+                            bool dis = true;
+                            while ((line = streamReader.ReadLine()) != null)
+                            {
+                                if (dis)
+                                {
+                                    displayNames.Add(line);
+                                }
+                                else
+                                {
+                                    des += line + "\n";
+                                }
+                                dis = false;
+                            }
+                            Console.WriteLine(des);
+                            descriptions.Add(des);
+                        }
+
+                        saveToCache(filePaths[i], displayNames[i], descriptions[i]);
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = File.CreateText(filePath)) ;
+                    }
                 }
             }
             else
