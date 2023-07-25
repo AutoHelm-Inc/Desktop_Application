@@ -52,7 +52,7 @@ namespace AutoHelm.pages.MainWindow
             {
                 string filePath = openFileDialog.FileName;
                 saveToCache(filePath);
-                SavedEventArgs savedArgs = new SavedEventArgs(filePath);
+                SavedEventArgs savedArgs = new SavedEventArgs(filePath, "");
                 Load_Saved_Page(this, savedArgs);
             }
         }
@@ -64,11 +64,15 @@ namespace AutoHelm.pages.MainWindow
         {
             SavedEventArgs savedArgs = e as SavedEventArgs;
             string filePath = savedArgs.getfilePath;
+            string displayName = savedArgs.getDisplayName;
             CreatePage createPage = new CreatePage();
             mainFrame.Content = createPage;
             Grid grid = (Grid)createPage.Content;
-            TextBlock textBlock = (TextBlock)grid.FindName("createTitle");
+            StackPanel stackPanel = (StackPanel)grid.FindName("createFieldPanel");
+            TextBox textBox = (TextBox)grid.FindName("createTitle");
+            TextBlock textBlock = (TextBlock)grid.FindName("createPath");
             textBlock.Text = filePath;
+            textBox.Text = displayName;
 
         }
         private void SaveAs_Click(object source, EventArgs e)
@@ -82,6 +86,8 @@ namespace AutoHelm.pages.MainWindow
                 if ((bool)saveAsDialog.ShowDialog())
                 {
                     string filePath = saveAsDialog.FileName;
+
+                    // Writing to file as text
                     CreatePage createPage = (CreatePage)mainFrame.Content;
                     File.WriteAllText(filePath, createPage.TempTxt.Text);
                     saveToCache(filePath);
@@ -95,8 +101,9 @@ namespace AutoHelm.pages.MainWindow
             {
                 CreatePage createPage = (CreatePage)mainFrame.Content;
                 Grid grid = (Grid)createPage.Content;
-                TextBlock textBlock = (TextBlock)grid.FindName("createTitle");
-                string filePath = textBlock.Text;
+                StackPanel stackPanel = (StackPanel)grid.FindName("createFieldPanel");
+                TextBox textBox = (TextBox)grid.FindName("createTitle");
+                string filePath = textBox.Text;
 
                 if (File.Exists(filePath))
                 {

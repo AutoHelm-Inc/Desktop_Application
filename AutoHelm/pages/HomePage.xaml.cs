@@ -6,26 +6,29 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Media;
 using AutoHelm.UserControls;
-    using System.IO;
-using Firebase.Auth;
-using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 using System.Threading;
-using Newtonsoft.Json.Linq;
 
 namespace AutoHelm.pages
 {
     public class SavedEventArgs : EventArgs
     {
         private readonly string filePath;
+        private readonly string displayName;
 
-        public SavedEventArgs(string filePath)
+        public SavedEventArgs(string filePath, string fileName)
         {
             this.filePath = filePath;
+            this.displayName = fileName;
         }
 
         public string getfilePath
         {
             get { return this.filePath; }
+        }
+        public string getDisplayName
+        {
+            get { return this.displayName; }
         }
     }
 
@@ -36,8 +39,6 @@ namespace AutoHelm.pages
         public static event MyEventHandler NewAHILPage;
         public static event MyEventHandler OpenAHILPage;
         public static event MyEventHandler Load_Saved_Page;
-        public static event MyEventHandler SyncAHIL;
-
         public HomePage()
         {
             InitializeComponent();
@@ -65,13 +66,17 @@ namespace AutoHelm.pages
 
                 }).Start();
             }
-            
+
         }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = (Button)sender;
             string filePath = (string)clickedButton.Tag;
-            SavedEventArgs savedArgs = new SavedEventArgs(filePath);
+
+            RecentFiles recentFiles = (RecentFiles)clickedButton.Content;
+            TextBlock textBlock = (TextBlock)recentFiles.FindName("recTempBox");
+            string displayName = textBlock.Text;
+            SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayName);
             Load_Saved_Page?.Invoke(this, savedArgs);
         }
 
@@ -108,8 +113,9 @@ namespace AutoHelm.pages
                     Grid.SetRow(newButton, rowCount);
 
                     RecentFiles recentFiles = new RecentFiles();
-                    string pathName = Path.GetFileNameWithoutExtension(path);
-                    recentFiles.recTempBox.Text = pathName;
+                    // Change this to display name
+                    string displayName = Path.GetFileNameWithoutExtension(path);
+                    recentFiles.recTempBox.Text = displayName;
                     newButton.Content = recentFiles;
                     HomePageGrid.Children.Add(newButton);
                     columnCount++;
