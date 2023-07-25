@@ -28,10 +28,15 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.function = blockFunction;
             _statement = statement;
             List<(string, Type)> paramsList = getParamListForFunc(blockFunction);
+            List<dynamic> functionArgs = ((SimpleStatement)statement).getArguments();
 
-            foreach ((string, Type) param in paramsList) 
-            {
-                InputParamsPanel.Children.Add(new ParamInputField(param));
+            for (int i = 0; i < paramsList.Count; i++) {
+                (string, Type) param = paramsList[i];
+                string initValue = "";
+                if (i < functionArgs.Count) {
+                    initValue = functionArgs[i].ToString();
+                }
+                InputParamsPanel.Children.Add(new ParamInputField(param, init: initValue));
             }
             paramWindowTitle.Content = function.ToString();
         }
@@ -42,10 +47,13 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.keyword = blockKeyword;
             _statement = statement;
             List<(string, Type)> paramsList = getParamListForFunc(blockKeyword);
-            
+            string initValue = "";
+            if (blockKeyword == Keywords.For) {
+                initValue = ((ForLoop)statement).getRepititionCount().ToString();
+            }
             foreach ((string, Type) param in paramsList)
             {
-                InputParamsPanel.Children.Add(new ParamInputField(param));
+                InputParamsPanel.Children.Add(new ParamInputField(param, init: initValue));
             }
             paramWindowTitle.Content = keyword.ToString();
         }
