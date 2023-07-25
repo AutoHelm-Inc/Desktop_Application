@@ -46,14 +46,33 @@ namespace AutoHelm.pages.MainWindow
         }
         private void OpenButton_Click_Page(object source, EventArgs e)
         {
+            ObjectCache cache = MemoryCache.Default;
+            List<string> filePaths = cache["path"] as List<string>;
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "AHIL file (*.ahil)|*.ahil|Text file (*.txt)|*.txt";
             if (openFileDialog.ShowDialog() == true)
             {
                 string filePath = openFileDialog.FileName;
-                saveToCache(filePath);
-                SavedEventArgs savedArgs = new SavedEventArgs(filePath);
-                Load_Saved_Page(this, savedArgs);
+                if (filePaths.Contains(filePath))
+                {
+                    int index = filePaths.IndexOf(filePath);
+                    List<string> displayNames = cache["displayName"] as List<string>;
+                    List<string> descriptions = cache["description"] as List<string>;
+                    SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayNames[index], descriptions[index]);
+                    Load_Saved_Page(this, savedArgs);
+                }
+                else
+                {
+                    // This all should change to reading from something
+                    string displayName = System.IO.Path.GetFileNameWithoutExtension(filePath);
+                    string description = "";
+
+                    saveToCache(filePath, displayName, description);
+                    SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayName, description);
+                    Load_Saved_Page(this, savedArgs);
+                }
+
             }
         }
         private void TopBar_ExecuteButton_Click_Page(object source, EventArgs e)
@@ -64,11 +83,18 @@ namespace AutoHelm.pages.MainWindow
         {
             SavedEventArgs savedArgs = e as SavedEventArgs;
             string filePath = savedArgs.getfilePath;
+            string displayName = savedArgs.getDisplayName;
+            string description = savedArgs.getDescription;
             CreatePage createPage = new CreatePage();
             mainFrame.Content = createPage;
             Grid grid = (Grid)createPage.Content;
-            TextBlock textBlock = (TextBlock)grid.FindName("createTitle");
+            StackPanel stackPanel = (StackPanel)grid.FindName("createFieldPanel");
+            TextBox textBox = (TextBox)grid.FindName("createTitle");
+            TextBlock textBlock = (TextBlock)grid.FindName("createPath");
+            TextBox textBox1 = (TextBox)grid.FindName("createDescription");
             textBlock.Text = filePath;
+            textBox.Text = displayName;
+            textBox1.Text = description;
 
         }
         private void SaveAs_Click(object source, EventArgs e)
@@ -82,9 +108,20 @@ namespace AutoHelm.pages.MainWindow
                 if ((bool)saveAsDialog.ShowDialog())
                 {
                     string filePath = saveAsDialog.FileName;
+
+                    // Writing to file as text
                     CreatePage createPage = (CreatePage)mainFrame.Content;
-                    File.WriteAllText(filePath, createPage.TempTxt.Text);
-                    saveToCache(filePath);
+                    Grid grid = (Grid)createPage.Content;
+                    TextBlock textBlock = (TextBlock)grid.FindName("createPath");
+                    TextBox textBox = (TextBox)grid.FindName("createTitle");
+                    TextBox textBox1 = (TextBox)grid.FindName("createDescription");
+                    textBlock.Text = filePath;
+                    string displayName = textBox.Text;
+                    string description = textBox1.Text;
+
+                    File.WriteAllText(filePath, createPage.createDescription.Text);
+
+                    saveToCache(filePath, displayName, description);
                 }
             }
         }
@@ -95,13 +132,17 @@ namespace AutoHelm.pages.MainWindow
             {
                 CreatePage createPage = (CreatePage)mainFrame.Content;
                 Grid grid = (Grid)createPage.Content;
-                TextBlock textBlock = (TextBlock)grid.FindName("createTitle");
+                TextBlock textBlock = (TextBlock)grid.FindName("createPath");
+                TextBox textBox = (TextBox)grid.FindName("createTitle");
+                TextBox textBox1 = (TextBox)grid.FindName("createDescription");
                 string filePath = textBlock.Text;
+                string displayName = textBox.Text;
+                string description = textBox1.Text;
 
                 if (File.Exists(filePath))
                 {
-                    File.WriteAllText(filePath, createPage.TempTxt.Text);
-                    saveToCache(filePath);
+                    File.WriteAllText(filePath, createPage.createDescription.Text);
+                    saveToCache(filePath, displayName, description);
                 }
                 else
                 {
@@ -109,53 +150,109 @@ namespace AutoHelm.pages.MainWindow
                 }
             }
         }
-        private void saveToCache(string filePath)
+        private void saveToCache(string filePath, string displayName, string description)
         {
             ObjectCache cache = MemoryCache.Default;
             List<string> filePaths = cache["path"] as List<string>;
+            List<string> displayNames = cache["displayName"] as List<string>;
+            List<string> descriptions = cache["description"] as List<string>;
 
             if (filePaths == null) { 
                 filePaths = new List<string>();
+                displayNames = new List<string>();
+                descriptions = new List<string>();
                 CacheItemPolicy policy = new CacheItemPolicy();
                 cache.Set("path", filePaths, policy);
+                cache.Set("displayName", displayNames, policy);
+                cache.Set("description", descriptions, policy);
             }
             if (!filePaths.Contains(filePath)){
                 filePaths.Add(filePath);
+                displayNames.Add(displayName);
+                descriptions.Add(description);
+                Console.WriteLine(descriptions[0]);
             }
             else
             {
                 int indexOfRecentFile = filePaths.IndexOf(filePath);
                 filePaths.RemoveAt(indexOfRecentFile);
+                displayNames.RemoveAt(indexOfRecentFile);
+                descriptions.RemoveAt(indexOfRecentFile);
                 filePaths.Add(filePath);
+                displayNames.Add(displayName);
+                descriptions.Add(description);
             }
 
         }
         private void getPathsFromFile()
         {
-
+            List<string> filePaths = new List<string>();
+            List<string> displayNames = new List<string>();
+            List<string> descriptions = new List<string>();
             bool exists = Directory.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm"));
 
             if (!exists)
                 Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm"));
 
             const Int32 BufferSize = 128;
-            var fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm/cachedPaths.xml");
+            var filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm/cachedPaths.xml");
 
-            if (File.Exists(fileName))
+            if (File.Exists(filePath))
             {
-                using (var fileStream = File.OpenRead(fileName))
+                using (var fileStream = File.OpenRead(filePath))
                 using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
                 {
-                    String line;
+                    string line;
                     while ((line = streamReader.ReadLine()) != null)
                     {
-                        saveToCache(line);
+                        if (File.Exists(line))
+                        {
+                            filePaths.Add(line);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < filePaths.Count; i++)
+                {
+                    string fileName;
+                    fileName = "cachedValues - " + i + ".xml";
+                    filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm", fileName);
+
+                    if (File.Exists(filePath))
+                    {
+                        using (var fileStream = File.OpenRead(filePath))
+                        using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+                        {
+                            string line;
+                            string des = "";
+                            bool dis = true;
+                            while ((line = streamReader.ReadLine()) != null)
+                            {
+                                if (dis)
+                                {
+                                    displayNames.Add(line);
+                                }
+                                else
+                                {
+                                    des += line + "\n";
+                                }
+                                dis = false;
+                            }
+                            Console.WriteLine(des);
+                            descriptions.Add(des);
+                        }
+
+                        saveToCache(filePaths[i], displayNames[i], descriptions[i]);
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = File.CreateText(filePath)) ;
                     }
                 }
             }
             else
             {
-                using (StreamWriter sw = File.CreateText(fileName));
+                using (StreamWriter sw = File.CreateText(filePath));
             }
 
         }
@@ -164,14 +261,29 @@ namespace AutoHelm.pages.MainWindow
             base.OnClosed(e);
             ObjectCache cache = MemoryCache.Default;
             List<string> filePaths = cache["path"] as List<string>;
+            List<string> displayNames = cache["displayName"] as List<string>;
+            List<string> descriptions = cache["description"] as List<string>;
 
-            var fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm/cachedPaths.xml");
+            var filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm/cachedPaths.xml");
 
-            using (StreamWriter writetext = new StreamWriter(fileName))
+            using (StreamWriter writetext = new StreamWriter(filePath))
             {
                 foreach(string path in filePaths)
                 {
                     writetext.WriteLine(path);
+                }
+            }
+
+            string fileName;
+            for (int i = 0; i < filePaths.Count; i++)
+            {
+                fileName = "cachedValues - " + i + ".xml";
+                filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm", fileName);
+
+                using (StreamWriter writetext = new StreamWriter(filePath))
+                {
+                    writetext.WriteLine(displayNames[i]);
+                    writetext.WriteLine(descriptions[i]);
                 }
             }
         }

@@ -17,13 +17,6 @@
     </Page.Resources>
 
     <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="48" x:Name="createTitle">
-            <TextBlock.Text>
-                Create
-            </TextBlock.Text>
-        </TextBlock>
-        <TextBox x:Name="TempTxt" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="200" Background="{x:Null}" Foreground="{DynamicResource BlueAccent}" Margin="295,0,0,0"></TextBox>
-
         <ScrollViewer x:Name="LandingAreaScrollable" PanningMode="None" >
             <StackPanel x:Name="LandingAreaPanel" HorizontalAlignment="Stretch">
                 <!--<local1:BlockLandingArea HorizontalAlignment="Center" Margin="0,10,10,10" Width="auto" Height="auto"/>
@@ -54,5 +47,15 @@
             <local1:DraggingStatementBlock HorizontalAlignment="Center" Margin="15,15,15,15"  Width="auto" Height="auto"/>-->
         </StackPanel>
         <!--</ScrollViewer>-->
+        <StackPanel HorizontalAlignment="Right" Width="350" Background="{DynamicResource OneDarkerThanPrimary}" x:Name="createFieldPanel">
+            <TextBox Text="Untitled" HorizontalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="60" Foreground="{DynamicResource BlueAlternateAccent}" TextWrapping="Wrap" x:Name="createTitle"/>
+            <TextBlock x:Name="createPath" HorizontalAlignment="Center" Background="{x:Null}" FontSize="14" Foreground="{DynamicResource BlueAccent}"><Italic>path</Italic></TextBlock>
+            <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="28">
+                <TextBlock.Text>
+                    Description
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBox x:Name="createDescription" HorizontalAlignment="Center" Height="420" Width="300"  Background="{x:Null}" TextWrapping="Wrap" AcceptsReturn="True" Foreground="{DynamicResource BlueAccent}"></TextBox>
+        </StackPanel>
     </Grid>
 </Page>

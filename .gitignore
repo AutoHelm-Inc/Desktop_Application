@@ -2,7 +2,7 @@
 /AutoHelm/bin
 /AutoHelm/.vs
 /.vs
-
+/AutoHelm/app.config
 
 /AutoHelm/obj/*
 /AutoHelm/bin/*
