@@ -55,7 +55,7 @@
                     Description
                 </TextBlock.Text>
             </TextBlock>
-            <TextBox x:Name="TempTxt" HorizontalAlignment="Center" Height="420" Width="300"  Background="{x:Null}" TextWrapping="Wrap" AcceptsReturn="True" Foreground="{DynamicResource BlueAccent}"></TextBox>
+            <TextBox x:Name="createDescription" HorizontalAlignment="Center" Height="420" Width="300"  Background="{x:Null}" TextWrapping="Wrap" AcceptsReturn="True" Foreground="{DynamicResource BlueAccent}"></TextBox>
         </StackPanel>
     </Grid>
 </Page>
