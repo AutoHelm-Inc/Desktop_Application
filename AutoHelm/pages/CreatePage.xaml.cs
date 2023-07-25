@@ -24,6 +24,7 @@ namespace AutoHelm.pages
         private List<DraggingStatementBlock> statementsAndFunctionBlocks;
         private int statementsAndFunctionBlocksIndex;
         private int numBlocksPerCycle;
+        private AHILProgram program;
 
         public CreatePage()
         {
@@ -32,6 +33,7 @@ namespace AutoHelm.pages
             statementsAndFunctionBlocksIndex = 0;
             numBlocksPerCycle = 5;
             int colorIndex = 0;
+            program = new AHILProgram();
 
             Style cycleElementsButtonStyle = new Style(typeof(Button));
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.BackgroundProperty, (SolidColorBrush)FindResource("BlueAccent")));
@@ -59,7 +61,7 @@ namespace AutoHelm.pages
             }
 
             updateBlocks(false);
-            LandingAreaPanel.Children.Add(new BlockLandingArea());
+            LandingAreaPanel.Children.Add(new BlockLandingArea(program));
         }
 
         private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)

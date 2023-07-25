@@ -18,7 +18,7 @@
     <Grid>
         <StackPanel x:Name="InputStackPanel" Orientation="Horizontal" HorizontalAlignment="Center">
             <Label x:Name="InputLabel" FontSize="15" Foreground="White" Margin="0,15,0,0"></Label>
-            <TextBox Height="25" Width="125" Margin="15,15,0,0" Foreground="White" Background="{DynamicResource OneLighterThanPrimary}" BorderBrush="{DynamicResource TwoLighterThanPrimary}" VerticalContentAlignment="Center"></TextBox>
+            <TextBox x:Name="InputField" Height="25" Width="125" Margin="15,15,0,0" Foreground="White" Background="{DynamicResource OneLighterThanPrimary}" BorderBrush="{DynamicResource TwoLighterThanPrimary}" VerticalContentAlignment="Center"></TextBox>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -27,13 +27,19 @@ namespace AutoHelm.UserControls.DragAndDrop
         private Boolean dropabble;
         private BlockLandingArea? parentBlock;
         private int depth;
-        public BlockLandingArea()
+        private static AHILProgram? program;
+        private Statement? _statement;
+
+        public BlockLandingArea(AHILProgram program)
         {
             this.function = null; 
             this.keyword = null;
             this.AllowDrop = true;
             this.parentBlock = null;
             depth = 0;
+            if (BlockLandingArea.program == null) { 
+                BlockLandingArea.program = program;
+            }
             InitializeComponent();
         }
 
@@ -70,20 +76,35 @@ namespace AutoHelm.UserControls.DragAndDrop
                 string oldDropZoneLabel = dropZoneLabel.Content.ToString();
 
                 BlockDataToTransfer blockDataFromDrag = ((BlockDataToTransfer)(dragEventData.Data.GetData("DRAG_BLOCK_DATA")));
-
+                
                 borderRect.Fill = (Brush)blockDataFromDrag.backgroundColor;
                 if(blockDataFromDrag.function != null)
                 {
                     dropZoneLabel.Content = blockDataFromDrag.function.ToString();
                     this.function = blockDataFromDrag.function;
                     this.keyword = null;
+                    if (program != null) {
+                        SimpleStatement statement = new SimpleStatement(blockDataFromDrag.function);
+                        program.addStatement(statement);
+                        _statement = statement;
+                    }
                 }
                 else
                 {
                     dropZoneLabel.Content = blockDataFromDrag.keyword.ToString();
                     this.keyword = blockDataFromDrag.keyword;
                     this.function = null;
+                    if (program != null) {
+                        Statement statement = keyword switch {
+                            Keywords.For => new ForLoop(),
+                            _ => throw new NotImplementedException("Other keywords are not implemented"),
+                        };
+                        program.addStatement(statement);
+                        _statement = statement;
+                    }
                 }
+                Console.WriteLine(program.generateProgramAHILCode());
+
                 dropZoneLabel.Foreground = blockDataFromDrag.labelColor;
 
                 borderRect.StrokeDashArray = null;
@@ -145,7 +166,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                 }
                 else if (oldDropZoneLabel.Equals("Drag Block Here!"))
                 {                
-                    parentStackPanel.Children.Add(new BlockLandingArea());
+                    parentStackPanel.Children.Add(new BlockLandingArea(program));
                 }
 
             }
@@ -214,6 +235,7 @@ namespace AutoHelm.UserControls.DragAndDrop
 
         private void DeleteStatementButton(object sender, RoutedEventArgs routedEventArgs)
         {
+            program.removeStatementRecursive(_statement);
             StackPanel parentStackPanel = this.Parent as StackPanel;
             parentStackPanel.Children.Remove(this);
             updateDepth(-1*(depth+1));
@@ -224,14 +246,15 @@ namespace AutoHelm.UserControls.DragAndDrop
         {
             if (function != null)
             {
-                ParameterInputWindow parameterInputWindow = new ParameterInputWindow(function);
+                ParameterInputWindow parameterInputWindow = new ParameterInputWindow(function, _statement);
                 parameterInputWindow.ShowDialog();
             }
             else
             {
-                ParameterInputWindow parameterInputWindow = new ParameterInputWindow(keyword);
+                ParameterInputWindow parameterInputWindow = new ParameterInputWindow(keyword, _statement);
                 parameterInputWindow.ShowDialog();
             }
+            Console.WriteLine(program.generateProgramAHILCode());
         }
     }
 }
