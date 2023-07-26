@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoHelm"
         xmlns:UC="clr-namespace:AutoHelm.user_controls"
         mc:Ignorable="d"
-        Title="AutoHelm" Height="765" Width="1360"
+        Title="AutoHelm" Height="1080" Width="1920"
         Background="Transparent" Icon="/pages/MainWindow/autohelm_logo.ico">
     
     
@@ -20,6 +20,6 @@
 
     <Grid x:Name="mainGrid" Background="{DynamicResource OneDarkerThanPrimary}">
         <UC:TopBar x:Name="topBar"/>
-        <Frame Margin="0,40,0,0" x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
+        <Frame Margin="0,40,0,0" x:Name="mainFrame" NavigationUIVisibility="Hidden" VerticalAlignment="Top" VerticalContentAlignment="Top"/>
     </Grid>
 </Window>
