@@ -35,7 +35,20 @@
                 <ColumnDefinition Width="200"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button Background="{x:Null}" Grid.Column="0" Grid.Row="0" Name="NewAHILButton" Click="NewAHILPage_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" >
+            <Button Background="{x:Null}" Grid.Column="0" Grid.Row="0" Name="NewAHILButton" Click="NewAHILPage_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
                 <Grid>
                     <Rectangle Fill="{StaticResource OneLighterThanPrimary}"  RadiusX="10" RadiusY="10"
                Width="200" Height="150" Margin="2"  HorizontalAlignment="Center"></Rectangle>
@@ -43,14 +56,14 @@
                 </Grid>
             </Button>
         </Grid>
-        <Button Background="{x:Null}" Name="SyncAHILButton" Click="SyncAHIL_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <Button Background="{x:Null}" Name="SyncAHILButton" Click="SyncAHIL_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand">
             <Grid>
                 <Rectangle Fill="{StaticResource OneLighterThanPrimary}"  RadiusX="10" RadiusY="10"
                Width="100" Height="75" Margin="2"  HorizontalAlignment="Center"></Rectangle>
                 <TextBlock Text="Sync" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource BlueAccent}" FontSize="30"></TextBlock>
             </Grid>
         </Button>
-        <Button Background="{x:Null}" Name="OpenAHILButton" Click="OpenAHILPage_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <Button Background="{x:Null}" Name="OpenAHILButton" Click="OpenAHILPage_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="Hand">
             <Grid>
                 <Rectangle Fill="{StaticResource OneLighterThanPrimary}"  RadiusX="10" RadiusY="10"
                Width="100" Height="75" Margin="2"  HorizontalAlignment="Center"></Rectangle>

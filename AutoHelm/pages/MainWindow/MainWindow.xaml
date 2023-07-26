@@ -7,7 +7,7 @@
         xmlns:UC="clr-namespace:AutoHelm.user_controls"
         mc:Ignorable="d"
         Title="AutoHelm" Height="765" Width="1360"
-        Background="Transparent">
+        Background="Transparent" Icon="/pages/MainWindow/autohelm_logo.ico">
     
     
     <Window.Resources>
@@ -18,8 +18,8 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
-        <UC:TopBar/>
+    <Grid x:Name="mainGrid" Background="{DynamicResource OneDarkerThanPrimary}">
+        <UC:TopBar x:Name="topBar"/>
         <Frame Margin="0,40,0,0" x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

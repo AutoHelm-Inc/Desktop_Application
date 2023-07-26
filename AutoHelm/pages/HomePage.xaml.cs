@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Runtime.Caching;
 using System.Windows;
 using System.Windows.Controls;
-using System.Diagnostics;
 using System.Windows.Media;
 using AutoHelm.UserControls;
-using System.IO;
 using System.Threading;
+using System.Windows.Media.Animation;
+using System.Windows.Input;
 
 namespace AutoHelm.pages
 {
@@ -113,11 +113,48 @@ namespace AutoHelm.pages
                         break;
                     }
                     Button newButton = new Button();
+
+                    Style style = new Style(typeof(Button));
+                    ControlTemplate controlTemplate = new ControlTemplate(typeof(Button));
+                    FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
+                    borderFactory.SetValue(Border.BackgroundProperty, Brushes.Transparent);
+                    FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+                    borderFactory.AppendChild(contentPresenterFactory);
+                    controlTemplate.VisualTree = borderFactory;
+                    Setter setter = new Setter(Control.TemplateProperty, controlTemplate);
+                    style.Setters.Add(setter);
+
+                    newButton.Style = style;
+
                     newButton.Background = Brushes.Transparent;
                     newButton.Foreground = Brushes.Transparent;
                     newButton.BorderBrush = Brushes.Transparent;
+                    newButton.Cursor = Cursors.Hand;
                     newButton.Tag = i;
+                    newButton.Name = "bruh";
                     newButton.Click += SavedFile_ButtonClick;
+
+                    ///// Hovering
+                    
+                    ScaleTransform scaleTransform = new ScaleTransform(1, 1);
+                    newButton.RenderTransformOrigin = new Point(0.5, 0.5);
+                    newButton.RenderTransform = scaleTransform;
+
+                    newButton.MouseEnter += (sender, e) =>
+                    {
+                        DoubleAnimation animation = new DoubleAnimation(1.1, TimeSpan.FromSeconds(0.1));
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, animation);
+                    };
+
+                    newButton.MouseLeave += (sender, e) =>
+                    {
+                        DoubleAnimation animation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.2));
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, animation);
+                    };
+
+                    /////
 
                     Grid.SetColumn(newButton, columnCount);
                     Grid.SetRow(newButton, rowCount);
