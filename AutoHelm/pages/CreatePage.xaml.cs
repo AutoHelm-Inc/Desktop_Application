@@ -117,19 +117,23 @@ namespace AutoHelm.pages
             BlockLandingArea blaProgram = new BlockLandingArea(ahilProgram);
 
             //Next we iterate through each statement
+            //By default we put "LandingAreaPanel" because we want it to be added to the panel related to the CreatePage
             foreach (Statement s in ahilProgram.getStatements())
             {
                 if (s is SimpleStatement)
                 {
-                    loadSimpleStatement((SimpleStatement)s);
+                    loadSimpleStatement((SimpleStatement)s, LandingAreaPanel);
                 }
                 else if (s is NestedStructure)
                 {
-                    loadNestedStruct((NestedStructure)s);
+                    loadNestedStruct((NestedStructure)s, LandingAreaPanel);
                 }
             }
         }
-        private void loadSimpleStatement(SimpleStatement s)
+
+        //Note that in these function, stack panel can change due to nesting. For instance For(5){ Run "Notepad.exe"} the
+        //StackPanel would be the NestedStackPanel of the For Block
+        private void loadSimpleStatement(SimpleStatement s, StackPanel stackPanel)
         {
             //For simple statements, we simply create a new block landing area with no parent or keyword since they are only functions
             SimpleStatement ss = (SimpleStatement)s;
@@ -137,17 +141,31 @@ namespace AutoHelm.pages
             //Set the arguments
             bla.setStatement(ss);
             //Then physically render the block
-            bla.loadBlock(LandingAreaPanel);
+            bla.loadBlock(stackPanel);
         }
 
-        private void loadNestedStruct(NestedStructure s)
+        private void loadNestedStruct(NestedStructure ns, StackPanel stackPanel)
         {
-            if (s is ForLoop)
+            if (ns is ForLoop)
             {
-                ForLoop fl = (ForLoop)s;
+                ForLoop fl = (ForLoop)ns;
                 BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, null);
                 bla.setStatement(fl);
-                bla.loadBlock(LandingAreaPanel);
+                StackPanel newPanel = bla.loadBlock(stackPanel);
+
+                foreach (Statement s in fl.getStatements())
+                {
+                    if (s is SimpleStatement)
+                    {
+                        loadSimpleStatement((SimpleStatement)s, newPanel);
+                    }
+                    else if (s is NestedStructure)
+                    {
+                        loadNestedStruct((NestedStructure)s, newPanel);
+                    }
+
+                }
+
             }
         }
 

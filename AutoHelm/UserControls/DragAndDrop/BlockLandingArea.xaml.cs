@@ -280,7 +280,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             this._statement = s;
         }
 
-        public void loadBlock(StackPanel parentStackPanel)
+        public StackPanel loadBlock(StackPanel parentStackPanel)
         {
             int numBlocksPerCycle = 5;
             int colorIndex = 0;
@@ -366,19 +366,24 @@ namespace AutoHelm.UserControls.DragAndDrop
             //If the keyword is a for loop we need to enlargen the block and also add a nested landing area
             if ((this.keyword == Keywords.For))
             {
-                if (this.keyword == Keywords.For)
-                {
-                    landingAreaGrid.Width = landingAreaGrid.Width + 35;
-                    borderRect.Height = borderRect.Height + 150;
-                    borderRect.Width = borderRect.Width + 35;
-                    updateDepth(1);
-                    NestedStatementsPanel.Children.Add(new BlockLandingArea(this)); //typically blank, need to replace it with all children
-                }
+
+                landingAreaGrid.Width = landingAreaGrid.Width + 35;
+                borderRect.Height = borderRect.Height + 150;
+                borderRect.Width = borderRect.Width + 35;
+                updateDepth(1);
+                //NestedStatementsPanel.Children.Add(new BlockLandingArea(this)); //typically blank, need to replace it with all children
                 changeParentDimensions(1);
-                
+                parentStackPanel.Children.Add(this);
+                return NestedStatementsPanel;
+
+
+            }
+            else
+            {
+                parentStackPanel.Children.Add(this);
+                return parentStackPanel;
             }
 
-            parentStackPanel.Children.Add(this);
 
         }
     }
