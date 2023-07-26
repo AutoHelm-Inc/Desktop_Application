@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
+using Automation_Project.src.automation;
 
 namespace AutoHelm.pages
 {
@@ -30,14 +31,23 @@ namespace AutoHelm.pages
             return program;
         }
 
-        public CreatePage()
+        public CreatePage(AHILProgram ahilProgram)
         {
             InitializeComponent();
 
             statementsAndFunctionBlocksIndex = 0;
             numBlocksPerCycle = 5;
             int colorIndex = 0;
-            program = new AHILProgram();
+
+            if (ahilProgram != null)
+            {
+                program = ahilProgram;
+                loadProgram(program);
+            }
+            else
+            {
+                program = new AHILProgram();
+            }
 
             Style cycleElementsButtonStyle = new Style(typeof(Button));
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.BackgroundProperty, (SolidColorBrush)FindResource("BlueAccent")));
@@ -101,5 +111,45 @@ namespace AutoHelm.pages
                 }
             }
         }
+        private void loadProgram(AHILProgram ahilProgram)
+        {
+            //First we create the empty landing area assocaited with the ahilProgram
+            BlockLandingArea blaProgram = new BlockLandingArea(ahilProgram);
+
+            //Next we iterate through each statement
+            foreach (Statement s in ahilProgram.getStatements())
+            {
+                if (s is SimpleStatement)
+                {
+                    loadSimpleStatement((SimpleStatement)s);
+                }
+                else if (s is NestedStructure)
+                {
+                    loadNestedStruct((NestedStructure)s);
+                }
+            }
+        }
+        private void loadSimpleStatement(SimpleStatement s)
+        {
+            //For simple statements, we simply create a new block landing area with no parent or keyword since they are only functions
+            SimpleStatement ss = (SimpleStatement)s;
+            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, null);
+            //Set the arguments
+            bla.setStatement(ss);
+            //Then physically render the block
+            bla.loadBlock(LandingAreaPanel);
+        }
+
+        private void loadNestedStruct(NestedStructure s)
+        {
+            if (s is ForLoop)
+            {
+                ForLoop fl = (ForLoop)s;
+                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, null);
+                bla.setStatement(fl);
+                bla.loadBlock(LandingAreaPanel);
+            }
+        }
+
     }
 }

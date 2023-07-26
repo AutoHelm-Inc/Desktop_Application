@@ -62,6 +62,16 @@ namespace AutoHelm.UserControls.DragAndDrop
             InitializeComponent();
         }
 
+        public BlockLandingArea(Functions? function, Keywords? keyword, BlockLandingArea? parentBlock)
+        {
+            this.function = function;
+            this.keyword = keyword;
+            this.AllowDrop = true;
+            this.parentBlock = parentBlock;
+            this.depth = 0;
+            InitializeComponent();
+        }
+
         public Boolean Dropabble
         {
             get { return this.dropabble;}
@@ -163,7 +173,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                         borderRect.Height = borderRect.Height + 150;
                         borderRect.Width = borderRect.Width + 35;
                         updateDepth(1); 
-                        NestedStatemetnsPanel.Children.Add(new BlockLandingArea(this));
+                        NestedStatementsPanel.Children.Add(new BlockLandingArea(this));
                     }
                     changeParentDimensions(1);
                         
@@ -263,6 +273,113 @@ namespace AutoHelm.UserControls.DragAndDrop
                 parameterInputWindow.ShowDialog();
             }
             Console.WriteLine(program.generateProgramAHILCode());
+        }
+
+        public void setStatement(Statement s)
+        {
+            this._statement = s;
+        }
+
+        public void loadBlock(StackPanel parentStackPanel)
+        {
+            int numBlocksPerCycle = 5;
+            int colorIndex = 0;
+
+            
+            //set the block color
+            foreach (Functions func in Enum.GetValues(typeof(Functions)))
+            {
+                if (func == this.function)
+                {
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                }
+                colorIndex++;
+            }
+
+            foreach (Keywords keyWord in Enum.GetValues(typeof(Keywords)))
+            {
+                if (keyWord == this.keyword)
+                {
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                }
+                colorIndex++;
+            }
+
+
+            if (this.function != null)
+            {
+                //Set the block label for function
+                dropZoneLabel.Content = this.function.ToString();
+
+            }
+            else
+            {
+                //Set the block label for keyword
+                dropZoneLabel.Content = this.keyword.ToString();
+            }
+
+            //Label colors are always white
+            dropZoneLabel.Foreground = new SolidColorBrush(Colors.White);
+            borderRect.StrokeDashArray = null;
+            borderRect.Stroke = Brushes.Black;
+
+            //Make delete button and set styling
+            Button deleteButton = new Button();
+            deleteButton.Background = new SolidColorBrush(Colors.Transparent);
+            deleteButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            deleteButton.Width = 34;
+            deleteButton.Height = 34;
+            deleteButton.VerticalAlignment = VerticalAlignment.Top;
+            deleteButton.HorizontalAlignment = HorizontalAlignment.Right;
+            deleteButton.Margin = new Thickness(10);
+            deleteButton.Content = "X";
+            deleteButton.FontSize = 18;
+            deleteButton.FontWeight = FontWeights.Bold;
+            deleteButton.Foreground = new SolidColorBrush(Colors.PaleVioletRed);
+            deleteButton.Click += new RoutedEventHandler(DeleteStatementButton);
+
+            //Make edit button and set styling
+            Button editButton = new Button();
+            editButton.Background = new SolidColorBrush(Colors.Transparent);
+            editButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            editButton.Width = 34;
+            editButton.Height = 34;
+            editButton.VerticalAlignment = VerticalAlignment.Bottom;
+            editButton.HorizontalAlignment = HorizontalAlignment.Right;
+            editButton.Margin = new Thickness(10);
+            Image editButtonImage = new Image();
+            //editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));
+            editButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/gear.png")));
+            //editButtonImage.Source = new BitmapImage(new Uri(@"Assets/gear.png", UriKind.Relative));
+            editButtonImage.Width = 18;
+            editButtonImage.Height = 18;
+            editButton.Content = editButtonImage;
+            editButton.Click += new RoutedEventHandler(EditStatementButton);
+
+            landingAreaGrid.Children.Add(editButton);
+            landingAreaGrid.Children.Add(deleteButton);
+
+            //StackPanel parentStackPanel = this.Parent as StackPanel;
+
+            string oldDropZoneLabel = dropZoneLabel.Content.ToString();
+            
+            //If the keyword is a for loop we need to enlargen the block and also add a nested landing area
+            if ((this.keyword == Keywords.For))
+            {
+                if (this.keyword == Keywords.For)
+                {
+                    landingAreaGrid.Width = landingAreaGrid.Width + 35;
+                    borderRect.Height = borderRect.Height + 150;
+                    borderRect.Width = borderRect.Width + 35;
+                    updateDepth(1);
+                    NestedStatementsPanel.Children.Add(new BlockLandingArea(this)); //typically blank, need to replace it with all children
+                }
+                changeParentDimensions(1);
+                
+            }
+
+            parentStackPanel.Children.Add(this);
+
         }
     }
 }
