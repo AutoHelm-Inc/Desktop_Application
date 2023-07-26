@@ -20,110 +20,156 @@ namespace AutoHelm.UserControls.DragAndDrop
     {
         private Functions? function;
         private Keywords? keyword;
+        private Statement _statement;
 
-        public ParameterInputWindow(Functions? blockFunction)
+        public ParameterInputWindow(Functions? blockFunction, Statement statement)
         {
             InitializeComponent();
             this.function = blockFunction;
-            List<string> paramsList = getParamListForFunc(blockFunction);
-            
-            foreach (string param in paramsList)
-            {
-                InputParamsPanel.Children.Add(new ParamInputField(param));
+            _statement = statement;
+            List<(string, Type)> paramsList = getParamListForFunc(blockFunction);
+            List<dynamic> functionArgs = ((SimpleStatement)statement).getArguments();
+
+            for (int i = 0; i < paramsList.Count; i++) {
+                (string, Type) param = paramsList[i];
+                string initValue = "";
+                if (i < functionArgs.Count) {
+                    initValue = functionArgs[i].ToString();
+                }
+                InputParamsPanel.Children.Add(new ParamInputField(param, init: initValue));
             }
             paramWindowTitle.Content = function.ToString();
         }
 
-        public ParameterInputWindow(Keywords? blockKeyword)
+        public ParameterInputWindow(Keywords? blockKeyword, Statement statement)
         {
             InitializeComponent();
             this.keyword = blockKeyword;
-            List<string> paramsList = getParamListForFunc(blockKeyword);
-            
-            foreach (string param in paramsList)
+            _statement = statement;
+            List<(string, Type)> paramsList = getParamListForFunc(blockKeyword);
+            string initValue = "";
+            if (blockKeyword == Keywords.For) {
+                initValue = ((ForLoop)statement).getRepititionCount().ToString();
+            }
+            foreach ((string, Type) param in paramsList)
             {
-                InputParamsPanel.Children.Add(new ParamInputField(param));
+                InputParamsPanel.Children.Add(new ParamInputField(param, init: initValue));
             }
             paramWindowTitle.Content = keyword.ToString();
         }
 
-        private void saveButtonCLick(object sender, RoutedEventArgs routedEventArgs)
+        private void saveButtonClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            
+            if (_statement.GetType() == typeof(SimpleStatement)) {
+                ((SimpleStatement)_statement).setArguments(new List<dynamic>());
+            }
+            foreach (ParamInputField child in InputParamsPanel.Children) {
+                if (child.InputField.Text == "") {
+                    continue;
+                }
+                if (child.getType() == typeof(int)) {
+                    int parsedValue = int.Parse(child.InputField.Text);
+                    if (_statement.GetType() == typeof(SimpleStatement)) {
+                        ((SimpleStatement)_statement).addArgument(parsedValue);
+                    }
+                    else if (keyword == Keywords.For) {
+                        ((ForLoop)_statement).setRepititionCount(parsedValue);
+                    }
+                } else {
+                    ((SimpleStatement)_statement).addArgument(child.InputField.Text);
+                }
+            }
+            this.Close();
         }
 
-        public List<string> getParamListForFunc(dynamic? funcOrKeyword)
+        public List<(string, Type)> getParamListForFunc(dynamic? funcOrKeyword)
         {
-            List<string> paramsList = new List<string>();
+            List<(string, Type)> paramsList = new List<(string, Type)>();
             if (funcOrKeyword is Functions)
             {
                 if ((Functions)funcOrKeyword == (Functions.Run))
                 {
-                    paramsList.Add("Program/File");
+                    paramsList.Add(("Program/File", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.SwitchWindow)
                 {
-                    paramsList.Add("Program");
+                    paramsList.Add(("Program", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.Close)
                 {
-                    paramsList.Add("Program");
+                    paramsList.Add(("Program", typeof(string)));
                 }
-                else if ((Functions)funcOrKeyword == Functions.Create)
+                else if ((Functions)funcOrKeyword == Functions.FileCreate)
                 {
-                    paramsList.Add("File Path");
+                    paramsList.Add(("File Path", typeof(string)));
+                }
+                else if ((Functions)funcOrKeyword == Functions.DirCreate) {
+                    paramsList.Add(("Directory Path", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.Save)
                 {
-                    paramsList.Add("File");
+                    paramsList.Add(("File", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.Move)
                 {
-                    paramsList.Add("Old path");
-                    paramsList.Add("New path");
+                    paramsList.Add(("Old Path", typeof(string)));
+                    paramsList.Add(("New Path", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.Del)
                 {
-                    paramsList.Add("File Path");
+                    paramsList.Add(("File Path", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.WrtLine)
                 {
-                    paramsList.Add("Line");
+                    paramsList.Add(("Line", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.Write)
                 {
-                    paramsList.Add("Words");
+                    paramsList.Add(("Words", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.PressKey)
                 {
-                    paramsList.Add("Key");
+                    paramsList.Add(("Keys", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.EmailsGet)
                 {
-                    paramsList.Add("Email Address");
+                    paramsList.Add(("Email Address", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.FilesGet)
                 {
-                    paramsList.Add("Folder Path");
+                    paramsList.Add(("Folder Path", typeof(string)));
+                }
+                else if ((Functions)funcOrKeyword == Functions.MouseMove) {
+                    paramsList.Add(("X", typeof(int)));
+                    paramsList.Add(("Y", typeof(int)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.Click)
                 {
-                    paramsList.Add("Button");
+                    paramsList.Add(("X", typeof(int)));
+                    paramsList.Add(("Y", typeof(int)));
+                    paramsList.Add(("Button", typeof(string)));
                 }
+                else if ((Functions)funcOrKeyword == Functions.SavAs) {
+                    paramsList.Add(("File Path", typeof(string)));
+                }
+                else if ((Functions)funcOrKeyword == Functions.Sleep) {
+                    paramsList.Add(("Sleep for MS", typeof(int)));
+                }
+
             }
             else
             {
                 if ((Keywords)funcOrKeyword == Keywords.If)
                 {
-                    paramsList.Add("Condition");
+                    paramsList.Add(("Condition", typeof(string)));
                 }
                 else if ((Keywords)funcOrKeyword == Keywords.Elif)
                 {
-                    paramsList.Add("Condition");
+                    paramsList.Add(("Condition", typeof(string)));
                 }
                 else if ((Keywords)funcOrKeyword == Keywords.For)
                 {
-                    paramsList.Add("Iterations");
+                    paramsList.Add(("Iterations", typeof(int)));
                 }
             }
             

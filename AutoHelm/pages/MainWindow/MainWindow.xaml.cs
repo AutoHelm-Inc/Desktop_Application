@@ -111,6 +111,7 @@ namespace AutoHelm.pages.MainWindow
 
                     // Writing to file as text
                     CreatePage createPage = (CreatePage)mainFrame.Content;
+
                     Grid grid = (Grid)createPage.Content;
                     TextBlock textBlock = (TextBlock)grid.FindName("createPath");
                     TextBox textBox = (TextBox)grid.FindName("createTitle");
@@ -119,7 +120,7 @@ namespace AutoHelm.pages.MainWindow
                     string displayName = textBox.Text;
                     string description = textBox1.Text;
 
-                    File.WriteAllText(filePath, createPage.createDescription.Text);
+                    File.WriteAllText(filePath, createPage.GetProgram().generateProgramAHILCode());
 
                     saveToCache(filePath, displayName, description);
                 }
@@ -141,7 +142,8 @@ namespace AutoHelm.pages.MainWindow
 
                 if (File.Exists(filePath))
                 {
-                    File.WriteAllText(filePath, createPage.createDescription.Text);
+
+                    File.WriteAllText(filePath, createPage.GetProgram().generateProgramAHILCode());
                     saveToCache(filePath, displayName, description);
                 }
                 else

@@ -20,10 +20,16 @@ namespace AutoHelm.UserControls.DragAndDrop
     /// </summary>
     public partial class ParamInputField : UserControl
     {
-        public ParamInputField(string label)
-        {
+        private Type _type;
+        public ParamInputField((string, Type) param, string init="") {
             InitializeComponent();
-            InputLabel.Content = label;
+            InputLabel.Content = param.Item1;
+            InputField.Text = init;
+            _type = param.Item2;
+        }
+
+        public Type getType() {
+            return _type;
         }
     }
 }
