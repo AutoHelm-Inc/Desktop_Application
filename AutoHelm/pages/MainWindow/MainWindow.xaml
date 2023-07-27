@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoHelm"
         xmlns:UC="clr-namespace:AutoHelm.user_controls"
         mc:Ignorable="d"
-        Title="AutoHelm" Height="1080" Width="1920"
+        Title="AutoHelm"
         Background="Transparent" Icon="/pages/MainWindow/autohelm_logo.ico">
     
     

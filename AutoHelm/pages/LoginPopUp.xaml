@@ -1,0 +1,45 @@
+﻿<Window x:Class="AutoHelm.pages.LoginPopUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login" Height="200" Width="300"
+        xmlns:local="clr-namespace:AutoHelm.pages"
+        Icon="/pages/MainWindow/autohelm_logo.ico">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}"
+                                     Value="">
+                                <Setter Property="Text" Value="{Binding (local:PlaceHolderText.Placeholder), RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Setter Property="Foreground" Value="Gray" />
+                            </DataTrigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Text" Value="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <TextBox x:Name="txtWelcome" Text="Sign In to your AutoHelm account" VerticalAlignment="Top" Margin="0 20 0 10" HorizontalAlignment="Center"/>
+        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+            <TextBox x:Name="txtEmail" local:PlaceHolderText.Placeholder="Email" Margin="0 0 0 10"/>
+            <PasswordBox x:Name="txtPassword" local:PlaceHolderText.Placeholder="Password" Margin="0 0 0 10"/>
+            <Button Content="Log In" Click="btnLogin_Click" Width="100"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

@@ -21,6 +21,15 @@ namespace AutoHelm.pages.MainWindow
         public MainWindow()
         {
             InitializeComponent();
+            forceFullScreen(this);
+            //this.ContentRendered += MainWindow_ContentRendered;
+
+            /*double desiredWidthInInches = 5.66;
+              double desiredHeightInInches = 6.37;
+              setSizeByInches(desiredWidthInInches, desiredHeightInInches, this);
+            */
+
+
             getPathsFromFile();
 
             LoadingPageAnimation();
@@ -36,8 +45,59 @@ namespace AutoHelm.pages.MainWindow
 
             HomePage.NewAHILPage += CreateButton_Click_Page;
             HomePage.OpenAHILPage += OpenButton_Click_Page;
+            HomePage.OpenLoginPage += LoginButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
         }
+        private void forceFullScreen(MainWindow mainWindow)
+        {
+            double screenWidth = SystemParameters.WorkArea.Width;
+            double screenHeight = SystemParameters.WorkArea.Height;
+            mainWindow.Left = 0;
+            mainWindow.Top = 0;
+            mainWindow.Width = screenWidth;
+            mainWindow.Height = screenHeight;
+            mainWindow.ResizeMode = ResizeMode.CanMinimize;
+        }
+
+
+        /*      private void setSizeByInches(double desiredWidthInInches, double desiredHeightInInches, MainWindow mainWindow)
+                {
+                    PresentationSource source = PresentationSource.FromVisual(mainWindow);
+                    mainWindow.Left = 0;
+                    mainWindow.Top = 0;
+                    double dpiX = 96.0;
+                    double dpiY = 96.0;
+                    if (source != null)
+                    {
+                        dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
+                        dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
+                    }
+                    int widthInPixels = (int)(desiredWidthInInches * dpiX);
+                    int heightInPixels = (int)(desiredHeightInInches * dpiY);
+
+                    mainWindow.Width = widthInPixels;
+                    mainWindow.Height = heightInPixels;
+                }*/
+
+/*        private void MainWindow_ContentRendered(object sender, EventArgs e)
+        {
+            // Calculate the desired window width based on the 16:9 aspect ratio
+            int targetWidth = 16;
+            int targetHeight = 9;
+            double desiredAspectRatio = (double)targetWidth / targetHeight;
+
+            // Get the screen's current working area (excluding the taskbar)
+            var workingArea = System.Windows.SystemParameters.WorkArea;
+
+            // Calculate the desired window height based on the aspect ratio and working area width
+            double desiredHeight = workingArea.Width * (1 / desiredAspectRatio);
+
+            // Adjust the window size to the desired aspect ratio
+            this.Width = workingArea.Width;
+            this.Height = desiredHeight;
+        }
+*/
+
         private void LoadingPageAnimation()
         {
             LoadingPage loadingPage = new LoadingPage();
@@ -87,6 +147,10 @@ namespace AutoHelm.pages.MainWindow
         private void CreateButton_Click_Page(object source, EventArgs e)
         {
             mainFrame.Content = new CreatePage();
+        }
+        private void LoginButton_Click_Page(object source, EventArgs e)
+        {
+            mainFrame.Content = new LoginPopUp();
         }
         private void OpenButton_Click_Page(object source, EventArgs e)
         {
