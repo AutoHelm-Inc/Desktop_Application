@@ -201,7 +201,7 @@ namespace AutoHelm.pages
         private void DrawDots()
         {
             int dotSize = 3;
-            int rows = 36;
+            int rows = 1000;
             int columns = 65;
             int spacing = 32;
 

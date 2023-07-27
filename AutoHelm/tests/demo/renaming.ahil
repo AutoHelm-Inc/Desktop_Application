@@ -1,0 +1,4 @@
+For (5) {
+    Move "..\..\..\tests\tests_output\group_{i}\data_{i}.txt", "..\..\..\tests\tests_output\group_{i}\data_{i}.csv"
+    Run "..\..\..\tests\tests_output\group_{i}\data_{i}.csv"
+}

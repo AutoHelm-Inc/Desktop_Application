@@ -20,6 +20,6 @@
 
     <Grid x:Name="mainGrid" Background="{DynamicResource OneDarkerThanPrimary}">
         <UC:TopBar x:Name="topBar"/>
-        <Frame Margin="0,40,0,0" x:Name="mainFrame" NavigationUIVisibility="Hidden" VerticalAlignment="Top" VerticalContentAlignment="Top"/>
+        <Frame Margin="0,30,0,0" x:Name="mainFrame" NavigationUIVisibility="Hidden" VerticalAlignment="Top" VerticalContentAlignment="Top"/>
     </Grid>
 </Window>

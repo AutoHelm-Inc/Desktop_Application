@@ -100,7 +100,7 @@ namespace AutoHelm.pages
             {
                 int rowCount = 0;
                 int columnCount = 1;
-                for(int i = 0; i < displayNames.Count; i++)
+                for(int i = displayNames.Count - 1; i >= 0; i--)
                 {
                     if(columnCount == 5)
                     {

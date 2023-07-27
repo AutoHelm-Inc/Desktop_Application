@@ -1,0 +1,6 @@
+Del "..\..\..\tests\tests_output"
+DirCreate "..\..\..\tests\tests_output"
+For (100) {
+    DirCreate "..\..\..\tests\tests_output\group_{i}"
+    FileCreate "..\..\..\tests\tests_output\group_{i}\data_{i}.txt"
+}
