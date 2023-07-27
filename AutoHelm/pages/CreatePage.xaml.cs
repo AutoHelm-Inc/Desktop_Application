@@ -33,6 +33,7 @@ namespace AutoHelm.pages
 
         public CreatePage()
         {
+            Console.WriteLine("createpage");
             InitializeComponent();
             DrawDots();
 
