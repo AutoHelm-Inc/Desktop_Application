@@ -7,10 +7,11 @@ using System.Windows.Navigation;
 using System.Runtime.Caching;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using System.Windows.Controls;
 using Automation_Project.src.parser;
 using Automation_Project.src.ast;
+using System.Windows.Media;
 
 namespace AutoHelm.pages.MainWindow
 {
@@ -23,6 +24,8 @@ namespace AutoHelm.pages.MainWindow
         {
             InitializeComponent();
             getPathsFromFile();
+
+            LoadingPageAnimation();
 
             /// Dev functions for how, except for maybe home page, that should be kept and changed to a home icon
             TopBar.HomeButton_Click_Page += TopBar_HomeButton_Click_Page;
@@ -37,7 +40,48 @@ namespace AutoHelm.pages.MainWindow
             HomePage.OpenAHILPage += OpenButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
         }
+        private void LoadingPageAnimation()
+        {
+            LoadingPage loadingPage = new LoadingPage();
+            mainFrame.Content = loadingPage;
+            //mainGrid.Background = Brushes.Black;
+            topBar.Visibility = Visibility.Collapsed;
 
+            Grid grid = (Grid)loadingPage.Content;
+            Image logo = (Image)grid.FindName("loadingLogo");
+            TextBlock title = (TextBlock)grid.FindName("loadingTitle");
+
+            ScaleTransform scaleTransform = new ScaleTransform(0, 0);
+            logo.RenderTransform = scaleTransform;
+            logo.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            DoubleAnimation scaleXAnimation1 = new DoubleAnimation(0, 0.4, TimeSpan.FromSeconds(2.5));
+            DoubleAnimation scaleYAnimation1 = new DoubleAnimation(0, 0.4, TimeSpan.FromSeconds(2.5));
+            DoubleAnimation fadeInAnimation = new DoubleAnimation(0, 0.6, TimeSpan.FromSeconds(3.5));
+
+            fadeInAnimation.Completed += (sender, e) =>
+            {
+
+                DoubleAnimation fadeInTitleAnimation = new DoubleAnimation(0, 0.7, TimeSpan.FromSeconds(2));
+                fadeInTitleAnimation.Completed += (sender, e) =>
+                {
+                    DoubleAnimation fadeOutAnimation = new DoubleAnimation(0.6, 0, TimeSpan.FromSeconds(1.5));
+                    fadeOutAnimation.Completed += (sender, e) =>
+                    {
+                        topBar.Visibility = Visibility.Visible;
+                        TopBar_HomeButton_Click_Page(this, null);
+                    };
+                        logo.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+                    title.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+                };
+
+                title.BeginAnimation(Image.OpacityProperty, fadeInTitleAnimation);
+            };
+
+            logo.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnimation1);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnimation1);
+        }
         private void TopBar_HomeButton_Click_Page(object source, EventArgs e)
         {
             mainFrame.Content = new HomePage();

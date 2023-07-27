@@ -8,17 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\AutoHelm_Logo.ico" />
-    <None Remove="Assets\AutoHelm_Logo.png" />
-    <None Remove="pages\background.png" />
-    <None Remove="pages\MainWindow\autohelm_logo.ico" />
-    <None Remove="pages\MainWindow\autohelm_logo.png" />
-    <None Remove="pages\open-folder.png" />
-    <None Remove="pages\run.png" />
-    <None Remove="pages\sync.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FirebaseAuthentication.net" Version="4.0.2" />
     <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="FireSharp" Version="2.0.4" />
@@ -30,12 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="pages\background.png" />
-    <Resource Include="pages\MainWindow\autohelm_logo.ico" />
-    <Resource Include="pages\MainWindow\autohelm_logo.png" />
-    <Resource Include="pages\open-folder.png" />
-    <Resource Include="pages\run.png" />
-    <Resource Include="pages\sync.png" />
+    <Folder Include="Assets\" />
   </ItemGroup>
 
 </Project>

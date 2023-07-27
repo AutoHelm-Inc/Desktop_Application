@@ -24,7 +24,7 @@
             <StackPanel x:Name="InputParamsPanel" Height="270" Background="{DynamicResource OneDarkerThanPrimary}">
 
             </StackPanel>
-            <Button x:Name="SubmitButton" Click="saveButtonClick" Background="{DynamicResource BlueAccent}" Width="200" VerticalAlignment="Bottom">
+            <Button x:Name="SubmitButton" Click="saveButtonClick" Background="{DynamicResource BlueAccent}" Width="200" VerticalAlignment="Bottom" Cursor="Hand">
                 <Label FontSize="16" FontWeight="Bold" Foreground="White" Content="Save"/>
             </Button>
         </StackPanel>
