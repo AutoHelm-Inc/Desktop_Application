@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="pages\LoadingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\DragAndDrop\DraggingStatementBlock.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -24,6 +27,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="pages\LoadingPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="pages\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

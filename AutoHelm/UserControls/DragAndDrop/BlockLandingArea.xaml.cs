@@ -36,9 +36,8 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.AllowDrop = true;
             this.parentBlock = null;
             depth = 0;
-            if (BlockLandingArea.program == null) {
-                BlockLandingArea.program = program;
-            }
+            BlockLandingArea.program = program;
+
             InitializeComponent();
         }
 

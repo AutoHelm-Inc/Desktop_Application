@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -32,7 +33,9 @@ namespace AutoHelm.pages
 
         public CreatePage()
         {
+            Console.WriteLine("createpage");
             InitializeComponent();
+            DrawDots();
 
             statementsAndFunctionBlocksIndex = 0;
             numBlocksPerCycle = 5;
@@ -48,6 +51,7 @@ namespace AutoHelm.pages
             cycleElements.Content = new TextBlock { Text = "Next", FontWeight = FontWeights.Bold, FontSize=16 };          
             cycleElements.Click += new RoutedEventHandler(CycleStatementsButtons);
             cycleElements.Style = cycleElementsButtonStyle;
+            cycleElements.Cursor = Cursors.Hand;
 
 
             //Add all potential blocks to list
@@ -69,6 +73,7 @@ namespace AutoHelm.pages
         }
 
         private void runButtonClick(object sender, RoutedEventArgs e) {
+
             program.saveToFile();
             program.execute();
         }
@@ -97,7 +102,47 @@ namespace AutoHelm.pages
             {
                 if (i < statementsAndFunctionBlocks.Count)
                 {
+                    ScaleTransform scaleTransform = new ScaleTransform(1, 1);
+                    statementsAndFunctionBlocks[i].RenderTransformOrigin = new Point(0.5, 0.5);
+                    statementsAndFunctionBlocks[i].RenderTransform = scaleTransform;
+
+                    statementsAndFunctionBlocks[i].MouseEnter += (sender, e) =>
+                    {
+                        DoubleAnimation animation = new DoubleAnimation(1.1, TimeSpan.FromSeconds(0.1));
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, animation);
+                    };
+
+                    statementsAndFunctionBlocks[i].MouseLeave += (sender, e) =>
+                    {
+                        DoubleAnimation animation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.2));
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, animation);
+                    };
+
                     StatementBlocksStackPanel.Children.Add(statementsAndFunctionBlocks[i]);
+                }
+            }
+        }
+        private void DrawDots()
+        {
+            int dotSize = 3;
+            int rows = 36;
+            int columns = 65;
+            int spacing = 32;
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    var pixel = new Rectangle();
+                    pixel.Fill = Brushes.Black;
+                    pixel.Width = dotSize;
+                    pixel.Height = dotSize;
+
+                    blankCanvas.Children.Add(pixel);
+                    Canvas.SetLeft(pixel, j * (dotSize + spacing));
+                    Canvas.SetTop(pixel, i * (dotSize + spacing));
                 }
             }
         }
