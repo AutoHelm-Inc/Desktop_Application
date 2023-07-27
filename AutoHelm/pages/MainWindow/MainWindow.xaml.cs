@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Media.Animation;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Threading;
 
 namespace AutoHelm.pages.MainWindow
 {
@@ -45,7 +46,6 @@ namespace AutoHelm.pages.MainWindow
 
             HomePage.NewAHILPage += CreateButton_Click_Page;
             HomePage.OpenAHILPage += OpenButton_Click_Page;
-            HomePage.OpenLoginPage += LoginButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
         }
         private void forceFullScreen(MainWindow mainWindow)
@@ -127,7 +127,10 @@ namespace AutoHelm.pages.MainWindow
                     fadeOutAnimation.Completed += (sender, e) =>
                     {
                         topBar.Visibility = Visibility.Visible;
-                        TopBar_HomeButton_Click_Page(this, null);
+
+                        mainFrame.Content = new LoginPopUp();
+
+                        //TopBar_HomeButton_Click_Page(this, null);
                     };
                         logo.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
                     title.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
@@ -147,10 +150,6 @@ namespace AutoHelm.pages.MainWindow
         private void CreateButton_Click_Page(object source, EventArgs e)
         {
             mainFrame.Content = new CreatePage();
-        }
-        private void LoginButton_Click_Page(object source, EventArgs e)
-        {
-            mainFrame.Content = new LoginPopUp();
         }
         private void OpenButton_Click_Page(object source, EventArgs e)
         {

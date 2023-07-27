@@ -93,24 +93,6 @@
             <!--<a href="https://www.flaticon.com/free-icons/folder" title="folder icons">Folder icons created by kmg design - Flaticon</a>-->
             <Image Source="/pages/open-folder.png"></Image>
         </Button>
-        <Button Background="Transparent" Width="100" Name="LoginButton" Click="OpenLoginPage_Click" Foreground="Transparent" Margin="65" BorderBrush="Transparent" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="Transparent">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-            <!--<a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by kmg design - Flaticon</a>-->
-            <Image Source="/pages/user.png"></Image>
-        </Button>
-
     </Grid>
     
 </Page>
