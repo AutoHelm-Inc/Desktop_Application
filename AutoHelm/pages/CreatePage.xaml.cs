@@ -142,6 +142,7 @@ namespace AutoHelm.pages
             bla.setStatement(ss);
             //Then physically render the block
             bla.loadBlock(stackPanel);
+            bla.AllowDrop = false;
         }
 
         private void loadNestedStruct(NestedStructure ns, StackPanel stackPanel, BlockLandingArea? parent)
@@ -167,6 +168,8 @@ namespace AutoHelm.pages
                 }
 
                 newPanel.Children.Add(new BlockLandingArea(bla));
+                bla.AllowDrop = false;
+
 
             }
         }
