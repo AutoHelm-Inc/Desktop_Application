@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
+using Automation_Project.src.automation;
 
 namespace AutoHelm.pages
 {
@@ -31,7 +32,7 @@ namespace AutoHelm.pages
             return program;
         }
 
-        public CreatePage()
+        public CreatePage(AHILProgram ahilProgram)
         {
             Console.WriteLine("createpage");
             InitializeComponent();
@@ -40,7 +41,16 @@ namespace AutoHelm.pages
             statementsAndFunctionBlocksIndex = 0;
             numBlocksPerCycle = 5;
             int colorIndex = 0;
-            program = new AHILProgram();
+
+            if (ahilProgram != null)
+            {
+                program = ahilProgram;
+                loadProgram(program);
+            }
+            else
+            {
+                program = new AHILProgram();
+            }
 
             Style cycleElementsButtonStyle = new Style(typeof(Button));
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.BackgroundProperty, (SolidColorBrush)FindResource("BlueAccent")));
@@ -124,6 +134,70 @@ namespace AutoHelm.pages
                 }
             }
         }
+
+        private void loadProgram(AHILProgram ahilProgram)
+        {
+            //First we create the empty landing area assocaited with the ahilProgram
+            BlockLandingArea blaProgram = new BlockLandingArea(ahilProgram);
+
+            //Next we iterate through each statement
+            //By default we put "LandingAreaPanel" because we want it to be added to the panel related to the CreatePage
+            foreach (Statement s in ahilProgram.getStatements())
+            {
+                if (s is SimpleStatement)
+                {
+                    loadSimpleStatement((SimpleStatement)s, LandingAreaPanel, null);
+                }
+                else if (s is NestedStructure)
+                {
+                    loadNestedStruct((NestedStructure)s, LandingAreaPanel, null);
+                }
+            }
+        }
+
+        //Note that in these function, stack panel can change due to nesting. For instance For(5){ Run "Notepad.exe"} the
+        //StackPanel would be the NestedStackPanel of the For Block
+        private void loadSimpleStatement(SimpleStatement s, StackPanel stackPanel, BlockLandingArea? parent)
+        {
+            //For simple statements, we simply create a new block landing area with no parent or keyword since they are only functions
+            SimpleStatement ss = (SimpleStatement)s;
+            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, parent);
+            //Set the arguments
+            bla.setStatement(ss);
+            //Then physically render the block
+            bla.loadBlock(stackPanel);
+            bla.AllowDrop = false;
+        }
+
+        private void loadNestedStruct(NestedStructure ns, StackPanel stackPanel, BlockLandingArea? parent)
+        {
+            if (ns is ForLoop)
+            {
+                ForLoop fl = (ForLoop)ns;
+                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, parent);
+                bla.setStatement(fl);
+                StackPanel newPanel = bla.loadBlock(stackPanel);
+
+                foreach (Statement s in fl.getStatements())
+                {
+                    if (s is SimpleStatement)
+                    {
+                        loadSimpleStatement((SimpleStatement)s, newPanel, bla);
+                    }
+                    else if (s is NestedStructure)
+                    {
+                        loadNestedStruct((NestedStructure)s, newPanel, bla);
+                    }
+
+                }
+
+                newPanel.Children.Add(new BlockLandingArea(bla));
+                bla.AllowDrop = false;
+
+
+            }
+        }
+        
         private void DrawDots()
         {
             int dotSize = 3;

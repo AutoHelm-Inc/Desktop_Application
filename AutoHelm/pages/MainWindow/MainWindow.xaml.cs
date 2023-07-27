@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media.Animation;
 using System.Windows.Controls;
+using Automation_Project.src.parser;
+using Automation_Project.src.ast;
 using System.Windows.Media;
 
 namespace AutoHelm.pages.MainWindow
@@ -86,7 +88,7 @@ namespace AutoHelm.pages.MainWindow
         }
         private void CreateButton_Click_Page(object source, EventArgs e)
         {
-            mainFrame.Content = new CreatePage();
+            mainFrame.Content = new CreatePage(null);
         }
         private void OpenButton_Click_Page(object source, EventArgs e)
         {
@@ -129,7 +131,14 @@ namespace AutoHelm.pages.MainWindow
             string filePath = savedArgs.getfilePath;
             string displayName = savedArgs.getDisplayName;
             string description = savedArgs.getDescription;
-            CreatePage createPage = new CreatePage();
+
+            //Run the parser when we open a file so we get access to the AST
+            Parser p = new Parser(filePath);
+            //obtain the ast through parser
+            AHILProgram program = p.parse();
+            //pass in the new program to our create page
+            CreatePage createPage = new CreatePage(program);
+
             mainFrame.Content = createPage;
             Grid grid = (Grid)createPage.Content;
             StackPanel stackPanel = (StackPanel)grid.FindName("createFieldPanel");
