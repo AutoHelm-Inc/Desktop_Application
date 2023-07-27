@@ -47,7 +47,7 @@
 
         <StackPanel HorizontalAlignment="Right" Width="350" Height="1080" Background="{DynamicResource OneDarkerThanPrimary}" x:Name="createFieldPanel">
             <TextBox Text="Untitled" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent" FontSize="60" Foreground="{DynamicResource BlueAccent}" Margin="0,25,0,0" CaretBrush="{DynamicResource BlueAlternateAccent}" TextWrapping="Wrap" x:Name="createTitle"/>
-            <TextBlock x:Name="createPath" HorizontalAlignment="Center" Background="Transparent" FontSize="14" Foreground="{DynamicResource BlueAccent}" Margin="0,25,0,0" ><Italic>path</Italic></TextBlock>
+            <TextBlock x:Name="createPath" TextWrapping="Wrap" HorizontalAlignment="Center" Background="Transparent" FontSize="14" Foreground="{DynamicResource BlueAccent}" Margin="0,25,0,0" ><Italic>path</Italic></TextBlock>
             <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="28" Margin="0,75,0,0">
                 <TextBlock.Text>
                     Description
