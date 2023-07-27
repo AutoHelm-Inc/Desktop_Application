@@ -122,34 +122,34 @@ namespace AutoHelm.pages
             {
                 if (s is SimpleStatement)
                 {
-                    loadSimpleStatement((SimpleStatement)s, LandingAreaPanel);
+                    loadSimpleStatement((SimpleStatement)s, LandingAreaPanel, null);
                 }
                 else if (s is NestedStructure)
                 {
-                    loadNestedStruct((NestedStructure)s, LandingAreaPanel);
+                    loadNestedStruct((NestedStructure)s, LandingAreaPanel, null);
                 }
             }
         }
 
         //Note that in these function, stack panel can change due to nesting. For instance For(5){ Run "Notepad.exe"} the
         //StackPanel would be the NestedStackPanel of the For Block
-        private void loadSimpleStatement(SimpleStatement s, StackPanel stackPanel)
+        private void loadSimpleStatement(SimpleStatement s, StackPanel stackPanel, BlockLandingArea? parent)
         {
             //For simple statements, we simply create a new block landing area with no parent or keyword since they are only functions
             SimpleStatement ss = (SimpleStatement)s;
-            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, null);
+            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, parent);
             //Set the arguments
             bla.setStatement(ss);
             //Then physically render the block
             bla.loadBlock(stackPanel);
         }
 
-        private void loadNestedStruct(NestedStructure ns, StackPanel stackPanel)
+        private void loadNestedStruct(NestedStructure ns, StackPanel stackPanel, BlockLandingArea? parent)
         {
             if (ns is ForLoop)
             {
                 ForLoop fl = (ForLoop)ns;
-                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, null);
+                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, parent);
                 bla.setStatement(fl);
                 StackPanel newPanel = bla.loadBlock(stackPanel);
 
@@ -157,14 +157,16 @@ namespace AutoHelm.pages
                 {
                     if (s is SimpleStatement)
                     {
-                        loadSimpleStatement((SimpleStatement)s, newPanel);
+                        loadSimpleStatement((SimpleStatement)s, newPanel, bla);
                     }
                     else if (s is NestedStructure)
                     {
-                        loadNestedStruct((NestedStructure)s, newPanel);
+                        loadNestedStruct((NestedStructure)s, newPanel, bla);
                     }
 
                 }
+
+                newPanel.Children.Add(new BlockLandingArea(bla));
 
             }
         }
