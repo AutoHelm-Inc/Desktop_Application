@@ -65,9 +65,17 @@ namespace AutoHelm.pages
                 new Thread(() =>
                 {
                     Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 1);
-                    AutoHelm.Firebase.FirebaseFunctions.CloudUpload("", "");
-                    MessageBox.Show("All applicable files have been saved to the cloud.",
-                                     "Cloud Saving Complete");
+                    if(AutoHelm.Firebase.FirebaseFunctions.CloudUpload("", ""))
+                    {
+                        MessageBox.Show("All files have been saved to the cloud.",
+                        "Cloud Saving Complete");
+                    }
+                    else
+                    {
+                        MessageBox.Show("There was an error saving some of your files!",
+                        "Error");
+                    }
+         
                     Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 0);
 
                 }).Start();
