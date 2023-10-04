@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,7 +86,21 @@ namespace AutoHelm.pages
         private void runButtonClick(object sender, RoutedEventArgs e) {
 
             program.saveToFile();
+
+            //Load Tray Icon Before Execution
+            String p = Directory.GetParent(System.Environment.CurrentDirectory)?.Parent?.Parent?.FullName;
+            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+
+            if (p != null)
+            {
+                ni.Icon = new System.Drawing.Icon(p + "/pages/MainWindow/autohelm_logo.ico");
+                ni.Visible = true;
+                ni.Text = "Running AutoHelm Workflow...";
+            }
+
             program.execute();
+
+            ni.Visible = false;
         }
 
         private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)
