@@ -33,9 +33,12 @@ namespace AutoHelm.user_controls
         public static event MyEventHandler SaveAs_Click;
         public static event MyEventHandler Save_Click;
 
+        public static TopBar self;
+
         public TopBar()
         {
             InitializeComponent();
+            self = this;
         }
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
