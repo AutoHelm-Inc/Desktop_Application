@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using Automation_Project.src.parser;
 using Automation_Project.src.ast;
 using System.Windows.Media;
+using AutoHelm.Shortcuts;
 
 namespace AutoHelm.pages.MainWindow
 {
@@ -39,6 +40,9 @@ namespace AutoHelm.pages.MainWindow
             HomePage.NewAHILPage += CreateButton_Click_Page;
             HomePage.OpenAHILPage += OpenButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
+
+            //Setup global shortcut manager
+            ShortcutManager.systemHookSetup();
         }
         private void LoadingPageAnimation()
         {
@@ -341,6 +345,8 @@ namespace AutoHelm.pages.MainWindow
                     writetext.WriteLine(descriptions[i]);
                 }
             }
+
+            ShortcutManager.turnOffSystemHook();
         }
 
     }

@@ -13,9 +13,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AutoHelm.Shortcuts;
 using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
 using Automation_Project.src.automation;
+using System.Threading;
 
 namespace AutoHelm.pages
 {
@@ -27,6 +29,7 @@ namespace AutoHelm.pages
         private int statementsAndFunctionBlocksIndex;
         private int numBlocksPerCycle;
         private AHILProgram program;
+        private static GlobalShortcut? killWorkflowShortcut;
 
         public AHILProgram GetProgram() {
             return program;
@@ -80,10 +83,26 @@ namespace AutoHelm.pages
 
             updateBlocks(false);
             LandingAreaPanel.Children.Add(new BlockLandingArea(program));
+
+            //remove killing workflow shortcut tied to any previously opened workflows
+            if(killWorkflowShortcut != null)
+            {
+                ShortcutManager.removeShortcut(killWorkflowShortcut);
+            }
+
+            //set up kill running workflow keyboard shortcut for currently open workflow
+            killWorkflowShortcut = new GlobalShortcut(ModifierKeys.Control, Key.CapsLock, killWorkflow);
+            ShortcutManager.addShortcut(killWorkflowShortcut);
+            
+        }
+
+        public void killWorkflow()
+        {
+            Console.WriteLine("Kill key pressed!");
+            program.killRunningProgram();
         }
 
         private void runButtonClick(object sender, RoutedEventArgs e) {
-
             program.saveToFile();
             program.execute();
         }
