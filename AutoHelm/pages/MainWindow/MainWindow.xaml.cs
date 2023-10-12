@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using Automation_Project.src.parser;
 using Automation_Project.src.ast;
 using System.Windows.Media;
+using System.Linq;
 
 namespace AutoHelm.pages.MainWindow
 {
@@ -25,7 +26,7 @@ namespace AutoHelm.pages.MainWindow
             InitializeComponent();
             getPathsFromFile();
 
-            LoadingPageAnimation();
+            // LoadingPageAnimation();
 
             /// Dev functions for how, except for maybe home page, that should be kept and changed to a home icon
             TopBar.HomeButton_Click_Page += TopBar_HomeButton_Click_Page;
@@ -84,6 +85,7 @@ namespace AutoHelm.pages.MainWindow
         }
         private void TopBar_HomeButton_Click_Page(object source, EventArgs e)
         {
+            getPathsFromFile();
             mainFrame.Content = new HomePage();
         }
         private void CreateButton_Click_Page(object source, EventArgs e)
@@ -100,7 +102,7 @@ namespace AutoHelm.pages.MainWindow
             if (openFileDialog.ShowDialog() == true)
             {
                 string filePath = openFileDialog.FileName;
-                if (filePaths.Contains(filePath))
+                if (filePaths != null && filePaths.Contains(filePath))
                 {
                     int index = filePaths.IndexOf(filePath);
                     List<string> displayNames = cache["displayName"] as List<string>;
@@ -120,6 +122,7 @@ namespace AutoHelm.pages.MainWindow
                 }
 
             }
+            TopBar_HomeButton_Click_Page(this,null);
         }
         private void TopBar_ExecuteButton_Click_Page(object source, EventArgs e)
         {
@@ -254,19 +257,25 @@ namespace AutoHelm.pages.MainWindow
 
             if (File.Exists(filePath))
             {
+                // Get File
                 using (var fileStream = File.OpenRead(filePath))
                 using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
                 {
-                    string line;
-                    while ((line = streamReader.ReadLine()) != null)
+                    string path;
+                    while ((path = streamReader.ReadLine()) != null)
                     {
-                        if (File.Exists(line))
+                        if (File.Exists(path))
                         {
-                            filePaths.Add(line);
+                            Console.WriteLine(path);
+                            filePaths.Add(path);
                         }
                     }
                 }
 
+                Console.WriteLine(filePaths.Count);
+
+
+                // Get Metadata
                 for (int i = 0; i < filePaths.Count; i++)
                 {
                     string fileName;
@@ -299,10 +308,11 @@ namespace AutoHelm.pages.MainWindow
 
                         saveToCache(filePaths[i], displayNames[i], descriptions[i]);
                     }
-                    else
-                    {
-                        using (StreamWriter sw = File.CreateText(filePath)) ;
-                    }
+                }
+
+                foreach (object item in displayNames)
+                {
+                    Console.WriteLine(item);
                 }
             }
             else

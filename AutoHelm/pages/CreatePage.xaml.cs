@@ -36,7 +36,7 @@ namespace AutoHelm.pages
         {
             Console.WriteLine("createpage");
             InitializeComponent();
-            DrawDots();
+            // DrawDots();
 
             statementsAndFunctionBlocksIndex = 0;
             numBlocksPerCycle = 5;
