@@ -44,6 +44,7 @@ namespace AutoHelm.pages
         public delegate void MyEventHandler(object source, EventArgs e);
         public static event MyEventHandler NewAHILPage;
         public static event MyEventHandler OpenAHILPage;
+        public static event MyEventHandler OpenLoginPage;
         public static event MyEventHandler Load_Saved_Page;
         public HomePage()
         {
@@ -53,6 +54,10 @@ namespace AutoHelm.pages
         private void NewAHILPage_Click(object sender, RoutedEventArgs e)
         {
             NewAHILPage(this, null);
+        }
+        private void OpenLoginPage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenLoginPage(this, null);
         }
         private void OpenAHILPage_Click(object sender, RoutedEventArgs e)
         {
