@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using AutoHelm.user_controls;
 using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
 using Automation_Project.src.automation;
@@ -85,7 +88,54 @@ namespace AutoHelm.pages
         private void runButtonClick(object sender, RoutedEventArgs e) {
 
             program.saveToFile();
+
+            String p = Directory.GetParent(System.Environment.CurrentDirectory)?.Parent?.Parent?.FullName;
+            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+            int bIndex1 = 0;
+            int bIndex2 = 0;
+
+
+            if (p != null)
+            {
+                //Load Tray Icon Before Execution
+                ni.Icon = new System.Drawing.Icon(p + "/pages/MainWindow/autohelm_logo.ico");
+                ni.Visible = true;
+                ni.Text = "Running AutoHelm Workflow...";
+
+                //Apply Borders to TopBar and CreatePage Before Execution
+                Border b1 = new Border();
+                b1.BorderBrush = Brushes.Red;
+                b1.BorderThickness = new Thickness(5, 0, 5, 5);
+
+                Border b2 = new Border();
+                b2.BorderBrush = Brushes.Red;
+                b2.BorderThickness = new Thickness(5, 5, 5, 0);
+
+                bIndex1 = ((Grid)this.Content).Children.Add(b1);
+                bIndex2 = ((Grid)TopBar.self.Content).Children.Add(b2);
+
+                //Force a Render Update
+                DispatcherFrame frame = new DispatcherFrame();
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Render, new DispatcherOperationCallback(delegate (object parameter)
+                {
+                    frame.Continue = false;
+                    return null;
+                }), null);
+
+                Dispatcher.PushFrame(frame);
+                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                                              new Action(delegate { }));
+
+            }
+
             program.execute();
+
+            //Remove Borders After Execution
+            ((Grid)this.Content).Children.RemoveAt(bIndex1);
+            ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+
+            //Remove Tray Icon After Execution
+            ni.Visible = false;
         }
 
         private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)
