@@ -119,7 +119,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                 {
                     paramsList.Add(("File Path", typeof(string)));
                 }
-                else if ((Functions)funcOrKeyword == Functions.WrtLine)
+                else if ((Functions)funcOrKeyword == Functions.WriteLine)
                 {
                     paramsList.Add(("Line", typeof(string)));
                 }
@@ -149,7 +149,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     paramsList.Add(("Y", typeof(int)));
                     paramsList.Add(("Button", typeof(string)));
                 }
-                else if ((Functions)funcOrKeyword == Functions.SavAs) {
+                else if ((Functions)funcOrKeyword == Functions.SaveAs) {
                     paramsList.Add(("File Path", typeof(string)));
                 }
                 else if ((Functions)funcOrKeyword == Functions.Sleep) {
