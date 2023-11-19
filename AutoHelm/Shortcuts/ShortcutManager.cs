@@ -56,7 +56,13 @@ namespace AutoHelm.Shortcuts
         {
             if(IsHookSetup)
             {
-                RemoveWindowsHookEx(HookID);
+                try
+                {
+                    RemoveWindowsHookEx(HookID);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
                 IsHookSetup=false;
             }
         }
