@@ -14,12 +14,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-<<<<<<< HEAD
 using AutoHelm.Shortcuts;
-=======
 using System.Windows.Threading;
 using AutoHelm.user_controls;
->>>>>>> main
 using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
 using Automation_Project.src.automation;
