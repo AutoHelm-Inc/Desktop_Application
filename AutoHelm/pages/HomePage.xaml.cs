@@ -44,6 +44,7 @@ namespace AutoHelm.pages
         public delegate void MyEventHandler(object source, EventArgs e);
         public static event MyEventHandler NewAHILPage;
         public static event MyEventHandler OpenAHILPage;
+        public static event MyEventHandler OpenLoginPage;
         public static event MyEventHandler Load_Saved_Page;
         public HomePage()
         {
@@ -53,6 +54,10 @@ namespace AutoHelm.pages
         private void NewAHILPage_Click(object sender, RoutedEventArgs e)
         {
             NewAHILPage(this, null);
+        }
+        private void OpenLoginPage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenLoginPage(this, null);
         }
         private void OpenAHILPage_Click(object sender, RoutedEventArgs e)
         {
@@ -65,9 +70,17 @@ namespace AutoHelm.pages
                 new Thread(() =>
                 {
                     Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 1);
-                    AutoHelm.Firebase.FirebaseFunctions.CloudUpload("", "");
-                    MessageBox.Show("All applicable files have been saved to the cloud.",
-                                     "Cloud Saving Complete");
+                    if(AutoHelm.Firebase.FirebaseFunctions.CloudUpload("", ""))
+                    {
+                        MessageBox.Show("All files have been saved to the cloud.",
+                        "Cloud Saving Complete");
+                    }
+                    else
+                    {
+                        MessageBox.Show("There was an error saving some of your files!",
+                        "Error");
+                    }
+         
                     Interlocked.Exchange(ref AutoHelm.Firebase.FirebaseFunctions.isSaving, 0);
 
                 }).Start();

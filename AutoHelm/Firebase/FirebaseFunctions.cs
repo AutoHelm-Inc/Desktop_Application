@@ -42,7 +42,7 @@ namespace AutoHelm.Firebase
 
         }
         //Must ensure the user is a properly authenticated user before proceeding
-        public async static void UploadFileWithAuth(string email, string password, string path, string displayName, string description)
+        public async static Task<bool> UploadFileWithAuth(string email, string password, string path, string displayName, string description)
         {
             var stream = File.Open(path, FileMode.Open);
             var config = new FirebaseAuthConfig
@@ -87,9 +87,11 @@ namespace AutoHelm.Firebase
             catch (Exception e)
             {
                 Console.WriteLine("Login failed for " + email + " for file: " + path);
+                return false;
             }
 
             stream.Close();
+            return true;
         }
 
         public static async void UpdateDatabase(string email, string password, bool isPublic, string path, string displayName, string description)
@@ -116,19 +118,31 @@ namespace AutoHelm.Firebase
         
         }
 
-        public static void CloudUpload(string email, string password)
+        public static bool CloudUpload(string email, string password)
         {
+            bool ret = false;
             ObjectCache cache = MemoryCache.Default;
             List<string> filePaths = cache["path"] as List<string>;
             List<string> displayNames = cache["displayName"] as List<string>;
             List<string> descriptions = cache["description"] as List<string>;
+
             if (filePaths != null && filePaths.Count >= 1)
             {
+                ret = true;
+
                 for (int i = 0; i < filePaths.Count; i++)
                 {
-                    UploadFileWithAuth("z2omer@gmail.com", "z2omer", filePaths[i], displayNames[i], descriptions[i]);
+                    Task<bool> task = UploadFileWithAuth("z2omer@gmail.com", "z2omer", filePaths[i], displayNames[i], descriptions[i]);
+                    bool result = task.Result;
+
+                    if (!result)
+                    {
+                        ret = false;
+                    }
                 }
             }
+
+            return ret;
         }
     }
 }
