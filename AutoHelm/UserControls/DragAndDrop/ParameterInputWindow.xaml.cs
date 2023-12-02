@@ -84,7 +84,10 @@ namespace AutoHelm.UserControls.DragAndDrop
         {
             if (_statement.GetType() == typeof(SimpleStatement)) {
                 ((SimpleStatement)_statement).setArguments(new List<dynamic>());
+            } else if (_statement.GetType() == typeof(Macro)) {
+                ((Macro)_statement).setArguments(new List<dynamic>());
             }
+
             foreach (ParamInputField child in InputParamsPanel.Children) {
                 if (child.InputField.Text == "") {
                     continue;

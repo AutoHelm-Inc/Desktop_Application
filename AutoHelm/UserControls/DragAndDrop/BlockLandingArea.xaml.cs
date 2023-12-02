@@ -271,7 +271,13 @@ namespace AutoHelm.UserControls.DragAndDrop
 
         private void DeleteStatementButton(object sender, RoutedEventArgs routedEventArgs)
         {
-            program.removeStatementRecursive(_statement);
+            if (_statement.GetType() == typeof(Macro))
+            {
+                program.removeMacro((Macro)_statement);
+            } else
+            {
+                program.removeStatementRecursive(_statement);
+            }
             StackPanel parentStackPanel = this.Parent as StackPanel;
             parentStackPanel.Children.Remove(this);
             updateDepth(-1*(depth+1));
@@ -329,6 +335,15 @@ namespace AutoHelm.UserControls.DragAndDrop
                 colorIndex++;
             }
 
+            foreach (MacroKeyword macro in Enum.GetValues(typeof(MacroKeyword)))
+            {
+                if (macro == this.macro)
+                {
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                }
+                colorIndex++;
+            }
+
 
             if (this.function != null)
             {
@@ -336,10 +351,14 @@ namespace AutoHelm.UserControls.DragAndDrop
                 dropZoneLabel.Content = this.function.ToString();
 
             }
-            else
+            else if (this.keyword != null) 
             {
                 //Set the block label for keyword
                 dropZoneLabel.Content = this.keyword.ToString();
+            }
+            else
+            {
+                dropZoneLabel.Content = this.macro.ToString();
             }
 
             //Label colors are always white

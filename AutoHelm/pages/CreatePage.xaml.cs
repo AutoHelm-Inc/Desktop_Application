@@ -215,6 +215,12 @@ namespace AutoHelm.pages
             //First we create the empty landing area assocaited with the ahilProgram
             BlockLandingArea blaProgram = new BlockLandingArea(ahilProgram);
 
+            //Load macros
+            foreach (Macro m in ahilProgram.getMacros())
+            {
+                loadMacro((Macro)m, LandingAreaPanel, null);
+            }
+
             //Next we iterate through each statement
             //By default we put "LandingAreaPanel" because we want it to be added to the panel related to the CreatePage
             foreach (Statement s in ahilProgram.getStatements())
@@ -272,7 +278,17 @@ namespace AutoHelm.pages
 
             }
         }
-        
+
+        private void loadMacro(Macro m, StackPanel stackPanel, BlockLandingArea? parent)
+        {
+            BlockLandingArea bla = new BlockLandingArea(null, null, m.getKeyword(), parent);
+            //Set the arguments
+            bla.setStatement(m);
+            //Then physically render the block
+            bla.loadBlock(stackPanel);
+            bla.AllowDrop = false;
+        }
+
         private void DrawDots()
         {
             int dotSize = 3;
