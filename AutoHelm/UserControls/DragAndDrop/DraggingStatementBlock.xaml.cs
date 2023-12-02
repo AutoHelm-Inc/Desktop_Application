@@ -27,6 +27,7 @@ namespace AutoHelm.UserControls.DragAndDrop
         private BlockDataToTransfer blockData;
         private Functions? function;
         private Keywords? keyword;
+        private MacroKeyword? macro;
 
         public DraggingStatementBlock()
         {
@@ -40,6 +41,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             borderRect.Fill = background;
             this.function = function;
             this.keyword = null;
+            this.macro = null;
         }
 
         public DraggingStatementBlock(Keywords? keyword, SolidColorBrush background)
@@ -48,6 +50,17 @@ namespace AutoHelm.UserControls.DragAndDrop
             dragBlockLabel.Content = keyword.ToString();
             borderRect.Fill = background;
             this.keyword = keyword;
+            this.function = null;
+            this.macro = null;
+        }
+
+        public DraggingStatementBlock(MacroKeyword? macro, SolidColorBrush background)
+        {
+            InitializeComponent();
+            dragBlockLabel.Content = macro.ToString();
+            borderRect.Fill = background;
+            this.macro = macro;
+            this.keyword = null;
             this.function = null;
         }
 
@@ -67,6 +80,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             public SolidColorBrush labelColor;
             public Functions? function;
             public Keywords? keyword;
+            public MacroKeyword? macro;
 
             public BlockDataToTransfer(Rectangle borderRect, Functions? function, SolidColorBrush labelColor)
             {
@@ -74,6 +88,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                 this.labelColor = labelColor;
                 this.function = function;
                 this.keyword = null;
+                this.macro = null;
             }
 
             public BlockDataToTransfer(Rectangle borderRect, Keywords? keyword, SolidColorBrush labelColor)
@@ -82,6 +97,15 @@ namespace AutoHelm.UserControls.DragAndDrop
                 this.labelColor = labelColor;
                 this.keyword = keyword;
                 this.function = null;
+                this.macro = null;
+            }
+            public BlockDataToTransfer(Rectangle borderRect, MacroKeyword? macro, SolidColorBrush labelColor)
+            {
+                this.backgroundColor = (SolidColorBrush)borderRect.Fill;
+                this.labelColor = labelColor;
+                this.function = null;
+                this.keyword = null;
+                this.macro = macro;
             }
         }
 
@@ -119,9 +143,13 @@ namespace AutoHelm.UserControls.DragAndDrop
                 {
                     this.blockData = new BlockDataToTransfer(borderRect, function, (SolidColorBrush)dragBlockLabel.Foreground);
                 }
-                else
+                else if (keyword != null)
                 {
                     this.blockData = new BlockDataToTransfer(borderRect, keyword, (SolidColorBrush)dragBlockLabel.Foreground);
+                }
+                else
+                {
+                    this.blockData = new BlockDataToTransfer(borderRect, macro, (SolidColorBrush)dragBlockLabel.Foreground);
                 }
                 var blockDataObject = new DataObject("DRAG_BLOCK_DATA", blockData);
                 blockAdornment = new DraggingBlockAdorner(this, (SolidColorBrush)borderRect.Fill);

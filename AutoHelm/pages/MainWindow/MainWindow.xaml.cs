@@ -90,7 +90,7 @@ namespace AutoHelm.pages.MainWindow
                     {
                         topBar.Visibility = Visibility.Visible;
                         mainFrame.Content = new LoginPopUp();
-                        //TopBar_HomeButton_Click_Page(this, null);
+                        TopBar_HomeButton_Click_Page(this, null);
                     };
                         logo.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
                     title.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);

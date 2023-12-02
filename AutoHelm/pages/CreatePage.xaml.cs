@@ -84,6 +84,12 @@ namespace AutoHelm.pages
                 colorIndex++;
             }
 
+            foreach (MacroKeyword macro in Enum.GetValues(typeof(MacroKeyword)))
+            {
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(macro, (SolidColorBrush)FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString())));
+                colorIndex++;
+            }
+
             updateBlocks(false);
             LandingAreaPanel.Children.Add(new BlockLandingArea(program));
 
@@ -230,7 +236,7 @@ namespace AutoHelm.pages
         {
             //For simple statements, we simply create a new block landing area with no parent or keyword since they are only functions
             SimpleStatement ss = (SimpleStatement)s;
-            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, parent);
+            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, null, parent);
             //Set the arguments
             bla.setStatement(ss);
             //Then physically render the block
@@ -243,7 +249,7 @@ namespace AutoHelm.pages
             if (ns is ForLoop)
             {
                 ForLoop fl = (ForLoop)ns;
-                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, parent);
+                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, null, parent);
                 bla.setStatement(fl);
                 StackPanel newPanel = bla.loadBlock(stackPanel);
 

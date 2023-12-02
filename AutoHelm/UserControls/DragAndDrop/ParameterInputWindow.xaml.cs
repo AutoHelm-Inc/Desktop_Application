@@ -20,6 +20,7 @@ namespace AutoHelm.UserControls.DragAndDrop
     {
         private Functions? function;
         private Keywords? keyword;
+        private MacroKeyword? macro;
         private Statement _statement;
 
         public ParameterInputWindow(Functions? blockFunction, Statement statement)
@@ -58,6 +59,27 @@ namespace AutoHelm.UserControls.DragAndDrop
             paramWindowTitle.Content = keyword.ToString();
         }
 
+        public ParameterInputWindow(MacroKeyword? blockKeyword, Statement statement)
+        {
+            InitializeComponent();
+            this.macro = blockKeyword;
+            _statement = statement;
+            List<(string, Type)> paramsList = getParamListForFunc(blockKeyword);
+            List<dynamic> macroArgs = ((Macro)statement).getArguments();
+
+            for (int i = 0; i < paramsList.Count; i++)
+            {
+                (string, Type) param = paramsList[i];
+                string initValue = "";
+                if (i < macroArgs.Count)
+                {
+                    initValue = macroArgs[i].ToString();
+                }
+                InputParamsPanel.Children.Add(new ParamInputField(param, init: initValue));
+            }
+            paramWindowTitle.Content = macro.ToString();
+        }
+
         private void saveButtonClick(object sender, RoutedEventArgs routedEventArgs)
         {
             if (_statement.GetType() == typeof(SimpleStatement)) {
@@ -74,6 +96,9 @@ namespace AutoHelm.UserControls.DragAndDrop
                     }
                     else if (keyword == Keywords.For) {
                         ((ForLoop)_statement).setRepititionCount(parsedValue);
+                    } else if (_statement.GetType() == typeof(Macro))
+                    {
+                        ((Macro)_statement).addArgument(parsedValue);
                     }
                 } else {
                     ((SimpleStatement)_statement).addArgument(child.InputField.Text);
@@ -157,7 +182,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                 }
 
             }
-            else
+            else if (funcOrKeyword is Keywords)
             {
                 if ((Keywords)funcOrKeyword == Keywords.If)
                 {
@@ -170,6 +195,13 @@ namespace AutoHelm.UserControls.DragAndDrop
                 else if ((Keywords)funcOrKeyword == Keywords.For)
                 {
                     paramsList.Add(("Iterations", typeof(int)));
+                }
+            }
+            else if (funcOrKeyword is MacroKeyword)
+            {
+                if ((MacroKeyword)funcOrKeyword == MacroKeyword.GlobalDelay)
+                {
+                    paramsList.Add(("Global Delay", typeof(int)));
                 }
             }
             

@@ -24,6 +24,7 @@ namespace AutoHelm.UserControls.DragAndDrop
     {
         private Functions? function;
         private Keywords? keyword;
+        private MacroKeyword? macro;
         private Boolean dropabble;
         private BlockLandingArea? parentBlock;
         private int depth;
@@ -33,6 +34,7 @@ namespace AutoHelm.UserControls.DragAndDrop
         public BlockLandingArea(AHILProgram program) {
             this.function = null;
             this.keyword = null;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = null;
             depth = 0;
@@ -45,6 +47,7 @@ namespace AutoHelm.UserControls.DragAndDrop
         {
             this.function = null;
             this.keyword = null;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
@@ -55,16 +58,18 @@ namespace AutoHelm.UserControls.DragAndDrop
         {
             this.function = null;
             this.keyword = null;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
             InitializeComponent();
         }
 
-        public BlockLandingArea(Functions? function, Keywords? keyword, BlockLandingArea? parentBlock)
+        public BlockLandingArea(Functions? function, Keywords? keyword, MacroKeyword? macro, BlockLandingArea? parentBlock)
         {
             this.function = function;
             this.keyword = keyword;
+            this.macro = macro;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
@@ -91,6 +96,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     dropZoneLabel.Content = blockDataFromDrag.function.ToString();
                     this.function = blockDataFromDrag.function;
                     this.keyword = null;
+                    this.macro = null;
                     SimpleStatement statement = new SimpleStatement(blockDataFromDrag.function);
                     if (parentBlock != null) {
                         ((NestedStructure)parentBlock._statement).addStatement(statement);
@@ -101,11 +107,12 @@ namespace AutoHelm.UserControls.DragAndDrop
                         _statement = statement;
                     }
                 }
-                else
+                else if (blockDataFromDrag.keyword != null)
                 {
                     dropZoneLabel.Content = blockDataFromDrag.keyword.ToString();
                     this.keyword = blockDataFromDrag.keyword;
                     this.function = null;
+                    this.macro = null;
                     Statement statement = keyword switch {
                         Keywords.For => new ForLoop(),
                         _ => throw new NotImplementedException("Other keywords are not implemented"),
@@ -116,6 +123,19 @@ namespace AutoHelm.UserControls.DragAndDrop
                     } 
                     else if (program != null) {
                         program.addStatement(statement);
+                        _statement = statement;
+                    }
+                }
+                else
+                {
+                    dropZoneLabel.Content = blockDataFromDrag.macro.ToString();
+                    this.macro = blockDataFromDrag.macro;
+                    this.keyword = null;
+                    this.function = null;
+                    Macro statement = new Macro(blockDataFromDrag.macro);
+                    if (program != null)
+                    {
+                        program.addMacros(statement);
                         _statement = statement;
                     }
                 }
@@ -266,9 +286,14 @@ namespace AutoHelm.UserControls.DragAndDrop
                 ParameterInputWindow parameterInputWindow = new ParameterInputWindow(function, _statement);
                 parameterInputWindow.ShowDialog();
             }
-            else
+            else if (keyword != null)
             {
                 ParameterInputWindow parameterInputWindow = new ParameterInputWindow(keyword, _statement);
+                parameterInputWindow.ShowDialog();
+            }
+            else
+            {
+                ParameterInputWindow parameterInputWindow = new ParameterInputWindow(macro, _statement);
                 parameterInputWindow.ShowDialog();
             }
             Console.WriteLine(program.generateProgramAHILCode());
