@@ -105,6 +105,11 @@ namespace AutoHelm.pages
             program.killRunningProgram();
         }
 
+        private void assistantButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void runButtonClick(object sender, RoutedEventArgs e) {
             program.saveToFile();
 
