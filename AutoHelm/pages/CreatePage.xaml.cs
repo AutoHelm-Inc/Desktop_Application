@@ -110,6 +110,11 @@ namespace AutoHelm.pages
         {
             AssistantWindow window = new AssistantWindow();
             window.ShowDialog();
+
+            // window.text is empty when user closes the assistant popup instead of submitting it, so return
+            if (window.text == String.Empty) return;
+
+            //todo: send window.text as prompt for ai assistant
         }
 
         private void runButtonClick(object sender, RoutedEventArgs e) {

@@ -54,7 +54,7 @@
                 </Button.Style>
                 <Image Source="/UserControls/Assistant/send.png" />
             </Button>
-            <TextBox x:Name="SearchTermTextBox" Margin="30,30,30,30" Background="Transparent" TextWrapping="Wrap" CaretBrush="DimGray" FontSize="20" BorderBrush="Transparent" Foreground="{DynamicResource BlueAccent}" FontWeight="DemiBold">
+            <TextBox x:Name="assistantTextBox" Margin="30,30,30,30" Background="Transparent" TextWrapping="Wrap" CaretBrush="DimGray" FontSize="20" BorderBrush="Transparent" Foreground="{DynamicResource BlueAccent}" FontWeight="DemiBold">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Setter Property="Template">
@@ -88,7 +88,7 @@
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
+                            <DataTrigger Binding="{Binding Text, ElementName=assistantTextBox}" Value="">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>

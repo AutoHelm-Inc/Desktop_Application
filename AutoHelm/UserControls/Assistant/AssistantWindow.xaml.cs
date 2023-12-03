@@ -19,6 +19,11 @@ namespace AutoHelm.UserControls.Assistant
     /// </summary>
     public partial class AssistantWindow : Window
     {
+        public string text
+        {
+            get { return assistantTextBox.Text; }
+        }
+
         public AssistantWindow()
         {
             InitializeComponent();
@@ -26,6 +31,7 @@ namespace AutoHelm.UserControls.Assistant
 
         private void closeButtonClick(object sender, RoutedEventArgs e)
         {
+            assistantTextBox.Text = string.Empty;
             Close();
         }
 
