@@ -19,6 +19,9 @@
     <None Remove="pages\open-folder.png" />
     <None Remove="pages\run.png" />
     <None Remove="pages\sync.png" />
+    <None Remove="UserControls\Assistant\close.png" />
+    <None Remove="UserControls\Assistant\search.png" />
+    <None Remove="UserControls\Assistant\send.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +62,9 @@
     <Resource Include="pages\open-folder.png" />
     <Resource Include="pages\run.png" />
     <Resource Include="pages\sync.png" />
+    <Resource Include="UserControls\Assistant\close.png" />
+    <Resource Include="UserControls\Assistant\search.png" />
+    <Resource Include="UserControls\Assistant\send.png" />
   </ItemGroup>
 
 </Project>

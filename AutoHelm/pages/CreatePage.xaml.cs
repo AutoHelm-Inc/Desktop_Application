@@ -21,6 +21,7 @@ using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
+using AutoHelm.UserControls.Assistant;
 
 namespace AutoHelm.pages
 {
@@ -107,7 +108,8 @@ namespace AutoHelm.pages
 
         private void assistantButtonClick(object sender, RoutedEventArgs e)
         {
-
+            AssistantWindow window = new AssistantWindow();
+            window.ShowDialog();
         }
 
         private void runButtonClick(object sender, RoutedEventArgs e) {

@@ -10,6 +10,9 @@
     <Compile Update="pages\LoadingPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\Assistant\AssistantWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\DragAndDrop\DraggingStatementBlock.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +37,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\Colours.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\Assistant\AssistantWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\DragAndDrop\DraggingStatementBlock.xaml">
