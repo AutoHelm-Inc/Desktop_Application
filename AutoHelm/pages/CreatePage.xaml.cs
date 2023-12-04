@@ -121,7 +121,6 @@ namespace AutoHelm.pages
             AHILProgram newProgram = new AHILProgram();
             CreatePage page = new CreatePage(newProgram);
             OpenNewCreatePage(sender, e, page);
-            
         }
 
         private void OpenNewCreatePage(object sender, RoutedEventArgs e, CreatePage p)
