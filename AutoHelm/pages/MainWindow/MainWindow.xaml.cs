@@ -56,6 +56,8 @@ namespace AutoHelm.pages.MainWindow
             HomePage.OpenAHILPage += OpenButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
 
+            CreatePage.OpenNewCreatePageEvent += OpenNewCreatePage;
+
             //Setup global shortcut manager
             ShortcutManager.systemHookSetup();
         }
@@ -110,6 +112,11 @@ namespace AutoHelm.pages.MainWindow
         private void CreateButton_Click_Page(object source, EventArgs e)
         {
             mainFrame.Content = new CreatePage(null);
+        }
+
+        private void OpenNewCreatePage(object source, EventArgs e, CreatePage p)
+        {
+            mainFrame.Content = p;
         }
         private void OpenButton_Click_Page(object source, EventArgs e)
         {
