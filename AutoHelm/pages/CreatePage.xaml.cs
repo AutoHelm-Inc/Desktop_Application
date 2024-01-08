@@ -19,11 +19,15 @@ using AutoHelm.user_controls;
 using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
 using Automation_Project.src.automation;
+using Emgu.CV.Structure;
+using Emgu.CV;
+using Tesseract;
+using Ocr;
 
 namespace AutoHelm.pages
 {
 
-    public partial class CreatePage : Page
+    public partial class CreatePage : System.Windows.Controls.Page
     {
         private Button cycleElements;
         private List<DraggingStatementBlock> statementsAndFunctionBlocks;
@@ -87,55 +91,53 @@ namespace AutoHelm.pages
 
         private void runButtonClick(object sender, RoutedEventArgs e) {
 
-            program.saveToFile();
+            /*
+            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap("C:\\Users\\AyaanAnishaFamily\\Pictures\\ford.PNG");
+            System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            System.Drawing.Imaging.BitmapData data = bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
+            Image<Bgr, byte> outputImage = new Image<Bgr, byte>(bitmap.Width, bitmap.Height, data.Stride, data.Scan0);
+            Image<Gray, Byte> grayImage = outputImage.Convert<Gray, Byte>();
 
-            String p = Directory.GetParent(System.Environment.CurrentDirectory)?.Parent?.Parent?.FullName;
-            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
-            int bIndex1 = 0;
-            int bIndex2 = 0;
+            grayImage = grayImage.Resize(outputImage.Width *2 , outputImage.Height * 2, Emgu.CV.CvEnum.Inter.Linear);
+
+            grayImage = grayImage.SmoothBilateral(9, 75, 75);
+
+            grayImage = grayImage.ThresholdAdaptive(new Gray(255), Emgu.CV.CvEnum.AdaptiveThresholdType.GaussianC, Emgu.CV.CvEnum.ThresholdType.Binary, 31, new Gray(0.03));
+
+            grayImage.Save("C:\\Users\\AyaanAnishaFamily\\Pictures\\Grey.PNG");
+            */
+
+            //Image<Bgr, byte> image = new Image<Bgr, byte>("C:\\Users\\AyaanAnishaFamily\\Pictures\\ahmedin4k.PNG");
+            //Image<Gray, Byte> grayImage = image.Convert<Gray, Byte>();
+
+            //grayImage = grayImage.Resize(grayImage.Width * 2, grayImage.Height * 2, Emgu.CV.CvEnum.Inter.Linear);
+
+            //grayImage = grayImage.SmoothBilateral(9, 75, 75);
+
+            //grayImage = grayImage.ThresholdAdaptive(new Gray(255), Emgu.CV.CvEnum.AdaptiveThresholdType.GaussianC, Emgu.CV.CvEnum.ThresholdType.Binary, 21, 4);
+
+            //grayImage.Save("C:\\Users\\AyaanAnishaFamily\\Pictures\\Grey.PNG");
+
+            //Image<Bgr, byte> image = new Image<Bgr, byte>("C:\\Users\\AyaanAnishaFamily\\Pictures\\Test1.PNG");
+            //Image<Gray, Byte> grayImage = image.Convert<Gray, Byte>();
+
+            //grayImage = grayImage.Resize(grayImage.Width * 3, grayImage.Height * 3, Emgu.CV.CvEnum.Inter.Cubic);
+
+            //grayImage = grayImage.SmoothGaussian(1, 1, 0,0 );
+
+            //CvInvoke.AdaptiveThreshold(grayImage, grayImage, 255, Emgu.CV.CvEnum.AdaptiveThresholdType.GaussianC, Emgu.CV.CvEnum.ThresholdType.BinaryInv, 31, 0.03);
 
 
-            if (p != null)
-            {
-                //Load Tray Icon Before Execution
-                ni.Icon = new System.Drawing.Icon(p + "/pages/MainWindow/autohelm_logo.ico");
-                ni.Visible = true;
-                ni.Text = "Running AutoHelm Workflow...";
+            //grayImage.Save("C:\\Users\\AyaanAnishaFamily\\Pictures\\Grey.PNG");
 
-                //Apply Borders to TopBar and CreatePage Before Execution
-                Border b1 = new Border();
-                b1.BorderBrush = Brushes.Red;
-                b1.BorderThickness = new Thickness(5, 0, 5, 5);
+            //var img = Pix.LoadFromFile("C:\\Users\\AyaanAnishaFamily\\Pictures\\Grey.PNG"); 
+            //var ocr = new TesseractEngine("C:\\Users\\AyaanAnishaFamily\\Documents\\University\\FYDP\\Desktop_Application\\AutoHelm\\bin\\Debug\\net6.0-windows\\ocrResources", "eng", EngineMode.Default); 
+            //var page = ocr.Process(img);
+            //string text = page.GetText();
+            //Console.WriteLine(page.GetText());
+            OcrController ocr = new OcrController("C:\\Users\\AyaanAnishaFamily\\Pictures\\Test1.PNG", true);
+            ocr.performOcr();
 
-                Border b2 = new Border();
-                b2.BorderBrush = Brushes.Red;
-                b2.BorderThickness = new Thickness(5, 5, 5, 0);
-
-                bIndex1 = ((Grid)this.Content).Children.Add(b1);
-                bIndex2 = ((Grid)TopBar.self.Content).Children.Add(b2);
-
-                //Force a Render Update
-                DispatcherFrame frame = new DispatcherFrame();
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Render, new DispatcherOperationCallback(delegate (object parameter)
-                {
-                    frame.Continue = false;
-                    return null;
-                }), null);
-
-                Dispatcher.PushFrame(frame);
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
-                                              new Action(delegate { }));
-
-            }
-
-            program.execute();
-
-            //Remove Borders After Execution
-            ((Grid)this.Content).Children.RemoveAt(bIndex1);
-            ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
-
-            //Remove Tray Icon After Execution
-            ni.Visible = false;
         }
 
         private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)
