@@ -25,6 +25,7 @@
     <PackageReference Include="FirebaseAuthentication.net" Version="4.0.2" />
     <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="FireSharp" Version="2.0.4" />
+    <PackageReference Include="SymSpell" Version="6.7.2" />
     <PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
