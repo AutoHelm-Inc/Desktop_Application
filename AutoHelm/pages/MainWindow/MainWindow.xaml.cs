@@ -41,7 +41,7 @@ namespace AutoHelm.pages.MainWindow
 
             getPathsFromFile();
 
-            // LoadingPageAnimation();
+            //LoadingPageAnimation();
 
             /// Dev functions for how, except for maybe home page, that should be kept and changed to a home icon
             TopBar.HomeButton_Click_Page += TopBar_HomeButton_Click_Page;
@@ -64,7 +64,6 @@ namespace AutoHelm.pages.MainWindow
         {
             LoadingPage loadingPage = new LoadingPage();
             mainFrame.Content = loadingPage;
-            //mainGrid.Background = Brushes.Black;
             topBar.Visibility = Visibility.Collapsed;
 
             Grid grid = (Grid)loadingPage.Content;
@@ -155,6 +154,10 @@ namespace AutoHelm.pages.MainWindow
             string displayName = savedArgs.getDisplayName;
             string description = savedArgs.getDescription;
 
+            if (!File.Exists(filePath)) {
+                MessageBox.Show("File was either Deleted or Corrupted", "Opening Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                using (File.Create(filePath));
+            }
             //Run the parser when we open a file so we get access to the AST
             Parser p = new Parser(filePath);
             //obtain the ast through parser
@@ -171,7 +174,7 @@ namespace AutoHelm.pages.MainWindow
             textBlock.Text = filePath;
             textBox.Text = displayName;
             textBox1.Text = description;
-
+            
         }
         private void SaveAs_Click(object source, EventArgs e)
         {
