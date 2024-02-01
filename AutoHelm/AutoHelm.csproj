@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
@@ -12,6 +13,8 @@
     <None Remove="Assets\AutoHelm_Logo.ico" />
     <None Remove="Assets\AutoHelm_Logo.png" />
     <None Remove="pages\background.png" />
+    <None Remove="pages\dots-not-grid.png" />
+    <None Remove="pages\dots.png" />
     <None Remove="pages\MainWindow\autohelm_logo.ico" />
     <None Remove="pages\MainWindow\autohelm_logo.png" />
     <None Remove="pages\open-folder.png" />
@@ -20,11 +23,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <COMReference Include="MSForms">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>a3c491d6-b925-4da5-a31b-80744f0e7d0b</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Emgu.CV" Version="4.8.1.5350" />
     <PackageReference Include="Emgu.CV.runtime.windows" Version="4.8.1.5350" />
     <PackageReference Include="FirebaseAuthentication.net" Version="4.0.2" />
     <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="FireSharp" Version="2.0.4" />
+    <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="SymSpell" Version="6.7.2" />
     <PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
@@ -36,6 +58,8 @@
 
   <ItemGroup>
     <Resource Include="pages\background.png" />
+    <Resource Include="pages\dots-not-grid.png" />
+    <Resource Include="pages\dots.png" />
     <Resource Include="pages\MainWindow\autohelm_logo.ico" />
     <Resource Include="pages\MainWindow\autohelm_logo.png" />
     <Resource Include="pages\open-folder.png" />
