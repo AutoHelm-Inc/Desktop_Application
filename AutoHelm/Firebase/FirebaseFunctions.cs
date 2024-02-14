@@ -17,7 +17,7 @@ using System.Configuration;
 
 namespace AutoHelm.Firebase
 {
-    
+
     internal class FirebaseFunctions
     {
         public static volatile int isSaving = 0;
@@ -42,7 +42,7 @@ namespace AutoHelm.Firebase
 
         }
         //Must ensure the user is a properly authenticated user before proceeding
-        public async static Task<bool> UploadFileWithAuth(string email, string password, string path, string displayName, string description)
+        public async static Task<bool> UploadFileWithAuth(string email, string password, string path, string displayName, string description, bool isPrivate)
         {
             var stream = File.Open(path, FileMode.Open);
             var config = new FirebaseAuthConfig
@@ -67,22 +67,41 @@ namespace AutoHelm.Firebase
                 var result = await uc.User.GetIdTokenAsync();
 
 
-                var task = new FirebaseStorage(
+                //if project was declared private, we put it in the private directory in firebase
+                if (isPrivate)
+                {
+                    var task = new FirebaseStorage(
                      ConfigurationManager.AppSettings["appSpot"],
                      new FirebaseStorageOptions
                      {
                          AuthTokenAsyncFactory = () => Task.FromResult(result),
                          ThrowOnCancel = true,
                      })
-                    .Child("Cloud_Saves")
+                    .Child("Private")
+                    .Child(email)
                     .Child(Path.GetFileName(path))
                     .PutAsync(stream);
+                }
+                //otherwise put it in the public directory where all public workflows exist
+                else
+                {
+                    var task = new FirebaseStorage(
+                     ConfigurationManager.AppSettings["appSpot"],
+                     new FirebaseStorageOptions
+                     {
+                         AuthTokenAsyncFactory = () => Task.FromResult(result),
+                         ThrowOnCancel = true,
+                     })
+                    .Child("Public")
+                    .Child(Path.GetFileName(path))
+                    .PutAsync(stream);
+                }
 
                 // Track progress of the upload
                 //task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
 
                 //Update database if file upload was succesful
-                UpdateDatabase(email, password, true, path, displayName, description);
+                UpdateDatabase(email, password, path, displayName, description, isPrivate);
             }
             catch (Exception e)
             {
@@ -94,7 +113,7 @@ namespace AutoHelm.Firebase
             return true;
         }
 
-        public static async void UpdateDatabase(string email, string password, bool isPublic, string path, string displayName, string description)
+        public static async void UpdateDatabase(string email, string password, string path, string displayName, string description, bool isPrivate)
         {
             IFirebaseConfig firebaseConfig = new FirebaseConfig()
             {
@@ -108,14 +127,26 @@ namespace AutoHelm.Firebase
                 Description = description,
                 FileName = Path.GetFileName(path),
                 Name = displayName,
-                Path = "Cloud_Saves/" + Path.GetFileName(path),
-                Public = isPublic,
+                //The path will defer depending on if the workflow is public or private
+                Path = isPrivate ? "Private/" + email + "/" + Path.GetFileName(path) : "Public/" + Path.GetFileName(path),
+                Public = isPrivate,
                 Username = email
             };
+
             var client = new FireSharp.FirebaseClient(firebaseConfig);
-            var setter = client.Set("Cloud_Saves/" + Path.GetFileNameWithoutExtension(path), databaseEntry);
-            
-        
+
+            //if the workflow is private, the database entry should be in the Private Section otherwise it will be in the Public Section
+            if (isPrivate)
+            {
+                var parsedEmail = email.Split("@");
+                var userId = parsedEmail[0] + parsedEmail[1].Split(".")[0];
+                var setter = client.Set("Private/"+ userId + "/" + Path.GetFileNameWithoutExtension(path), databaseEntry);
+            }
+            else
+            {
+                var setter = client.Set("Public/" + Path.GetFileNameWithoutExtension(path), databaseEntry);
+            }
+
         }
 
         public static bool CloudUpload(string email, string password)
@@ -125,7 +156,7 @@ namespace AutoHelm.Firebase
             List<string> filePaths = cache["path"] as List<string>;
             List<string> displayNames = cache["displayName"] as List<string>;
             List<string> descriptions = cache["description"] as List<string>;
-            //TODO
+            List<bool> isPrivateStatus = cache["isPrivate"] as List<bool>;
 
             if (filePaths != null && filePaths.Count >= 1)
             {
@@ -133,7 +164,7 @@ namespace AutoHelm.Firebase
 
                 for (int i = 0; i < filePaths.Count; i++)
                 {
-                    Task<bool> task = UploadFileWithAuth("z2omer@gmail.com", "z2omer", filePaths[i], displayNames[i], descriptions[i]);
+                    Task<bool> task = UploadFileWithAuth("z2omer@gmail.com", "z2omer", filePaths[i], displayNames[i], descriptions[i], isPrivateStatus[i]);
                     bool result = task.Result;
 
                     if (!result)
