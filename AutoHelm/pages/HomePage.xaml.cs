@@ -16,12 +16,14 @@ namespace AutoHelm.pages
         private readonly string filePath;
         private readonly string displayName;
         private readonly string description;
+        private readonly bool isPrivate;
 
-        public SavedEventArgs(string filePath, string fileName, string description)
+        public SavedEventArgs(string filePath, string fileName, string description, bool isPrivate)
         {
             this.filePath = filePath;
             this.displayName = fileName;
             this.description = description;
+            this.isPrivate = isPrivate;
         }
 
         public string getfilePath
@@ -35,6 +37,11 @@ namespace AutoHelm.pages
         public string getDescription
         {
             get { return this.description; }
+        }
+
+        public bool getPrivate
+        {
+            get { return this.isPrivate; }
         }
     }
 
@@ -93,6 +100,7 @@ namespace AutoHelm.pages
             List<string> filePaths = cache["path"] as List<string>;
             List<string> displayNames = cache["displayName"] as List<string>;
             List<string> descriptions = cache["description"] as List<string>;
+            List<bool> isPrivateStatus = cache["isPrivate"] as List<bool>;
 
             Button clickedButton = (Button)sender;
             int index = (int)clickedButton.Tag;
@@ -100,8 +108,9 @@ namespace AutoHelm.pages
             string filePath = filePaths[index];
             string displayName = displayNames[index];
             string description = descriptions[index];
+            bool isPrivate = isPrivateStatus[index];
 
-            SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayName, description);
+            SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayName, description, isPrivate);
             Load_Saved_Page?.Invoke(this, savedArgs);
         }
 
