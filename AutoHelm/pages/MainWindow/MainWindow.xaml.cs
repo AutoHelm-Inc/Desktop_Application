@@ -25,19 +25,21 @@ namespace AutoHelm.pages.MainWindow
         public MainWindow()
         {
             InitializeComponent();
-           this.WindowState = WindowState.Maximized;
 
-            this.Visibility = Visibility.Collapsed;
-            this.WindowStyle = WindowStyle.None;
-            this.ResizeMode = ResizeMode.NoResize;
+            Window virtualWindow = new Window();
+            //create a test window to see screen resolution
+            virtualWindow.Show();
+            virtualWindow.Opacity = 0;
+            virtualWindow.WindowState = WindowState.Maximized;
+            double returnHeight = virtualWindow.Height;
+            double returnWidth = virtualWindow.Width;
+            virtualWindow.Close();
+            //Change the UI window to the above-fetched size to prevent covering of the taskbar
             this.WindowState = WindowState.Maximized;
-            this.Topmost = true;
-            this.Topmost = false;
-            //this.UseNoneWindowStyle = true;
-            //this.IgnoreTaskbarOnMaximize = true;
-            this.Visibility = Visibility.Visible;
-            //this.FormBorderStyle = FormBorderStyle.None;
-            //this.TopMost = true;
+            this.MaxHeight = returnHeight;
+            this.MaxWidth = returnWidth;
+            this.ResizeMode = ResizeMode.CanMinimize;
+
 
             getPathsFromFile();
 
