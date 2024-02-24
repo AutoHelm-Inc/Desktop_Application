@@ -20,6 +20,10 @@ namespace AutoHelm.pages.MainWindow
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    public static class usernameTopLevel
+    {
+        public static String email = "";
+    }
     public partial class MainWindow : Window
     {
         public MainWindow()
