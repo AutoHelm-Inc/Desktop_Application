@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="Assets\AutoHelm_Logo.ico" />
     <None Remove="Assets\AutoHelm_Logo.png" />
+    <None Remove="pages\assistant.png" />
     <None Remove="pages\background.png" />
     <None Remove="pages\dots-not-grid.png" />
     <None Remove="pages\dots.png" />
@@ -20,6 +21,9 @@
     <None Remove="pages\open-folder.png" />
     <None Remove="pages\run.png" />
     <None Remove="pages\sync.png" />
+    <None Remove="UserControls\Assistant\close.png" />
+    <None Remove="UserControls\Assistant\search.png" />
+    <None Remove="UserControls\Assistant\send.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="pages\assistant.png" />
     <Resource Include="pages\background.png" />
     <Resource Include="pages\dots-not-grid.png" />
     <Resource Include="pages\dots.png" />
@@ -61,6 +66,9 @@
     <Resource Include="pages\open-folder.png" />
     <Resource Include="pages\run.png" />
     <Resource Include="pages\sync.png" />
+    <Resource Include="UserControls\Assistant\close.png" />
+    <Resource Include="UserControls\Assistant\search.png" />
+    <Resource Include="UserControls\Assistant\send.png" />
   </ItemGroup>
 
 </Project>

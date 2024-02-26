@@ -21,6 +21,7 @@ using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
+using AutoHelm.UserControls.Assistant;
 
 namespace AutoHelm.pages
 {
@@ -33,6 +34,9 @@ namespace AutoHelm.pages
         private int numBlocksPerCycle;
         private AHILProgram program;
         private static GlobalShortcut? killWorkflowShortcut;
+
+        public delegate void MyEventHandler(object source, EventArgs e, CreatePage p);
+        public static event MyEventHandler OpenNewCreatePageEvent;
 
         public AHILProgram GetProgram() {
             return program;
@@ -103,6 +107,25 @@ namespace AutoHelm.pages
         {
             Console.WriteLine("Kill key pressed!");
             program.killRunningProgram();
+        }
+
+        private void assistantButtonClick(object sender, RoutedEventArgs e)
+        {
+            AssistantWindow window = new AssistantWindow();
+            window.ShowDialog();
+
+            // window.text is empty when user closes the assistant popup instead of submitting it, so return
+            if (window.text == String.Empty) return;
+
+            //todo: send window.text as prompt for ai assistant
+            AHILProgram newProgram = new AHILProgram();
+            CreatePage page = new CreatePage(newProgram);
+            OpenNewCreatePage(sender, e, page);
+        }
+
+        private void OpenNewCreatePage(object sender, RoutedEventArgs e, CreatePage p)
+        {
+            OpenNewCreatePageEvent(this, null, p);
         }
 
         private void runButtonClick(object sender, RoutedEventArgs e) {
