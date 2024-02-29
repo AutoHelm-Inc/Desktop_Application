@@ -119,12 +119,21 @@ namespace AutoHelm.UserControls.DragAndDrop
                         _statement = statement;
                     }
                 }
-                Console.WriteLine(program.generateProgramAHILCode());
 
                 dropZoneLabel.Foreground = blockDataFromDrag.labelColor;
 
                 borderRect.StrokeDashArray = null;
                 borderRect.Stroke = Brushes.Black;
+
+                Style style = new Style(typeof(Button));
+                ControlTemplate controlTemplate = new ControlTemplate(typeof(Button));
+                FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
+                borderFactory.SetValue(Border.BackgroundProperty, Brushes.Transparent);
+                FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+                borderFactory.AppendChild(contentPresenterFactory);
+                controlTemplate.VisualTree = borderFactory;
+                Setter setter = new Setter(Control.TemplateProperty, controlTemplate);
+                style.Setters.Add(setter);
 
                 //Make delete button and set styling
                 Button deleteButton = new Button();
@@ -135,10 +144,13 @@ namespace AutoHelm.UserControls.DragAndDrop
                 deleteButton.VerticalAlignment = VerticalAlignment.Top;
                 deleteButton.HorizontalAlignment = HorizontalAlignment.Right;
                 deleteButton.Margin = new Thickness(10);
-                deleteButton.Content = "X";
-                deleteButton.FontSize = 18;
-                deleteButton.FontWeight = FontWeights.Bold;
-                deleteButton.Foreground = new SolidColorBrush(Colors.PaleVioletRed);
+                Image deleteButtonImage = new Image();
+                deleteButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/close2.png")));
+                deleteButtonImage.Width = 17;
+                deleteButtonImage.Height = 17;
+                deleteButton.Content = deleteButtonImage;
+                deleteButton.Cursor = Cursors.Hand;
+                deleteButton.Style = style;
                 deleteButton.Click += new RoutedEventHandler(DeleteStatementButton);
 
                 //Make edit button and set styling
@@ -157,6 +169,8 @@ namespace AutoHelm.UserControls.DragAndDrop
                 editButtonImage.Width = 18;
                 editButtonImage.Height = 18;
                 editButton.Content = editButtonImage;
+                editButton.Cursor = Cursors.Hand;
+                editButton.Style = style;
                 editButton.Click += new RoutedEventHandler(EditStatementButton);
 
                 landingAreaGrid.Children.Add(editButton);
@@ -256,7 +270,6 @@ namespace AutoHelm.UserControls.DragAndDrop
             parentStackPanel.Children.Remove(this);
             updateDepth(-1*(depth+1));
             changeParentDimensions(-1);
-            Console.WriteLine(program.generateProgramAHILCode());
         }
 
         private void EditStatementButton(object sender, RoutedEventArgs routedEventArgs)
@@ -271,7 +284,6 @@ namespace AutoHelm.UserControls.DragAndDrop
                 ParameterInputWindow parameterInputWindow = new ParameterInputWindow(keyword, _statement);
                 parameterInputWindow.ShowDialog();
             }
-            Console.WriteLine(program.generateProgramAHILCode());
         }
 
         public void setStatement(Statement s)
@@ -322,6 +334,16 @@ namespace AutoHelm.UserControls.DragAndDrop
             borderRect.StrokeDashArray = null;
             borderRect.Stroke = Brushes.Black;
 
+            Style style = new Style(typeof(Button));
+            ControlTemplate controlTemplate = new ControlTemplate(typeof(Button));
+            FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
+            borderFactory.SetValue(Border.BackgroundProperty, Brushes.Transparent);
+            FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+            borderFactory.AppendChild(contentPresenterFactory);
+            controlTemplate.VisualTree = borderFactory;
+            Setter setter = new Setter(Control.TemplateProperty, controlTemplate);
+            style.Setters.Add(setter);
+
             //Make delete button and set styling
             Button deleteButton = new Button();
             deleteButton.Background = new SolidColorBrush(Colors.Transparent);
@@ -331,10 +353,15 @@ namespace AutoHelm.UserControls.DragAndDrop
             deleteButton.VerticalAlignment = VerticalAlignment.Top;
             deleteButton.HorizontalAlignment = HorizontalAlignment.Right;
             deleteButton.Margin = new Thickness(10);
-            deleteButton.Content = "X";
-            deleteButton.FontSize = 18;
-            deleteButton.FontWeight = FontWeights.Bold;
-            deleteButton.Foreground = new SolidColorBrush(Colors.PaleVioletRed);
+
+            Image deleteButtonImage = new Image();
+            deleteButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/close2.png")));
+            deleteButtonImage.Width = 17;
+            deleteButtonImage.Height = 17;
+            deleteButton.Content = deleteButtonImage;
+
+            deleteButton.Cursor = Cursors.Hand;
+            deleteButton.Style = style;
             deleteButton.Click += new RoutedEventHandler(DeleteStatementButton);
 
             //Make edit button and set styling
@@ -353,6 +380,8 @@ namespace AutoHelm.UserControls.DragAndDrop
             editButtonImage.Width = 18;
             editButtonImage.Height = 18;
             editButton.Content = editButtonImage;
+            editButton.Cursor = Cursors.Hand;
+            editButton.Style = style;
             editButton.Click += new RoutedEventHandler(EditStatementButton);
 
             landingAreaGrid.Children.Add(editButton);

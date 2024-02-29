@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:RenderOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+        RenderOptions.BitmapScalingMode="HighQuality"
         xmlns:local="clr-namespace:AutoHelm"
         xmlns:UC="clr-namespace:AutoHelm.user_controls"
         mc:Ignorable="d"
-        Title="AutoHelm" Height="900" Width="1600"
+        Title="AutoHelm" Width="1920" Height="1080"
         Background="Transparent" Icon="/pages/MainWindow/autohelm_logo.ico">
     
     

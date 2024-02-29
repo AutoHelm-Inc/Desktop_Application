@@ -17,7 +17,8 @@
     </Page.Resources>
 
     <Grid>
-        <Image Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" UseLayoutRounding="True" SnapsToDevicePixels="True" Source="/pages/dots-not-grid.png"></Image>
+        <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" UseLayoutRounding="True" SnapsToDevicePixels="True" Source="/pages/grid-png-43579.png" Opacity="0.1"></Image>
+        
         <ScrollViewer x:Name="LandingAreaScrollable" PanningMode="None" >
             <StackPanel x:Name="LandingAreaPanel" HorizontalAlignment="Stretch">
                 <Canvas x:Name="blankCanvas" Background="{DynamicResource PrimaryBackgroundColor}">
@@ -47,18 +48,33 @@
         </Button>
 
         <Button Click="assistantButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="30" Margin="195,0,0,5" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" ToolTip="Assistant">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="Transparent">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
             <Image Source="/pages/assistant.png"/>
         </Button>
 
         <StackPanel HorizontalAlignment="Right" Width="350" Height="1080" Background="{DynamicResource OneDarkerThanPrimary}" x:Name="createFieldPanel">
-            <TextBox Text="Untitled" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent" FontSize="30" Foreground="{DynamicResource BlueAccent}" Margin="0,25,0,0" CaretBrush="{DynamicResource BlueAlternateAccent}" MaxLength="60" TextWrapping="Wrap" x:Name="createTitle"/>
-            <TextBlock x:Name="createPath" TextWrapping="Wrap" HorizontalAlignment="Center" Background="Transparent" FontSize="14" Foreground="{DynamicResource BlueAccent}" Margin="0,25,0,0"><Italic>path</Italic></TextBlock>
-            <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="28" Margin="0,75,0,0">
+            <TextBox Text="Untitled" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0.5" BorderBrush="Transparent" FontSize="30" Foreground="{DynamicResource BlueAccent}" Margin="0,50,0,0" CaretBrush="{DynamicResource BlueAlternateAccent}" MaxLength="60" TextWrapping="Wrap" x:Name="createTitle"/>
+            <TextBlock x:Name="createPath" TextWrapping="Wrap" HorizontalAlignment="Center" Background="Transparent" FontSize="14" Foreground="{DynamicResource BlueAccent}" Margin="0,20,0,0"><Italic>path</Italic></TextBlock>
+            <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="28" Margin="0,100,0,25">
                 <TextBlock.Text>
                     Description
                 </TextBlock.Text>
             </TextBlock>
-            <TextBox x:Name="createDescription" HorizontalAlignment="Center" Height="600" Width="300" BorderBrush="{DynamicResource BlueAccent}" CaretBrush="{DynamicResource BlueAlternateAccent}" Background="Transparent" TextWrapping="Wrap" AcceptsReturn="True" FontSize="18" MaxLength="500" Foreground="{DynamicResource BlueAccent}"></TextBox>
+            <Border BorderBrush="{DynamicResource TwoLighterThanPrimary}" BorderThickness="2" CornerRadius="10" Width="{Binding ActualWidth, ElementName=createDescription}" Height="{Binding ActualHeight, ElementName=createDescription}">
+                <TextBox x:Name="createDescription" HorizontalAlignment="Center" Height="600" Width="300" BorderThickness="0" CaretBrush="{DynamicResource BlueAlternateAccent}" Background="Transparent" TextWrapping="Wrap" AcceptsReturn="True" FontSize="20" MaxLength="500" Padding="10,5,10,5" Foreground="{DynamicResource BlueAccent}"></TextBox>
+            </Border>
         </StackPanel>
     </Grid>
 </Page>

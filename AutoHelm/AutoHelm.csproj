@@ -16,6 +16,7 @@
     <None Remove="pages\background.png" />
     <None Remove="pages\dots-not-grid.png" />
     <None Remove="pages\dots.png" />
+    <None Remove="pages\grid-png-43579.png" />
     <None Remove="pages\MainWindow\autohelm_logo.ico" />
     <None Remove="pages\MainWindow\autohelm_logo.png" />
     <None Remove="pages\open-folder.png" />
@@ -61,6 +62,7 @@
     <Resource Include="pages\background.png" />
     <Resource Include="pages\dots-not-grid.png" />
     <Resource Include="pages\dots.png" />
+    <Resource Include="pages\grid-png-43579.png" />
     <Resource Include="pages\MainWindow\autohelm_logo.ico" />
     <Resource Include="pages\MainWindow\autohelm_logo.png" />
     <Resource Include="pages\open-folder.png" />

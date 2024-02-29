@@ -131,14 +131,14 @@ namespace AutoHelm.UserControls.DragAndDrop
                 {
                     paramsList.Add(("Keys", typeof(string)));
                 }
-                else if ((Functions)funcOrKeyword == Functions.EmailsGet)
-                {
-                    paramsList.Add(("Email Address", typeof(string)));
-                }
-                else if ((Functions)funcOrKeyword == Functions.FilesGet)
-                {
-                    paramsList.Add(("Folder Path", typeof(string)));
-                }
+                //else if ((Functions)funcOrKeyword == Functions.EmailsGet)
+                //{
+                //    paramsList.Add(("Email Address", typeof(string)));
+                //}
+                //else if ((Functions)funcOrKeyword == Functions.FilesGet)
+                //{
+                //    paramsList.Add(("Folder Path", typeof(string)));
+                //}
                 else if ((Functions)funcOrKeyword == Functions.MouseMove) {
                     paramsList.Add(("X", typeof(int)));
                     paramsList.Add(("Y", typeof(int)));
