@@ -58,6 +58,11 @@ namespace AutoHelm.UserControls.DragAndDrop
             paramWindowTitle.Content = keyword.ToString();
         }
 
+        private void closeButtonClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void saveButtonClick(object sender, RoutedEventArgs routedEventArgs)
         {
             if (_statement.GetType() == typeof(SimpleStatement)) {
@@ -79,7 +84,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     ((SimpleStatement)_statement).addArgument(child.InputField.Text);
                 }
             }
-            this.Close();
+            Close();
         }
 
         public List<(string, Type)> getParamListForFunc(dynamic? funcOrKeyword)
@@ -163,15 +168,16 @@ namespace AutoHelm.UserControls.DragAndDrop
             }
             else
             {
-                if ((Keywords)funcOrKeyword == Keywords.If)
-                {
-                    paramsList.Add(("Condition", typeof(string)));
-                }
-                else if ((Keywords)funcOrKeyword == Keywords.Elif)
-                {
-                    paramsList.Add(("Condition", typeof(string)));
-                }
-                else if ((Keywords)funcOrKeyword == Keywords.For)
+                //if ((Keywords)funcOrKeyword == Keywords.If)
+                //{
+                //    paramsList.Add(("Condition", typeof(string)));
+                //}
+                //else if ((Keywords)funcOrKeyword == Keywords.Elif)
+                //{
+                //    paramsList.Add(("Condition", typeof(string)));
+                //}
+                //else 
+                if ((Keywords)funcOrKeyword == Keywords.For)
                 {
                     paramsList.Add(("Iterations", typeof(int)));
                 }
