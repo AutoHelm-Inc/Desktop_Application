@@ -78,13 +78,13 @@ namespace AutoHelm.pages
             statementsAndFunctionBlocks = new List<DraggingStatementBlock>();
             foreach (Functions func in Enum.GetValues(typeof(Functions)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(func, (SolidColorBrush)FindResource("BlockColor"+ (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(func, (SolidColorBrush)FindResource("BlockColor"+ (colorIndex).ToString())));
                 colorIndex++;
             }
 
             foreach(Keywords keyWord in Enum.GetValues(typeof(Keywords)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(keyWord, (SolidColorBrush)FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(keyWord, (SolidColorBrush)FindResource("BlockColor" + (colorIndex).ToString())));
                 colorIndex++;
             }
 

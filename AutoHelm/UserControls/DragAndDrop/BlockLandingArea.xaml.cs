@@ -352,7 +352,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             {
                 if (func == this.function)
                 {
-                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex).ToString()));
                 }
                 colorIndex++;
             }
@@ -361,7 +361,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             {
                 if (keyWord == this.keyword)
                 {
-                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex).ToString()));
                 }
                 colorIndex++;
             }
