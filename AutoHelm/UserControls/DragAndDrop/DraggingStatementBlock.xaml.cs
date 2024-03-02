@@ -60,6 +60,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             dragBlockLabel.Content = macro.ToString();
             borderRect.Fill = background;
             this.macro = macro;
+
             this.function = null;
             this.keyword = null;
         }
@@ -104,6 +105,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             {
                 this.backgroundColor = (SolidColorBrush)borderRect.Fill;
                 this.labelColor = labelColor;
+
                 this.macro = macro;
                 this.function = null;
                 this.keyword = null;
