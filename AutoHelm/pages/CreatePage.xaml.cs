@@ -21,6 +21,7 @@ using AutoHelm.UserControls.DragAndDrop;
 using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
+using AutoHelm.UserControls.Assistant;
 
 namespace AutoHelm.pages
 {
@@ -33,6 +34,9 @@ namespace AutoHelm.pages
         private int numBlocksPerCycle;
         private AHILProgram program;
         private static GlobalShortcut? killWorkflowShortcut;
+
+        public delegate void MyEventHandler(object source, EventArgs e, CreatePage p);
+        public static event MyEventHandler OpenNewCreatePageEvent;
 
         public AHILProgram GetProgram() {
             return program;
@@ -84,6 +88,12 @@ namespace AutoHelm.pages
                 colorIndex++;
             }
 
+            foreach (MacroKeyword macro in Enum.GetValues(typeof(MacroKeyword)))
+            {
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(macro, (SolidColorBrush)FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString())));
+                colorIndex++;
+            }
+
             updateBlocks(false);
             LandingAreaPanel.Children.Add(new BlockLandingArea(program));
 
@@ -103,6 +113,25 @@ namespace AutoHelm.pages
         {
             Console.WriteLine("Kill key pressed!");
             program.killRunningProgram();
+        }
+
+        private void assistantButtonClick(object sender, RoutedEventArgs e)
+        {
+            AssistantWindow window = new AssistantWindow();
+            window.ShowDialog();
+
+            // window.text is empty when user closes the assistant popup instead of submitting it, so return
+            if (window.text == String.Empty) return;
+
+            //todo: send window.text as prompt for ai assistant
+            AHILProgram newProgram = new AHILProgram();
+            CreatePage page = new CreatePage(newProgram);
+            OpenNewCreatePage(sender, e, page);
+        }
+
+        private void OpenNewCreatePage(object sender, RoutedEventArgs e, CreatePage p)
+        {
+            OpenNewCreatePageEvent(this, null, p);
         }
 
         private void runButtonClick(object sender, RoutedEventArgs e) {
@@ -209,6 +238,12 @@ namespace AutoHelm.pages
             //First we create the empty landing area assocaited with the ahilProgram
             BlockLandingArea blaProgram = new BlockLandingArea(ahilProgram);
 
+            //Load macros
+            foreach (Macro m in ahilProgram.getMacros())
+            {
+                loadMacro((Macro)m, LandingAreaPanel, null);
+            }
+
             //Next we iterate through each statement
             //By default we put "LandingAreaPanel" because we want it to be added to the panel related to the CreatePage
             foreach (Statement s in ahilProgram.getStatements())
@@ -230,7 +265,7 @@ namespace AutoHelm.pages
         {
             //For simple statements, we simply create a new block landing area with no parent or keyword since they are only functions
             SimpleStatement ss = (SimpleStatement)s;
-            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, parent);
+            BlockLandingArea bla = new BlockLandingArea(ss.getFunction(), null, null, parent);
             //Set the arguments
             bla.setStatement(ss);
             //Then physically render the block
@@ -243,7 +278,7 @@ namespace AutoHelm.pages
             if (ns is ForLoop)
             {
                 ForLoop fl = (ForLoop)ns;
-                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, parent);
+                BlockLandingArea bla = new BlockLandingArea(null, Keywords.For, null, parent);
                 bla.setStatement(fl);
                 StackPanel newPanel = bla.loadBlock(stackPanel);
 
@@ -266,7 +301,17 @@ namespace AutoHelm.pages
 
             }
         }
-        
+
+        private void loadMacro(Macro m, StackPanel stackPanel, BlockLandingArea? parent)
+        {
+            BlockLandingArea bla = new BlockLandingArea(null, null, m.getKeyword(), parent);
+            //Set the arguments
+            bla.setStatement(m);
+            //Then physically render the block
+            bla.loadBlock(stackPanel);
+            bla.AllowDrop = false;
+        }
+
         private void DrawDots()
         {
             int dotSize = 3;

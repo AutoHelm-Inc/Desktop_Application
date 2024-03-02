@@ -4,6 +4,7 @@ using Firebase.Auth;
 using Firebase.Auth.Providers;
 using System.Configuration;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AutoHelm.pages
 {
@@ -14,30 +15,8 @@ namespace AutoHelm.pages
         public LoginPopUp()
         {
             InitializeComponent();
-            failed.Visibility = System.Windows.Visibility.Hidden;
-            //            SetPlaceholderText();
         }
-        /*        private void SetPlaceholderText()
-                {
-                    txtEmail.Text = emailPlaceholder;
-                    txtPassword.Password = passwordPlaceholder;
-                }
-        */
-        /*        private void txtEmail_GotFocus(object sender, RoutedEventArgs e)
-                {
-                    if (txtEmail.Text == emailPlaceholder)
-                    {
-                        txtEmail.Text = string.Empty;
-                    }
-                }
-                private void txtPassword_GotFocus(object sender, RoutedEventArgs e)
-                {
-                    if (txtPassword.Password == passwordPlaceholder)
-                    {
-                        txtPassword.Password = string.Empty;
-                    }
-                }*/
-        private async void tryLogin(string email, string password)
+       private async void tryLogin(string email, string password)
         {
             var config = new FirebaseAuthConfig
             {
@@ -58,15 +37,13 @@ namespace AutoHelm.pages
 
                 var client = new FirebaseAuthClient(config);
                 UserCredential uc = await client.SignInWithEmailAndPasswordAsync(email, password);
-                failed.Visibility = System.Windows.Visibility.Hidden;
                 NavigationService.Navigate(new HomePage());
 
             }
             catch (Exception e)
             {
-                failed.Visibility = System.Windows.Visibility.Visible;
-                //MessageBox.Show("Login failed for " + email);
-                //                MessageBox.Show("Login failed: " + e);
+                //TODO show failed message
+                MessageSpace.Text = "Login failed";
             }
         }
         private async void tryReg(string email, string password)
@@ -91,34 +68,37 @@ namespace AutoHelm.pages
                 var client = new FirebaseAuthClient(config);
                 UserCredential uc = await client.CreateUserWithEmailAndPasswordAsync(email, password);
 
-                MessageBox.Show("Registration successful!");
+                MessageSpace.Text = "Registration successful!";
             }
             catch (FirebaseAuthException e)
             {
-                // Registration failed, show an error message
-                MessageBox.Show($"Registration failed: {e.Reason}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageSpace.Text = "Registration failed";
             }
             catch (Exception e)
             {
-                MessageBox.Show($"An error occurred: {e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //                MessageBox.Show("Login failed: " + e);
+                MessageSpace.Text = "Registration failed";
             }
         }
-        private async void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtEmail.Text;
-            string password = txtPassword.Password;
-            txtEmail.Text = "";
-            txtPassword.Password = "";
+            MessageSpace.Text = "";
+            string email = txtUser.Text;
+            string password = txtPass.Password;
+            AutoHelm.pages.MainWindow.usernameTopLevel.email = email;
             tryLogin(email, password);
         }
-        private async void BtnRegister_Click(object sender, RoutedEventArgs e)
+        private void btnRegis_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtEmail.Text;
-            string password = txtPassword.Password;
-            txtEmail.Text = "";
-            txtPassword.Password = "";
+            MessageSpace.Text = "";
+            string email = txtUser.Text;
+            string password = txtPass.Password;
             tryReg(email, password);
+        }
+
+        private void btnGuest_Click(object sender, RoutedEventArgs e)
+        {
+            MessageSpace.Text = "";
+            NavigationService.Navigate(new HomePage());
         }
     }
 }

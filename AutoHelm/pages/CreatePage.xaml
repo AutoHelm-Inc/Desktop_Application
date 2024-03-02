@@ -29,7 +29,7 @@
         </StackPanel>
         
         <!--<a href="https://www.flaticon.com/free-icons/play" title="play icons">Play icons created by Freepik - Flaticon</a>-->
-        <Button Click="runButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="100" Width="100" Margin="65,0,0,65" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" FontFamily="Arial Black" FontSize="30" Cursor="Hand">
+        <Button Click="runButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="100" Width="100" Margin="65,0,0,65" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" FontFamily="Arial Black" FontSize="30" Cursor="Hand" ToolTip="Run Program">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -44,6 +44,10 @@
                 </Style>
             </Button.Style>
             <Image Source="/pages/run.png"></Image>
+        </Button>
+
+        <Button Click="assistantButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="30" Margin="195,0,0,5" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" ToolTip="Assistant">
+            <Image Source="/pages/assistant.png"/>
         </Button>
 
         <StackPanel HorizontalAlignment="Right" Width="350" Height="1080" Background="{DynamicResource OneDarkerThanPrimary}" x:Name="createFieldPanel">

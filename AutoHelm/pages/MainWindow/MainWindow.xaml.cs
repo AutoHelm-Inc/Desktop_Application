@@ -20,28 +20,34 @@ namespace AutoHelm.pages.MainWindow
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    public static class usernameTopLevel
+    {
+        public static String email = "";
+    }
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-           this.WindowState = WindowState.Maximized;
 
-            this.Visibility = Visibility.Collapsed;
-            this.WindowStyle = WindowStyle.None;
-            this.ResizeMode = ResizeMode.NoResize;
+            Window virtualWindow = new Window();
+            //create a test window to see screen resolution
+            virtualWindow.Show();
+            virtualWindow.Opacity = 0;
+            virtualWindow.WindowState = WindowState.Maximized;
+            double returnHeight = virtualWindow.Height;
+            double returnWidth = virtualWindow.Width;
+            virtualWindow.Close();
+            //Change the UI window to the above-fetched size to prevent covering of the taskbar
             this.WindowState = WindowState.Maximized;
-            this.Topmost = true;
-            this.Topmost = false;
-            //this.UseNoneWindowStyle = true;
-            //this.IgnoreTaskbarOnMaximize = true;
-            this.Visibility = Visibility.Visible;
-            //this.FormBorderStyle = FormBorderStyle.None;
-            //this.TopMost = true;
+            this.MaxHeight = returnHeight;
+            this.MaxWidth = returnWidth;
+            this.ResizeMode = ResizeMode.CanMinimize;
+
 
             getPathsFromFile();
 
-            //LoadingPageAnimation();
+            LoadingPageAnimation();
 
             /// Dev functions for how, except for maybe home page, that should be kept and changed to a home icon
             TopBar.HomeButton_Click_Page += TopBar_HomeButton_Click_Page;
@@ -55,6 +61,8 @@ namespace AutoHelm.pages.MainWindow
             HomePage.NewAHILPage += CreateButton_Click_Page;
             HomePage.OpenAHILPage += OpenButton_Click_Page;
             HomePage.Load_Saved_Page += Load_Saved_Page;
+
+            CreatePage.OpenNewCreatePageEvent += OpenNewCreatePage;
 
             //Setup global shortcut manager
             ShortcutManager.systemHookSetup();
@@ -110,6 +118,11 @@ namespace AutoHelm.pages.MainWindow
         private void CreateButton_Click_Page(object source, EventArgs e)
         {
             mainFrame.Content = new CreatePage(null);
+        }
+
+        private void OpenNewCreatePage(object source, EventArgs e, CreatePage p)
+        {
+            mainFrame.Content = p;
         }
         private void OpenButton_Click_Page(object source, EventArgs e)
         {

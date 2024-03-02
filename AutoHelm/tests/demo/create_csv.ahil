@@ -1,13 +1,15 @@
+
 Del "..\..\..\tests\tests_output"
 DirCreate "..\..\..\tests\tests_output"
 For (5){
     DirCreate "..\..\..\tests\tests_output\group_{i}"
     FileCreate "..\..\..\tests\tests_output\group_{i}\data_{i}.txt"
-    Run "..\..\..\tests\tests_output\group_{i}\data_{i}.txt", "WordPad.exe"
+    Run "..\..\..\tests\tests_output\group_{i}\data_{i}.txt"
     For (10){
-        WrtLine "{i},{i*10},{i*100}"
+        Sleep 1000
+        WriteLine "{i},{i*10},{i*100}"
     }
-    Sleep 500
+    Sleep 2000
     Save 
-    Close 
+    Close
 }
