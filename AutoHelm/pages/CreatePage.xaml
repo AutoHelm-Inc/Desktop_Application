@@ -29,8 +29,7 @@
         <StackPanel x:Name="StatementBlocksStackPanel" Width="230" Height="1080" HorizontalAlignment="Left" Background="{DynamicResource OneDarkerThanPrimary}">
         </StackPanel>
         
-        <!--<a href="https://www.flaticon.com/free-icons/play" title="play icons">Play icons created by Freepik - Flaticon</a>-->
-        <Button Click="runButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="100" Width="100" Margin="65,0,0,65" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" FontFamily="Arial Black" FontSize="30" Cursor="Hand" ToolTip="Run Program">
+        <Button Click="runButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="100" Width="100" Margin="65,0,0,40" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" FontFamily="Arial Black" FontSize="30" Cursor="Hand" ToolTip="Run Program">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -65,7 +64,7 @@
         </Button>
 
         <StackPanel HorizontalAlignment="Right" Width="350" Height="1080" Background="{DynamicResource OneDarkerThanPrimary}" x:Name="createFieldPanel">
-            <TextBox Text="Untitled" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0.5" BorderBrush="Transparent" FontSize="30" Foreground="{DynamicResource BlueAccent}" Margin="0,50,0,0" CaretBrush="{DynamicResource BlueAlternateAccent}" MaxLength="60" TextWrapping="Wrap" x:Name="createTitle"/>
+            <TextBox Text="Untitled Project" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0.5" BorderBrush="Transparent" FontSize="30" Foreground="{DynamicResource BlueAccent}" Margin="0,50,0,0" CaretBrush="{DynamicResource BlueAlternateAccent}" MaxLength="60" TextWrapping="Wrap" x:Name="createTitle"/>
             <TextBlock x:Name="createPath" TextWrapping="Wrap" HorizontalAlignment="Center" Background="Transparent" FontSize="14" Foreground="{DynamicResource BlueAccent}" Margin="0,20,0,0"><Italic>path</Italic></TextBlock>
             <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="28" Margin="0,100,0,25">
                 <TextBlock.Text>

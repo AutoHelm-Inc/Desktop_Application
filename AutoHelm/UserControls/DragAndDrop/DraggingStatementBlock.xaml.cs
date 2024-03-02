@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using Automation_Project.src.ast;
 
 namespace AutoHelm.UserControls.DragAndDrop
@@ -34,10 +35,39 @@ namespace AutoHelm.UserControls.DragAndDrop
             InitializeComponent();
         }
 
+        public static String? fromEnum(Functions? @enum)
+        {
+            return @enum switch
+            {
+                Functions.Run => "Run Program",
+                Functions.SwitchWindow => "Switch Window",
+                Functions.Close => "Close Window",
+                Functions.FileCreate => "Create File",
+                Functions.DirCreate => "Create Folder",
+                Functions.Save => "Save File",
+                Functions.Move => "Move File/Folder",
+                Functions.Del => "Delete File/Folder",
+                Functions.WriteLine => "Write with New Line",
+                Functions.Write => "Write",
+                Functions.PressKey => "Press Key",
+                //Functions.EmailsGet => _emailsGetInstance,
+                //Functions.FilesGet => _filesGetInstance,
+                Functions.MouseMove => "Move Mouse",
+                Functions.Click => "Click Mouse",
+                Functions.SaveAs => "Save As",
+                Functions.Sleep => "Delay",
+                Functions.MouseToWord => "Move Mouse to Word",
+                _ => null,
+            };
+        }
+
         public DraggingStatementBlock(Functions? function, SolidColorBrush background)
         {
             InitializeComponent();
-            dragBlockLabel.Content = function.ToString();
+            String name = fromEnum(function);
+          
+            dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + function.ToString() + ".png")));
+            dragBlockLabel.Content = name;
             borderRect.Fill = background;
             this.function = function;
             this.keyword = null;
@@ -47,7 +77,15 @@ namespace AutoHelm.UserControls.DragAndDrop
         public DraggingStatementBlock(Keywords? keyword, SolidColorBrush background)
         {
             InitializeComponent();
-            dragBlockLabel.Content = keyword.ToString();
+            String name = keyword.ToString();
+
+            if (name == "For")
+            {
+                name = "Loop";
+            }
+
+            dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + keyword.ToString() + ".png")));
+            dragBlockLabel.Content = name;
             borderRect.Fill = background;
             this.keyword = keyword;
             this.function = null;

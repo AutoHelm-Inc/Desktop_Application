@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.IO;
 using static AutoHelm.UserControls.DragAndDrop.DraggingStatementBlock;
 using System.Configuration.Internal;
+using System.Xml.Linq;
 
 namespace AutoHelm.UserControls.DragAndDrop
 {
@@ -77,6 +78,32 @@ namespace AutoHelm.UserControls.DragAndDrop
             set { this.dropabble = value; }
         }
 
+        public static String? fromEnum(Functions? @enum)
+        {
+            return @enum switch
+            {
+                Functions.Run => "Run Program",
+                Functions.SwitchWindow => "Switch Window",
+                Functions.Close => "Close Window",
+                Functions.FileCreate => "Create File",
+                Functions.DirCreate => "Create Folder",
+                Functions.Save => "Save File",
+                Functions.Move => "Move File/Folder",
+                Functions.Del => "Delete File/Folder",
+                Functions.WriteLine => "Write with New Line",
+                Functions.Write => "Write",
+                Functions.PressKey => "Press Key",
+                //Functions.EmailsGet => _emailsGetInstance,
+                //Functions.FilesGet => _filesGetInstance,
+                Functions.MouseMove => "Move Mouse",
+                Functions.Click => "Click Mouse",
+                Functions.SaveAs => "Save As",
+                Functions.Sleep => "Delay",
+                Functions.MouseToWord => "Move Mouse to Word",
+                _ => null,
+            };
+        }
+
         private void UserControl_Drop(object sender, DragEventArgs dragEventData)
         {
             if (this.AllowDrop)
@@ -88,7 +115,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                 borderRect.Fill = (Brush)blockDataFromDrag.backgroundColor;
                 if(blockDataFromDrag.function != null)
                 {
-                    dropZoneLabel.Content = blockDataFromDrag.function.ToString();
+                    dropZoneLabel.Content = fromEnum(blockDataFromDrag.function);
                     this.function = blockDataFromDrag.function;
                     this.keyword = null;
                     SimpleStatement statement = new SimpleStatement(blockDataFromDrag.function);
@@ -103,7 +130,15 @@ namespace AutoHelm.UserControls.DragAndDrop
                 }
                 else
                 {
-                    dropZoneLabel.Content = blockDataFromDrag.keyword.ToString();
+                    //Set the block label for keyword
+                    if (blockDataFromDrag.keyword.ToString() == "For")
+                    {
+                        dropZoneLabel.Content = "Loop";
+                    }
+                    else
+                    {
+                        dropZoneLabel.Content = keyword.ToString();
+                    }
                     this.keyword = blockDataFromDrag.keyword;
                     this.function = null;
                     Statement statement = keyword switch {
@@ -159,9 +194,9 @@ namespace AutoHelm.UserControls.DragAndDrop
                 editButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
                 editButton.Width = 34;
                 editButton.Height = 34;
-                editButton.VerticalAlignment = VerticalAlignment.Bottom;
-                editButton.HorizontalAlignment = HorizontalAlignment.Right;
-                editButton.Margin = new Thickness(10);
+                editButton.VerticalAlignment = VerticalAlignment.Top;
+                editButton.HorizontalAlignment = HorizontalAlignment.Left;
+                editButton.Margin = new Thickness(0, 10, 0, 0);
                 Image editButtonImage = new Image();
                 //editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));
                 editButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/gear.png")));
@@ -172,6 +207,21 @@ namespace AutoHelm.UserControls.DragAndDrop
                 editButton.Cursor = Cursors.Hand;
                 editButton.Style = style;
                 editButton.Click += new RoutedEventHandler(EditStatementButton);
+
+                //Add Block Icon
+                dragBlockIcon.Margin = new Thickness(0, 35, 0, 0);
+                dragBlockIcon.Width = 50;
+                dragBlockIcon.Height = 50;
+                dropZoneLabel.Margin = new Thickness(0, 0, 0, 0);
+
+                if (function != null)
+                {
+                    dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + function.ToString() + ".png")));
+                }
+                else
+                {
+                    dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + keyword.ToString() + ".png")));
+                }
 
                 landingAreaGrid.Children.Add(editButton);
                 landingAreaGrid.Children.Add(deleteButton);
@@ -320,13 +370,20 @@ namespace AutoHelm.UserControls.DragAndDrop
             if (this.function != null)
             {
                 //Set the block label for function
-                dropZoneLabel.Content = this.function.ToString();
+                dropZoneLabel.Content = fromEnum(function);
 
             }
             else
             {
                 //Set the block label for keyword
-                dropZoneLabel.Content = this.keyword.ToString();
+                if (keyword.ToString() == "For")
+                {
+                    dropZoneLabel.Content = "Loop";
+                }
+                else
+                {
+                    dropZoneLabel.Content = keyword.ToString();
+                }
             }
 
             //Label colors are always white
@@ -370,9 +427,9 @@ namespace AutoHelm.UserControls.DragAndDrop
             editButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
             editButton.Width = 34;
             editButton.Height = 34;
-            editButton.VerticalAlignment = VerticalAlignment.Bottom;
+            editButton.VerticalAlignment = VerticalAlignment.Top;
             editButton.HorizontalAlignment = HorizontalAlignment.Right;
-            editButton.Margin = new Thickness(10);
+            editButton.Margin = new Thickness(0, 10, 0, 0);
             Image editButtonImage = new Image();
             //editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));
             editButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/gear.png")));
@@ -383,6 +440,21 @@ namespace AutoHelm.UserControls.DragAndDrop
             editButton.Cursor = Cursors.Hand;
             editButton.Style = style;
             editButton.Click += new RoutedEventHandler(EditStatementButton);
+
+            //Add Block Icon
+            dragBlockIcon.Margin = new Thickness(0, 35, 0, 0);
+            dragBlockIcon.Width = 50;
+            dragBlockIcon.Height = 50;
+            dropZoneLabel.Margin = new Thickness(0, 0, 0, 0);
+
+            if (function != null)
+            {
+                dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + function.ToString() + ".png")));
+            }
+            else
+            {
+                dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + keyword.ToString() + ".png")));
+            }
 
             landingAreaGrid.Children.Add(editButton);
             landingAreaGrid.Children.Add(deleteButton);
