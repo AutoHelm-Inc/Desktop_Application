@@ -1,0 +1,102 @@
+﻿<Window x:Class="AutoHelm.UserControls.Assistant.AssistantWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutoHelm.UserControls.Assistant"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Height="200" Width="600"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        >
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Colours.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border CornerRadius="10" BorderBrush="{DynamicResource OneDarkerThanPrimary}" BorderThickness="3" Background="{DynamicResource OneLighterThanPrimary}">
+        <Grid>
+            <Button Click="closeButtonClick" Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,10" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <Image Source="/UserControls/Assistant/close.png" />
+            </Button>
+            <Button Click="saveButtonClick" Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10,10" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <Image Source="/UserControls/Assistant/send.png" />
+            </Button>
+            <TextBox x:Name="assistantTextBox" Margin="30,30,30,30" Background="Transparent" TextWrapping="Wrap" CaretBrush="DimGray" FontSize="20" BorderBrush="Transparent" Foreground="{DynamicResource BlueAccent}" FontWeight="DemiBold">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TextBox}">
+                                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsEnabled" Value="false">
+                                            <Setter Property="BorderBrush" TargetName="border" Value="Transparent"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="BorderBrush" TargetName="border" Value="Transparent"/>
+                                        </Trigger>
+                                        <Trigger Property="IsFocused" Value="true">
+                                             <Setter Property="BorderBrush" TargetName="border" Value="Transparent"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <TextBlock IsHitTestVisible="False" Margin="35,30,30,30" FontSize="20" Foreground="DimGray" FontWeight="DemiBold">
+                <TextBlock>
+                    Describe your workflow..
+                </TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=assistantTextBox}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+
+        </Grid>
+    </Border>
+</Window>

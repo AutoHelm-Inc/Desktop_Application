@@ -183,6 +183,10 @@ namespace AutoHelm.UserControls.DragAndDrop
                 else if ((Functions)funcOrKeyword == Functions.Sleep) {
                     paramsList.Add(("Sleep for MS", typeof(int)));
                 }
+                else if ((Functions)funcOrKeyword == Functions.MouseToWord)
+                {
+                    paramsList.Add(("Word", typeof(string)));
+                }
 
             }
             else if (funcOrKeyword is Keywords)

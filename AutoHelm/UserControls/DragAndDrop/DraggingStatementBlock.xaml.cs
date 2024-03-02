@@ -60,8 +60,9 @@ namespace AutoHelm.UserControls.DragAndDrop
             dragBlockLabel.Content = macro.ToString();
             borderRect.Fill = background;
             this.macro = macro;
-            this.keyword = null;
+
             this.function = null;
+            this.keyword = null;
         }
 
         private struct XandYCoordinates
@@ -99,13 +100,23 @@ namespace AutoHelm.UserControls.DragAndDrop
                 this.function = null;
                 this.macro = null;
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
             public BlockDataToTransfer(Rectangle borderRect, MacroKeyword? macro, SolidColorBrush labelColor)
             {
                 this.backgroundColor = (SolidColorBrush)borderRect.Fill;
                 this.labelColor = labelColor;
+<<<<<<< HEAD
                 this.function = null;
                 this.keyword = null;
                 this.macro = macro;
+=======
+                this.macro = macro;
+                this.function = null;
+                this.keyword = null;
+>>>>>>> main
             }
         }
 

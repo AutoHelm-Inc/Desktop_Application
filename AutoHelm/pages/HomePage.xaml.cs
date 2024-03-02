@@ -176,6 +176,7 @@ namespace AutoHelm.pages
 
                     // Change this to display name
                     string displayName = displayNames[i];
+                    Console.WriteLine(displayName);
                     recentFiles.recTempBox.Text = displayName;
                     newButton.Content = recentFiles;
                     HomePageGrid.Children.Add(newButton);
