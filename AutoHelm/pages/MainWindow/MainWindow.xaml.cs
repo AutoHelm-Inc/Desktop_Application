@@ -47,7 +47,7 @@ namespace AutoHelm.pages.MainWindow
 
             getPathsFromFile();
 
-            //LoadingPageAnimation();
+            LoadingPageAnimation();
 
             /// Dev functions for how, except for maybe home page, that should be kept and changed to a home icon
             TopBar.HomeButton_Click_Page += TopBar_HomeButton_Click_Page;
@@ -97,7 +97,7 @@ namespace AutoHelm.pages.MainWindow
                     {
                         topBar.Visibility = Visibility.Visible;
                         mainFrame.Content = new LoginPopUp();
-                        TopBar_HomeButton_Click_Page(this, null);
+                        //TopBar_HomeButton_Click_Page(this, null);
                     };
                         logo.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
                     title.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
