@@ -186,6 +186,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                 else if ((Functions)funcOrKeyword == Functions.MouseToWord)
                 {
                     paramsList.Add(("Word", typeof(string)));
+                    paramsList.Add(("Is Dark Mode?", typeof(string)));
                 }
 
             }
