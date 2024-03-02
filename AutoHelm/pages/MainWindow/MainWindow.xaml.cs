@@ -23,6 +23,7 @@ namespace AutoHelm.pages.MainWindow
     public static class usernameTopLevel
     {
         public static String email = "";
+        public static String password = "";
     }
     public partial class MainWindow : Window
     {

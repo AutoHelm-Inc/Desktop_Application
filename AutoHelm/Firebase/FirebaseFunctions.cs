@@ -164,7 +164,7 @@ namespace AutoHelm.Firebase
 
                 for (int i = 0; i < filePaths.Count; i++)
                 {
-                    Task<bool> task = UploadFileWithAuth("z2omer@gmail.com", "z2omer", filePaths[i], displayNames[i], descriptions[i], isPrivateStatus[i]);
+                    Task<bool> task = UploadFileWithAuth(AutoHelm.pages.MainWindow.usernameTopLevel.email, AutoHelm.pages.MainWindow.usernameTopLevel.password, filePaths[i], displayNames[i], descriptions[i], isPrivateStatus[i]);
                     bool result = task.Result;
 
                     if (!result)
