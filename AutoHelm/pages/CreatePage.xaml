@@ -46,7 +46,7 @@
             <Image Source="/pages/run.png"></Image>
         </Button>
 
-        <Button Click="assistantButtonClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="30" Margin="195,0,0,5" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" ToolTip="Assistant">
+        <Button Name="assistantButton" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="30" Margin="195,0,0,5" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" ToolTip="Assistant">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -60,8 +60,20 @@
                     </Setter>
                 </Style>
             </Button.Style>
-            <Image Source="/pages/assistant.png"/>
+            <Image>
+                <Image.Style>
+                    <Style>
+                        <Setter Property="Image.Source" Value="/pages/assistant.png"/>
+                        <Style.Triggers>
+                            <Trigger Property="Image.IsMouseOver" Value="True">
+                                <Setter Property="Image.Source" Value="/Assets/assistant-2.png"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </Button>
+
 
         <StackPanel HorizontalAlignment="Right" Width="350" Height="1080" Background="{DynamicResource OneDarkerThanPrimary}" x:Name="createFieldPanel">
             <TextBox Text="Untitled Project" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0.5" BorderBrush="Transparent" FontSize="30" Foreground="{DynamicResource BlueAccent}" Margin="0,50,0,0" CaretBrush="{DynamicResource BlueAlternateAccent}" MaxLength="60" TextWrapping="Wrap" x:Name="createTitle"/>

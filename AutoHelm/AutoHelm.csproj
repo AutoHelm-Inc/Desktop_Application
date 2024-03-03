@@ -10,8 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\arrow-2.png" />
+    <None Remove="Assets\arrow.png" />
     <None Remove="Assets\AutoHelm_Logo.ico" />
     <None Remove="Assets\AutoHelm_Logo.png" />
+    <None Remove="pages\assistant-2.png" />
     <None Remove="pages\assistant.png" />
     <None Remove="pages\background.png" />
     <None Remove="pages\dots-not-grid.png" />
@@ -58,6 +61,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\arrow-2.png" />
+    <Resource Include="Assets\arrow.png" />
+    <Resource Include="Assets\assistant-2.png" />
     <Resource Include="pages\assistant.png" />
     <Resource Include="pages\background.png" />
     <Resource Include="pages\dots-not-grid.png" />
