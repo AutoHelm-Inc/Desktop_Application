@@ -22,6 +22,8 @@ using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
 using AutoHelm.UserControls.Assistant;
+using Automation_Project.src.parser;
+using System.Net.Http;
 
 namespace AutoHelm.pages
 {
@@ -34,6 +36,7 @@ namespace AutoHelm.pages
         private int numBlocksPerCycle;
         private AHILProgram program;
         private static GlobalShortcut? killWorkflowShortcut;
+        private static readonly HttpClient httpClient = new HttpClient();
 
         public delegate void MyEventHandler(object source, EventArgs e, CreatePage p);
         public static event MyEventHandler OpenNewCreatePageEvent;
@@ -115,17 +118,29 @@ namespace AutoHelm.pages
             program.killRunningProgram();
         }
 
-        private void assistantButtonClick(object sender, RoutedEventArgs e)
+        private async void assistantButtonClick(object sender, RoutedEventArgs e)
         {
             AssistantWindow window = new AssistantWindow();
+            AssistantResponseLoading loading = new AssistantResponseLoading();
             window.ShowDialog();
 
-            // window.text is empty when user closes the assistant popup instead of submitting it, so return
+            /* window.text is empty when user closes the assistant popup instead of submitting it, so return */
             if (window.text == String.Empty) return;
 
-            //todo: send window.text as prompt for ai assistant
-            AHILProgram newProgram = new AHILProgram();
+            /* send window.text as prompt for ai assistant with a GET request */
+            string serverAddress = "72.141.46.234:3000";
+            string request = $"http://{serverAddress}/execute?command={window.text}";
+            loading.Show(); // show a loading gif
+            string assistantResponse = await httpClient.GetStringAsync(request);
+            loading.Close();
+
+            //Console.WriteLine(assistantResponse);
+
+            /* Parse the AI generated AHIL code and generate a new AHILProgram from it */
+            Parser parser = Parser.fromAHILCode(assistantResponse);
+            AHILProgram newProgram = parser.parse();
             CreatePage page = new CreatePage(newProgram);
+
             OpenNewCreatePage(sender, e, page);
         }
 
