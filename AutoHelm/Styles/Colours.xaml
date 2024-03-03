@@ -20,15 +20,15 @@
     <SolidColorBrush x:Key="BlockColor8" Color="#11C698" />
     <SolidColorBrush x:Key="BlockColor9" Color="#76E39C" />
 
-    <SolidColorBrush x:Key="BlockColor10" Color="#FDD161" />
-    <SolidColorBrush x:Key="BlockColor11" Color="#F2BF53" />
+    <SolidColorBrush x:Key="BlockColor10" Color="#F28552" />
+    <SolidColorBrush x:Key="BlockColor11" Color="#F29E4C" />
     <SolidColorBrush x:Key="BlockColor12" Color="#F2B052" />
-    <SolidColorBrush x:Key="BlockColor13" Color="#F29E4C" />
-    <SolidColorBrush x:Key="BlockColor14" Color="#F28552" />
+    <SolidColorBrush x:Key="BlockColor13" Color="#F2BF53" />
+    <SolidColorBrush x:Key="BlockColor14" Color="#FDD161" />
 
-    <SolidColorBrush x:Key="BlockColor15" Color="#f77976" />
+    <SolidColorBrush x:Key="BlockColor15" Color="#C43939" />
     <SolidColorBrush x:Key="BlockColor16" Color="#e15554" />
-    <SolidColorBrush x:Key="BlockColor17" Color="#C43939" />
+    <SolidColorBrush x:Key="BlockColor17" Color="#f77976" />
     
 
 </ResourceDictionary>
