@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.IO;
 using static AutoHelm.UserControls.DragAndDrop.DraggingStatementBlock;
 using System.Configuration.Internal;
+using Microsoft.VisualBasic;
 
 namespace AutoHelm.UserControls.DragAndDrop
 {
@@ -30,6 +31,7 @@ namespace AutoHelm.UserControls.DragAndDrop
         private int depth;
         private static AHILProgram? program;
         private Statement? _statement;
+        private int numNestableChildBlocks;
 
         public BlockLandingArea(AHILProgram program) {
             this.function = null;
@@ -39,6 +41,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.parentBlock = null;
             depth = 0;
             BlockLandingArea.program = program;
+            numNestableChildBlocks = 0;
 
             InitializeComponent();
         }
@@ -51,6 +54,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
+            numNestableChildBlocks = 0;
             InitializeComponent();
         }
 
@@ -61,7 +65,8 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
-            this.depth = 0;
+            this.depth = depth;
+            numNestableChildBlocks = 0;
             InitializeComponent();
         }
 
@@ -73,6 +78,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
+            numNestableChildBlocks = 0;
             InitializeComponent();
         }
 
@@ -191,10 +197,10 @@ namespace AutoHelm.UserControls.DragAndDrop
                         landingAreaGrid.Width = landingAreaGrid.Width + 35;
                         borderRect.Height = borderRect.Height + 150;
                         borderRect.Width = borderRect.Width + 35;
-                        updateDepth(1);
                         NestedStatemetnsPanel.Children.Add(new BlockLandingArea(this));
                     }
-                    changeParentDimensions(1);
+                    updateDepth(1);
+                    //changeParentWidth(1);
                         
                     
                     parentStackPanel.Children.Add(new BlockLandingArea(parentBlock));
@@ -212,45 +218,106 @@ namespace AutoHelm.UserControls.DragAndDrop
 
         private void updateDepth(int factor )
         {
-            BlockLandingArea? temp = this.parentBlock;
-            while (temp != null)
+            BlockLandingArea? tempParentBlock = this.parentBlock;
+            BlockLandingArea? tempChildBlock = this;
+            Boolean widthMustIncrease = false;
+
+            if (tempParentBlock != null && this.keyword == Keywords.For && factor < 0)
             {
-                temp.depth += factor;
-                temp = temp.parentBlock;
+                tempParentBlock.numNestableChildBlocks = tempParentBlock.numNestableChildBlocks - 1;
             }
+
+            
+            while (tempParentBlock != null)
+            {
+                changeParentHeight(Math.Abs(factor) / factor, tempChildBlock, tempParentBlock);
+                if (this.keyword == Keywords.For){
+                    if(factor < 0)
+                    {
+                        double originalWidth = this.borderRect.Width;
+                        if (tempParentBlock.numNestableChildBlocks == 0)
+                        {
+                            Console.WriteLine("depth before " + tempParentBlock.depth);
+                            tempParentBlock.depth += factor;
+                            Console.WriteLine("depth after " + tempParentBlock.depth);
+                            changeParentWidth(Math.Abs(factor) / factor, tempParentBlock);
+                        }
+
+                        if(tempParentBlock.borderRect.Width == originalWidth + 35)
+                        {
+                            changeParentWidthWithCustomDepth(Math.Abs(factor) / factor, tempParentBlock, 0);
+                        }
+
+                        
+                    }
+                    else if (factor > 0 && tempParentBlock.numNestableChildBlocks == 0 || widthMustIncrease)
+                    {
+                        Console.WriteLine("depth before " + tempParentBlock.depth);
+                        tempParentBlock.depth += factor;
+                        Console.WriteLine("depth after " + tempParentBlock.depth);
+
+                        changeParentWidth(Math.Abs(factor) / factor, tempParentBlock);
+                        widthMustIncrease = true;
+                    }
+                }
+                //tempChildBlock = tempParentBlock;
+                tempParentBlock = tempParentBlock.parentBlock;
+            }
+
+            tempParentBlock = this.parentBlock;
+            if (tempParentBlock != null && this.keyword == Keywords.For && factor > 0)
+            {
+                tempParentBlock.numNestableChildBlocks = tempParentBlock.numNestableChildBlocks + 1;
+            }
+            //Console.WriteLine(tempParentBlock.numNestableChildBlocks);
+
         }
 
-        private void changeParentDimensions(int factor)
+        private void changeParentWidth(int factor, BlockLandingArea? tempParentBlock)
         {
-            if(this.parentBlock != null)
+            if(tempParentBlock != null)
             {
-                BlockLandingArea? tempParentBlock = this.parentBlock;
                 Rectangle? tempRect = tempParentBlock.borderRect;
                 Grid? tempGrid = tempParentBlock.landingAreaGrid;
 
-
-                do
+                if (this.keyword == Keywords.For )
                 {
-                    if (this.keyword == Keywords.For)
-                    {
+                    tempGrid.Width = tempGrid.Width + 35 * factor * (depth + 1);
+                    Console.WriteLine("before W " + tempRect.Width);
+                    tempRect.Width = tempRect.Width + 35 * factor * (depth + 1);
+                    Console.WriteLine("after W " + tempRect.Width);
+                }
+            }
+        }
 
-                        tempGrid.Width = tempGrid.Width + 35 * factor * (depth + 1);
-                        tempRect.Width = tempRect.Width + 35 * factor * (depth + 1);
-                        
-                        
-                    }
-                    tempRect.Height = tempRect.Height + (borderRect.Height+25)*factor;
+        private void changeParentWidthWithCustomDepth(int factor, BlockLandingArea? tempParentBlock, int customDepth)
+        {
+            if (tempParentBlock != null)
+            {
+                Rectangle? tempRect = tempParentBlock.borderRect;
+                Grid? tempGrid = tempParentBlock.landingAreaGrid;
 
+                if (this.keyword == Keywords.For)
+                {
+                    tempGrid.Width = tempGrid.Width + 35 * factor * (customDepth + 1);
+                    Console.WriteLine("before W " + tempRect.Width);
+                    tempRect.Width = tempRect.Width + 35 * factor * (customDepth + 1);
+                    Console.WriteLine("after W " + tempRect.Width);
+                }
+            }
+        }
 
-                    tempParentBlock = tempParentBlock.parentBlock;
-                    if(tempParentBlock != null)
-                    {
-                        tempRect = tempParentBlock.borderRect;
-                        tempGrid = tempParentBlock.landingAreaGrid;
-                    }
+        private void changeParentHeight(int factor, BlockLandingArea? tempChildBlock, BlockLandingArea? tempParentBlock)
+        {
+            if (tempParentBlock != null)
+            {
+                Rectangle? tempRect = tempParentBlock.borderRect;
+                Rectangle? tempChildRect = tempChildBlock.borderRect;
+                Grid? tempGrid = tempParentBlock.landingAreaGrid;
 
-                } while (tempParentBlock != null);
-
+                Console.WriteLine("before H " + tempRect.Height);
+                tempRect.Height = tempRect.Height + (tempChildRect.Height + 25) * factor;
+                Console.WriteLine("after H " + tempRect.Height);
             }
         }
 
@@ -281,7 +348,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             StackPanel parentStackPanel = this.Parent as StackPanel;
             parentStackPanel.Children.Remove(this);
             updateDepth(-1*(depth+1));
-            changeParentDimensions(-1);
+            //changeParentWidth(-1);
             Console.WriteLine(program.generateProgramAHILCode());
         }
 
@@ -415,10 +482,10 @@ namespace AutoHelm.UserControls.DragAndDrop
                     landingAreaGrid.Width = landingAreaGrid.Width + 35;
                     borderRect.Height = borderRect.Height + 150;
                     borderRect.Width = borderRect.Width + 35;
-                    updateDepth(1);
                     //NestedStatementsPanel.Children.Add(new BlockLandingArea(this)); //typically blank, need to replace it with all children
                 }
-                changeParentDimensions(1);
+                updateDepth(1);
+                //changeParentWidth(1);
                 parentStackPanel.Children.Add(this);
                 return NestedStatemetnsPanel;
 
