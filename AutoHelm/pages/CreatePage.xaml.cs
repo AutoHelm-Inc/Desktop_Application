@@ -28,7 +28,9 @@ namespace AutoHelm.pages
 
     public partial class CreatePage : Page
     {
-        private Button cycleElements;
+        private Button cycleElementsNext;
+        private Button cycleElementsPrevious;
+        private StackPanel buttonStackPanel;
         private List<DraggingStatementBlock> statementsAndFunctionBlocks;
         private int statementsAndFunctionBlocksIndex;
         private int numBlocksPerCycle;
@@ -63,38 +65,63 @@ namespace AutoHelm.pages
             }
 
             Style cycleElementsButtonStyle = new Style(typeof(Button));
+            buttonStackPanel = new StackPanel();
+            buttonStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
+
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.BackgroundProperty, (SolidColorBrush)FindResource("BlueAccent")));
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.White));
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.FontSizeProperty, 15.0));
-            cycleElementsButtonStyle.Setters.Add(new Setter(Button.PaddingProperty, new Thickness(10)));
-            cycleElements = new Button();
-            cycleElements.Content = new TextBlock { Text = "Next", FontWeight = FontWeights.Bold, FontSize=16 };          
-            cycleElements.Click += new RoutedEventHandler(CycleStatementsButtons);
-            cycleElements.Style = cycleElementsButtonStyle;
-            cycleElements.Cursor = Cursors.Hand;
+            cycleElementsButtonStyle.Setters.Add(new Setter(Button.PaddingProperty, new Thickness(50,10,50,10)));
 
+            Image arrowImageNext = new Image();
+            arrowImageNext.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/arrow.png")));
+            arrowImageNext.Width = 24;
+            arrowImageNext.Height = 24;
+
+            cycleElementsNext = new Button();
+            cycleElementsNext.Content = arrowImageNext;
+            cycleElementsNext.Click += new RoutedEventHandler(CycleStatementsButtonsNext);
+            cycleElementsNext.Style = cycleElementsButtonStyle;
+            cycleElementsNext.Cursor = Cursors.Hand;
+            cycleElementsNext.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            Image arrowImagePrevious = new Image();
+            arrowImagePrevious.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/arrow-2.png")));
+            arrowImagePrevious.Width = 24;
+            arrowImagePrevious.Height = 24;
+
+            cycleElementsPrevious = new Button();
+            cycleElementsPrevious.Content = arrowImagePrevious;
+            cycleElementsPrevious.Click += new RoutedEventHandler(CycleStatementsButtonsPrevious);
+            cycleElementsPrevious.Style = cycleElementsButtonStyle;
+            cycleElementsPrevious.Cursor = Cursors.Hand;
+            cycleElementsPrevious.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            buttonStackPanel.Orientation = Orientation.Horizontal;
+            buttonStackPanel.Children.Add(cycleElementsPrevious);
+            buttonStackPanel.Children.Add(cycleElementsNext);
 
             //Add all potential blocks to list
             statementsAndFunctionBlocks = new List<DraggingStatementBlock>();
             foreach (Functions func in Enum.GetValues(typeof(Functions)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(func, (SolidColorBrush)FindResource("BlockColor"+ (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(func, (SolidColorBrush)FindResource("BlockColor"+ (colorIndex).ToString())));
                 colorIndex++;
             }
 
             foreach(Keywords keyWord in Enum.GetValues(typeof(Keywords)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(keyWord, (SolidColorBrush)FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(keyWord, (SolidColorBrush)FindResource("BlockColor" + (colorIndex).ToString())));
                 colorIndex++;
             }
 
             foreach (MacroKeyword macro in Enum.GetValues(typeof(MacroKeyword)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(macro, (SolidColorBrush)FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(macro, (SolidColorBrush)FindResource("BlockColor" + (colorIndex).ToString())));
                 colorIndex++;
             }
 
-            updateBlocks(false);
+            updateBlocks(3);
             LandingAreaPanel.Children.Add(new BlockLandingArea(program));
 
             //remove killing workflow shortcut tied to any previously opened workflows
@@ -186,25 +213,36 @@ namespace AutoHelm.pages
             ni.Visible = false;
         }
 
-        private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)
+        private void CycleStatementsButtonsNext(object sender, RoutedEventArgs routedEventArgs)
         {
-            updateBlocks(true);
+            updateBlocks(1);
+        }
+        private void CycleStatementsButtonsPrevious(object sender, RoutedEventArgs routedEventArgs)
+        {
+            updateBlocks(2);
         }
 
-        private void updateBlocks(bool incrementIndex)
+        private void updateBlocks(int incrementIndex)
         {
-            if (incrementIndex)
+            if (incrementIndex == 1)
             {
                 statementsAndFunctionBlocksIndex += numBlocksPerCycle;
+            }
+            else if (incrementIndex == 2)
+            {
+                statementsAndFunctionBlocksIndex -= numBlocksPerCycle;
             }
 
             if (statementsAndFunctionBlocksIndex >= statementsAndFunctionBlocks.Count - 1)
             {
                 statementsAndFunctionBlocksIndex = 0;
+            }else if (statementsAndFunctionBlocksIndex < 0)
+            {
+                statementsAndFunctionBlocksIndex = statementsAndFunctionBlocks.Count - 3;
             }
 
             StatementBlocksStackPanel.Children.Clear();
-            StatementBlocksStackPanel.Children.Add(cycleElements);
+            StatementBlocksStackPanel.Children.Add(buttonStackPanel);
 
             for (int i = statementsAndFunctionBlocksIndex; i < statementsAndFunctionBlocksIndex + numBlocksPerCycle; i++)
             {
