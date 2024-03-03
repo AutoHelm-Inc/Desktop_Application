@@ -22,6 +22,7 @@ using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
 using AutoHelm.UserControls.Assistant;
+using AutoHelm.UserControls;
 
 namespace AutoHelm.pages
 {
@@ -177,10 +178,19 @@ namespace AutoHelm.pages
             }
 
             /* Execute automation asynchronously and return a Task handle*/
-            Task automationProcess = program.execute();
+            Task<AutomationProcessResult> automationProcess = program.execute();
 
             /* Define a callback to run after automation process completes */
             Action<Task> onAutomationComplete = new Action<Task>(_ => {
+                AutomationProcessResult result = automationProcess.Result;
+                string errors = result.errors;
+
+                if (errors != "")
+                {
+                    ReusableDialog dialog = new ReusableDialog("Errors occured while running the workflow:\n" + errors);
+                    dialog.ShowDialog();
+                }
+
                 //Remove Borders After Execution
                 ((Grid)this.Content).Children.RemoveAt(bIndex1);
                 ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
