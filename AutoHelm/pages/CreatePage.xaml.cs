@@ -176,14 +176,21 @@ namespace AutoHelm.pages
 
             }
 
-            program.execute();
+            /* Execute automation asynchronously and return a Task handle*/
+            Task automationProcess = program.execute();
 
-            //Remove Borders After Execution
-            ((Grid)this.Content).Children.RemoveAt(bIndex1);
-            ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+            /* Define a callback to run after automation process completes */
+            Action<Task> onAutomationComplete = new Action<Task>(_ => {
+                //Remove Borders After Execution
+                ((Grid)this.Content).Children.RemoveAt(bIndex1);
+                ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
 
-            //Remove Tray Icon After Execution
-            ni.Visible = false;
+                //Remove Tray Icon After Execution
+                ni.Visible = false;
+            });
+
+            /* Register callback */
+            automationProcess.ContinueWith(onAutomationComplete, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)
