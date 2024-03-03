@@ -95,9 +95,18 @@ namespace AutoHelm.UserControls.DragAndDrop
         public DraggingStatementBlock(MacroKeyword? macro, SolidColorBrush background)
         {
             InitializeComponent();
-            dragBlockLabel.Content = macro.ToString();
+            String name = macro.ToString();
+
+            if (name == "GlobalDelay")
+            {
+                name = "Global Delay";
+            }
+
+            dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + macro.ToString() + ".png")));
+            dragBlockLabel.Content = name;
             borderRect.Fill = background;
             this.macro = macro;
+
             this.function = null;
             this.keyword = null;
         }
@@ -142,6 +151,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             {
                 this.backgroundColor = (SolidColorBrush)borderRect.Fill;
                 this.labelColor = labelColor;
+
                 this.macro = macro;
                 this.function = null;
                 this.keyword = null;

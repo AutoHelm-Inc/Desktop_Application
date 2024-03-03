@@ -17,6 +17,7 @@
     <None Remove="pages\assistant-2.png" />
     <None Remove="pages\assistant.png" />
     <None Remove="pages\background.png" />
+    <None Remove="pages\key-icon.png" />
     <None Remove="pages\dots-not-grid.png" />
     <None Remove="pages\dots.png" />
     <None Remove="pages\grid-png-43579.png" />
@@ -25,6 +26,7 @@
     <None Remove="pages\open-folder.png" />
     <None Remove="pages\run.png" />
     <None Remove="pages\sync.png" />
+    <None Remove="pages\user-icon.png" />
     <None Remove="UserControls\Assistant\close.png" />
     <None Remove="UserControls\Assistant\search.png" />
     <None Remove="UserControls\Assistant\send.png" />
@@ -66,6 +68,7 @@
     <Resource Include="Assets\assistant-2.png" />
     <Resource Include="pages\assistant.png" />
     <Resource Include="pages\background.png" />
+    <Resource Include="pages\key-icon.png" />
     <Resource Include="pages\dots-not-grid.png" />
     <Resource Include="pages\dots.png" />
     <Resource Include="pages\grid-png-43579.png" />
@@ -74,6 +77,7 @@
     <Resource Include="pages\open-folder.png" />
     <Resource Include="pages\run.png" />
     <Resource Include="pages\sync.png" />
+    <Resource Include="pages\user-icon.png" />
     <Resource Include="UserControls\Assistant\close.png" />
     <Resource Include="UserControls\Assistant\search.png" />
     <Resource Include="UserControls\Assistant\send.png" />

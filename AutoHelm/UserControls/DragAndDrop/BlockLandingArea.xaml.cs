@@ -1,4 +1,4 @@
-﻿using Automation_Project.src.ast;
+using Automation_Project.src.ast;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +25,7 @@ namespace AutoHelm.UserControls.DragAndDrop
     {
         private Functions? function;
         private Keywords? keyword;
+        private MacroKeyword? macro;
         private Boolean dropabble;
         private BlockLandingArea? parentBlock;
         private int depth;
@@ -34,6 +35,7 @@ namespace AutoHelm.UserControls.DragAndDrop
         public BlockLandingArea(AHILProgram program) {
             this.function = null;
             this.keyword = null;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = null;
             depth = 0;
@@ -46,6 +48,7 @@ namespace AutoHelm.UserControls.DragAndDrop
         {
             this.function = null;
             this.keyword = null;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
@@ -56,16 +59,17 @@ namespace AutoHelm.UserControls.DragAndDrop
         {
             this.function = null;
             this.keyword = null;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
             InitializeComponent();
         }
-
-        public BlockLandingArea(Functions? function, Keywords? keyword, BlockLandingArea? parentBlock)
+        public BlockLandingArea(Functions? function, Keywords? keyword, MacroKeyword? macro, BlockLandingArea? parentBlock)
         {
             this.function = function;
             this.keyword = keyword;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
@@ -118,6 +122,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     dropZoneLabel.Content = fromEnum(blockDataFromDrag.function);
                     this.function = blockDataFromDrag.function;
                     this.keyword = null;
+                    this.macro = null;
                     SimpleStatement statement = new SimpleStatement(blockDataFromDrag.function);
                     if (parentBlock != null) {
                         ((NestedStructure)parentBlock._statement).addStatement(statement);
@@ -128,7 +133,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                         _statement = statement;
                     }
                 }
-                else
+                else if (blockDataFromDrag.keyword != null)
                 {
                     //Set the block label for keyword
                     if (blockDataFromDrag.keyword.ToString() == "For")
@@ -141,6 +146,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     }
                     this.keyword = blockDataFromDrag.keyword;
                     this.function = null;
+                    this.macro = null;
                     Statement statement = keyword switch {
                         Keywords.For => new ForLoop(),
                         _ => throw new NotImplementedException("Other keywords are not implemented"),
@@ -151,6 +157,27 @@ namespace AutoHelm.UserControls.DragAndDrop
                     } 
                     else if (program != null) {
                         program.addStatement(statement);
+                        _statement = statement;
+                    }
+                }
+                else
+                {
+                    //Set the block label for keyword
+                    if (blockDataFromDrag.macro.ToString() == "GlobalDelay")
+                    {
+                        dropZoneLabel.Content = "Global Delay";
+                    }
+                    else
+                    {
+                        dropZoneLabel.Content = keyword.ToString();
+                    }
+                    this.macro = blockDataFromDrag.macro;
+                    this.keyword = null;
+                    this.function = null;
+                    Macro statement = new Macro(blockDataFromDrag.macro);
+                    if (program != null)
+                    {
+                        program.addMacros(statement);
                         _statement = statement;
                     }
                 }
@@ -218,9 +245,13 @@ namespace AutoHelm.UserControls.DragAndDrop
                 {
                     dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + function.ToString() + ".png")));
                 }
-                else
+                else if (keyword != null)
                 {
                     dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + keyword.ToString() + ".png")));
+                }
+                else
+                {
+                    dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + macro.ToString() + ".png")));
                 }
 
                 landingAreaGrid.Children.Add(editButton);
@@ -315,7 +346,13 @@ namespace AutoHelm.UserControls.DragAndDrop
 
         private void DeleteStatementButton(object sender, RoutedEventArgs routedEventArgs)
         {
-            program.removeStatementRecursive(_statement);
+            if (_statement.GetType() == typeof(Macro))
+            {
+                program.removeMacro((Macro)_statement);
+            } else
+            {
+                program.removeStatementRecursive(_statement);
+            }
             StackPanel parentStackPanel = this.Parent as StackPanel;
             parentStackPanel.Children.Remove(this);
             updateDepth(-1*(depth+1));
@@ -329,9 +366,14 @@ namespace AutoHelm.UserControls.DragAndDrop
                 ParameterInputWindow parameterInputWindow = new ParameterInputWindow(function, _statement);
                 parameterInputWindow.ShowDialog();
             }
-            else
+            else if (keyword != null)
             {
                 ParameterInputWindow parameterInputWindow = new ParameterInputWindow(keyword, _statement);
+                parameterInputWindow.ShowDialog();
+            }
+            else
+            {
+                ParameterInputWindow parameterInputWindow = new ParameterInputWindow(macro, _statement);
                 parameterInputWindow.ShowDialog();
             }
         }
@@ -365,7 +407,15 @@ namespace AutoHelm.UserControls.DragAndDrop
                 }
                 colorIndex++;
             }
-
+            
+            foreach (MacroKeyword macro in Enum.GetValues(typeof(MacroKeyword)))
+            {
+                if (macro == this.macro)
+                {
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                }
+                colorIndex++;
+            }
 
             if (this.function != null)
             {
@@ -373,12 +423,21 @@ namespace AutoHelm.UserControls.DragAndDrop
                 dropZoneLabel.Content = fromEnum(function);
 
             }
-            else
+            else if (this.keyword != null) 
             {
                 //Set the block label for keyword
                 if (keyword.ToString() == "For")
                 {
                     dropZoneLabel.Content = "Loop";
+                }
+                else
+                {
+                    dropZoneLabel.Content = keyword.ToString();
+                }
+            }else{
+                if (macro.ToString() == "GlobalDelay")
+                {
+                    dropZoneLabel.Content = "Global Delay";
                 }
                 else
                 {
@@ -451,9 +510,12 @@ namespace AutoHelm.UserControls.DragAndDrop
             {
                 dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + function.ToString() + ".png")));
             }
-            else
+            else if (this.keyword != null) 
             {
                 dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + keyword.ToString() + ".png")));
+            }else
+            {
+                dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + macro.ToString() + ".png")));
             }
 
             landingAreaGrid.Children.Add(editButton);

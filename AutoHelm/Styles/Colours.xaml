@@ -28,6 +28,7 @@
 
     <SolidColorBrush x:Key="BlockColor15" Color="#f77976" />
     <SolidColorBrush x:Key="BlockColor16" Color="#e15554" />
+    <SolidColorBrush x:Key="BlockColor17" Color="#C43939" />
     
 
 </ResourceDictionary>
