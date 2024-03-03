@@ -137,11 +137,16 @@ namespace AutoHelm.pages
             //Console.WriteLine(assistantResponse);
 
             /* Parse the AI generated AHIL code and generate a new AHILProgram from it */
-            Parser parser = Parser.fromAHILCode(assistantResponse);
-            AHILProgram newProgram = parser.parse();
-            CreatePage page = new CreatePage(newProgram);
-
-            OpenNewCreatePage(sender, e, page);
+            try
+            {
+                Parser parser = Parser.fromAHILCode(assistantResponse);
+                AHILProgram newProgram = parser.parse();
+                CreatePage page = new CreatePage(newProgram);
+                OpenNewCreatePage(sender, e, page);
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void OpenNewCreatePage(object sender, RoutedEventArgs e, CreatePage p)
