@@ -45,16 +45,27 @@ namespace AutoHelm.UserControls
                 Grid grid = new Grid();
                 Button b = new Button();
                 TextBlock tb = new TextBlock();
-                b.Margin = new Thickness(20, 0, 20, 0);
+                b.Margin = new Thickness(30, 0, 30, 0);
                 b.HorizontalAlignment = HorizontalAlignment.Center;
                 b.VerticalAlignment = VerticalAlignment.Center;
                 b.Background = Brushes.Transparent;
                 b.BorderThickness = new Thickness(0);
+                b.Cursor = Cursors.Hand;
                 b.Content = tb;
+                Style buttonStyle = new Style();
+                ControlTemplate templateButton = new ControlTemplate(typeof(Button));
+                FrameworkElementFactory elemFactory = new FrameworkElementFactory(typeof(Border));
+                elemFactory.SetValue(Border.BackgroundProperty, Brushes.Transparent);
+                templateButton.VisualTree = elemFactory;
+                elemFactory.AppendChild(new FrameworkElementFactory(typeof(ContentPresenter)));
+                buttonStyle.Setters.Add(new Setter { Property = Button.TemplateProperty, Value = templateButton });
+                b.Style = buttonStyle;
+
                 tb.Text = button.text;
                 tb.FontSize = 20;
                 tb.Foreground = (Brush)FindResource("BlueAccent");
                 tb.FontWeight = FontWeights.DemiBold;
+
                 void buttonClick(object sender, RoutedEventArgs e)
                 {
                     Close();
