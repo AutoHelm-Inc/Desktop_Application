@@ -15,9 +15,9 @@
     </Page.Resources>
 
     <Border>
-        <Border Height="Auto"                    
+        <!--<Border Height="Auto"                    
             BorderThickness="5"
-            Opacity="0.95">
+            Opacity="0.95">-->
 
             <!--<Border.BorderBrush>-->
                 <!--<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -247,7 +247,7 @@
 
             </Grid>
 
-        </Border>
+        <!--</Border>-->
 
     </Border>
 
