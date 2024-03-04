@@ -22,18 +22,24 @@ using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
 using AutoHelm.UserControls.Assistant;
+using AutoHelm.UserControls;
+using Automation_Project.src.parser;
+using System.Net.Http;
 
 namespace AutoHelm.pages
 {
 
     public partial class CreatePage : Page
     {
-        private Button cycleElements;
+        private Button cycleElementsNext;
+        private Button cycleElementsPrevious;
+        private StackPanel buttonStackPanel;
         private List<DraggingStatementBlock> statementsAndFunctionBlocks;
         private int statementsAndFunctionBlocksIndex;
         private int numBlocksPerCycle;
         private AHILProgram program;
         private static GlobalShortcut? killWorkflowShortcut;
+        private static readonly HttpClient httpClient = new HttpClient();
 
         public delegate void MyEventHandler(object source, EventArgs e, CreatePage p);
         public static event MyEventHandler OpenNewCreatePageEvent;
@@ -63,38 +69,63 @@ namespace AutoHelm.pages
             }
 
             Style cycleElementsButtonStyle = new Style(typeof(Button));
+            buttonStackPanel = new StackPanel();
+            buttonStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
+
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.BackgroundProperty, (SolidColorBrush)FindResource("BlueAccent")));
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.White));
             cycleElementsButtonStyle.Setters.Add(new Setter(Button.FontSizeProperty, 15.0));
-            cycleElementsButtonStyle.Setters.Add(new Setter(Button.PaddingProperty, new Thickness(10)));
-            cycleElements = new Button();
-            cycleElements.Content = new TextBlock { Text = "Next", FontWeight = FontWeights.Bold, FontSize=16 };          
-            cycleElements.Click += new RoutedEventHandler(CycleStatementsButtons);
-            cycleElements.Style = cycleElementsButtonStyle;
-            cycleElements.Cursor = Cursors.Hand;
+            cycleElementsButtonStyle.Setters.Add(new Setter(Button.PaddingProperty, new Thickness(50,10,50,10)));
 
+            Image arrowImageNext = new Image();
+            arrowImageNext.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/arrow.png")));
+            arrowImageNext.Width = 24;
+            arrowImageNext.Height = 24;
+
+            cycleElementsNext = new Button();
+            cycleElementsNext.Content = arrowImageNext;
+            cycleElementsNext.Click += new RoutedEventHandler(CycleStatementsButtonsNext);
+            cycleElementsNext.Style = cycleElementsButtonStyle;
+            cycleElementsNext.Cursor = Cursors.Hand;
+            cycleElementsNext.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            Image arrowImagePrevious = new Image();
+            arrowImagePrevious.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/arrow-2.png")));
+            arrowImagePrevious.Width = 24;
+            arrowImagePrevious.Height = 24;
+
+            cycleElementsPrevious = new Button();
+            cycleElementsPrevious.Content = arrowImagePrevious;
+            cycleElementsPrevious.Click += new RoutedEventHandler(CycleStatementsButtonsPrevious);
+            cycleElementsPrevious.Style = cycleElementsButtonStyle;
+            cycleElementsPrevious.Cursor = Cursors.Hand;
+            cycleElementsPrevious.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            buttonStackPanel.Orientation = Orientation.Horizontal;
+            buttonStackPanel.Children.Add(cycleElementsPrevious);
+            buttonStackPanel.Children.Add(cycleElementsNext);
 
             //Add all potential blocks to list
             statementsAndFunctionBlocks = new List<DraggingStatementBlock>();
             foreach (Functions func in Enum.GetValues(typeof(Functions)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(func, (SolidColorBrush)FindResource("BlockColor"+ (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(func, (SolidColorBrush)FindResource("BlockColor"+ (colorIndex).ToString())));
                 colorIndex++;
             }
 
             foreach(Keywords keyWord in Enum.GetValues(typeof(Keywords)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(keyWord, (SolidColorBrush)FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(keyWord, (SolidColorBrush)FindResource("BlockColor" + (colorIndex).ToString())));
                 colorIndex++;
             }
 
             foreach (MacroKeyword macro in Enum.GetValues(typeof(MacroKeyword)))
             {
-                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(macro, (SolidColorBrush)FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString())));
+                statementsAndFunctionBlocks.Add(new DraggingStatementBlock(macro, (SolidColorBrush)FindResource("BlockColor" + (colorIndex).ToString())));
                 colorIndex++;
             }
 
-            updateBlocks(false);
+            updateBlocks(3);
             LandingAreaPanel.Children.Add(new BlockLandingArea(program));
 
             //remove killing workflow shortcut tied to any previously opened workflows
@@ -115,18 +146,35 @@ namespace AutoHelm.pages
             program.killRunningProgram();
         }
 
-        private void assistantButtonClick(object sender, RoutedEventArgs e)
+        private async void assistantButtonClick(object sender, RoutedEventArgs e)
         {
             AssistantWindow window = new AssistantWindow();
+            AssistantResponseLoading loading = new AssistantResponseLoading();
             window.ShowDialog();
 
-            // window.text is empty when user closes the assistant popup instead of submitting it, so return
+            /* window.text is empty when user closes the assistant popup instead of submitting it, so return */
             if (window.text == String.Empty) return;
 
-            //todo: send window.text as prompt for ai assistant
-            AHILProgram newProgram = new AHILProgram();
-            CreatePage page = new CreatePage(newProgram);
-            OpenNewCreatePage(sender, e, page);
+            /* send window.text as prompt for ai assistant with a GET request */
+            string serverAddress = "72.141.46.234:3000";
+            string request = $"http://{serverAddress}/execute?command={window.text}";
+            loading.Show(); // show a loading gif
+            string assistantResponse = await httpClient.GetStringAsync(request);
+            loading.Close();
+
+            //Console.WriteLine(assistantResponse);
+
+            /* Parse the AI generated AHIL code and generate a new AHILProgram from it */
+            try
+            {
+                Parser parser = Parser.fromAHILCode(assistantResponse);
+                AHILProgram newProgram = parser.parse();
+                CreatePage page = new CreatePage(newProgram);
+                OpenNewCreatePage(sender, e, page);
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void OpenNewCreatePage(object sender, RoutedEventArgs e, CreatePage p)
@@ -176,35 +224,62 @@ namespace AutoHelm.pages
 
             }
 
-            program.execute();
+            /* Execute automation asynchronously and return a Task handle*/
+            Task<AutomationProcessResult> automationProcess = program.execute();
 
-            //Remove Borders After Execution
-            ((Grid)this.Content).Children.RemoveAt(bIndex1);
-            ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+            /* Define a callback to run after automation process completes */
+            Action<Task> onAutomationComplete = new Action<Task>(_ => {
+                AutomationProcessResult result = automationProcess.Result;
+                string errors = result.errors;
 
-            //Remove Tray Icon After Execution
-            ni.Visible = false;
+                if (errors != "")
+                {
+                    ReusableDialog dialog = new ReusableDialog("Errors occured while running the workflow:\n" + errors);
+                    dialog.ShowDialog();
+                }
+
+                //Remove Borders After Execution
+                ((Grid)this.Content).Children.RemoveAt(bIndex1);
+                ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+
+                //Remove Tray Icon After Execution
+                ni.Visible = false;
+            });
+
+            /* Register callback */
+            automationProcess.ContinueWith(onAutomationComplete, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void CycleStatementsButtons(object sender, RoutedEventArgs routedEventArgs)
+        private void CycleStatementsButtonsNext(object sender, RoutedEventArgs routedEventArgs)
         {
-            updateBlocks(true);
+            updateBlocks(1);
+        }
+        private void CycleStatementsButtonsPrevious(object sender, RoutedEventArgs routedEventArgs)
+        {
+            updateBlocks(2);
         }
 
-        private void updateBlocks(bool incrementIndex)
+        private void updateBlocks(int incrementIndex)
         {
-            if (incrementIndex)
+            if (incrementIndex == 1)
             {
                 statementsAndFunctionBlocksIndex += numBlocksPerCycle;
+            }
+            else if (incrementIndex == 2)
+            {
+                statementsAndFunctionBlocksIndex -= numBlocksPerCycle;
             }
 
             if (statementsAndFunctionBlocksIndex >= statementsAndFunctionBlocks.Count - 1)
             {
                 statementsAndFunctionBlocksIndex = 0;
+            }else if (statementsAndFunctionBlocksIndex < 0)
+            {
+                statementsAndFunctionBlocksIndex = statementsAndFunctionBlocks.Count - 3;
             }
 
             StatementBlocksStackPanel.Children.Clear();
-            StatementBlocksStackPanel.Children.Add(cycleElements);
+            StatementBlocksStackPanel.Children.Add(buttonStackPanel);
 
             for (int i = statementsAndFunctionBlocksIndex; i < statementsAndFunctionBlocksIndex + numBlocksPerCycle; i++)
             {

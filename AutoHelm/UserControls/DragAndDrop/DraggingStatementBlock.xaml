@@ -17,10 +17,13 @@
     </UserControl.Resources>
 
     <Grid>
-        <Rectangle x:Name="borderRect" Cursor="Hand" Fill="{DynamicResource BlueAccent}" Margin="15,15,15,15" Stroke="Black" StrokeThickness="1" Width="200" Height="125" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" StrokeDashArray="">
+        <Rectangle x:Name="borderRect" Cursor="Hand" Fill="{DynamicResource BlueAlternateAccent}" Margin="15,15,15,15" Stroke="Black" StrokeThickness="1" Width="200" Height="125" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" StrokeDashArray="">
             <Rectangle.RadiusX>15</Rectangle.RadiusX>
             <Rectangle.RadiusY>15</Rectangle.RadiusY>
         </Rectangle>
-        <Label x:Name="dragBlockLabel" Cursor="Hand" Content="Temp Statement" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Calibri" FontSize="20" FontWeight="Bold"/>
+        <StackPanel Orientation="Vertical">
+            <Image x:Name="dragBlockIcon" HorizontalAlignment="Center" Height="50" Width="50" Margin="0,35,0,0"/>
+            <Label x:Name="dragBlockLabel" Cursor="Hand" Content="Temp Statement" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Calibri" FontSize="20" FontWeight="Bold"/>
+        </StackPanel>
     </Grid>
 </UserControl>
