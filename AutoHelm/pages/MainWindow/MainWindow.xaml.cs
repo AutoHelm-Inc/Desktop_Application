@@ -177,27 +177,31 @@ namespace AutoHelm.pages.MainWindow
                 MessageBox.Show("File was either Deleted or Corrupted", "Opening Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 using (File.Create(filePath));
             }
-            //Run the parser when we open a file so we get access to the AST
-            Parser p = new Parser(filePath);
-            //obtain the ast through parser
-            AHILProgram program = p.parse();
-            //pass in the new program to our create page
-            CreatePage createPage = new CreatePage(program);
+            
+            try{
+                //Run the parser when we open a file so we get access to the AST
+                Parser p = new Parser(filePath);
+                //obtain the ast through parser
+                AHILProgram program = p.parse();
+                //pass in the new program to our create page
+                CreatePage createPage = new CreatePage(program);
 
-            mainFrame.Content = createPage;
-            Grid grid = (Grid)createPage.Content;
-            StackPanel stackPanel = (StackPanel)grid.FindName("createFieldPanel");
-            TextBox textBox = (TextBox)grid.FindName("createTitle");
-            TextBlock textBlock = (TextBlock)grid.FindName("createPath");
-            TextBox textBox1 = (TextBox)grid.FindName("createDescription");
-            CheckBox isPrivateCheckbox = (CheckBox)grid.FindName("isPrivate");
+                mainFrame.Content = createPage;
+                Grid grid = (Grid)createPage.Content;
+                StackPanel stackPanel = (StackPanel)grid.FindName("createFieldPanel");
+                TextBox textBox = (TextBox)grid.FindName("createTitle");
+                TextBlock textBlock = (TextBlock)grid.FindName("createPath");
+                TextBox textBox1 = (TextBox)grid.FindName("createDescription");
+                CheckBox isPrivateCheckbox = (CheckBox)grid.FindName("isPrivate");
 
-            textBlock.Text = filePath;
-            textBox.Text = displayName;
-            textBox1.Text = description;
-            isPrivateCheckbox.IsChecked = isPrivate;
-
-
+                textBlock.Text = filePath;
+                textBox.Text = displayName;
+                textBox1.Text = description;
+                isPrivateCheckbox.IsChecked = isPrivate;
+            }
+            catch(ParserException error){
+                //handle parser errors and retry with AI model
+            }
         }
         private void SaveAs_Click(object source, EventArgs e)
         {
