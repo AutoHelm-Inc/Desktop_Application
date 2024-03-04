@@ -22,11 +22,18 @@ namespace AutoHelm.UserControls.Assistant
         public string text
         {
             get { return assistantTextBox.Text; }
+            set { assistantTextBox.Text = value; }
         }
 
         public AssistantWindow()
         {
             InitializeComponent();
+        }
+
+        public AssistantWindow(string text)
+        {
+            InitializeComponent();
+            this.text = text;
         }
 
         private void closeButtonClick(object sender, RoutedEventArgs e)

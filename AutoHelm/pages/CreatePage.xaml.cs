@@ -38,6 +38,7 @@ namespace AutoHelm.pages
         private int statementsAndFunctionBlocksIndex;
         private int numBlocksPerCycle;
         private AHILProgram program;
+        private string assistantPopupText;
         private static GlobalShortcut? killWorkflowShortcut;
         private static readonly HttpClient httpClient = new HttpClient();
 
@@ -57,6 +58,7 @@ namespace AutoHelm.pages
             statementsAndFunctionBlocksIndex = 0;
             numBlocksPerCycle = 5;
             int colorIndex = 0;
+            assistantPopupText = string.Empty;
 
             if (ahilProgram != null)
             {
@@ -148,16 +150,17 @@ namespace AutoHelm.pages
 
         private async void assistantButtonClick(object sender, RoutedEventArgs e)
         {
-            AssistantWindow window = new AssistantWindow();
+            AssistantWindow assistantPopup = new AssistantWindow(assistantPopupText);
             AssistantResponseLoading loading = new AssistantResponseLoading();
-            window.ShowDialog();
+            assistantPopup.ShowDialog();
 
             /* window.text is empty when user closes the assistant popup instead of submitting it, so return */
-            if (window.text == String.Empty) return;
+            if (assistantPopup.text == String.Empty) return;
+            assistantPopupText = assistantPopup.text;
 
             /* send window.text as prompt for ai assistant with a GET request */
             string serverAddress = "72.141.46.234:3000";
-            string request = $"http://{serverAddress}/execute?command={window.text}";
+            string request = $"http://{serverAddress}/execute?command={assistantPopup.text}";
             loading.Show(); // show a loading gif
             string assistantResponse = "";
             try
@@ -173,15 +176,28 @@ namespace AutoHelm.pages
 
             Console.WriteLine(assistantResponse);
 
-            /* Parse the AI generated AHIL code and generate a new AHILProgram from it */
+            /* Parse the AI generated AHIL code and generate a new AHILProgram from it. */
+            /* Show a message if the generated code is invalid. */
             try
             {
                 Parser parser = Parser.fromAHILCode(assistantResponse);
                 AHILProgram newProgram = parser.parse();
                 CreatePage page = new CreatePage(newProgram);
                 OpenNewCreatePage(sender, e, page);
-            } catch (Exception ex)
+            } catch (ParserException ex)
             {
+                Action retryButtonClick = new Action(() => {
+                    assistantButtonClick(sender, e);
+                });
+                ReusableDialogButton[] dialogButtons = new ReusableDialogButton[2];
+                dialogButtons[0] = new ReusableDialogButton { text = "OK", action = new Action(() => { Console.WriteLine("OK"); })};
+                dialogButtons[1] = new ReusableDialogButton { text = "Retry", action = retryButtonClick};
+                string errorBody = "The AI generated workflow contained invalid syntax: \n" + ex.Message + "\n\n" + 
+                    "The AI assistant generated the following program: \n" +
+                    $"{assistantResponse}";
+                ReusableDialog dialog = new ReusableDialog(errorBody, dialogButtons);
+                dialog.Height = 400;
+                dialog.ShowDialog();
                 Console.WriteLine(ex.Message);
             }
         }
