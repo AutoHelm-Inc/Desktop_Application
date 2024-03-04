@@ -164,7 +164,6 @@ namespace AutoHelm.UserControls.DragAndDrop
                 {
                     paramsList.Add(("Keys", typeof(string)));
                 }
-
                 else if ((Functions)funcOrKeyword == Functions.MouseMove) {
                     paramsList.Add(("X", typeof(int)));
                     paramsList.Add(("Y", typeof(int)));
@@ -190,7 +189,6 @@ namespace AutoHelm.UserControls.DragAndDrop
             }
             else if (funcOrKeyword is Keywords)
             {
-
                 if ((Keywords)funcOrKeyword == Keywords.For)
                 {
                     paramsList.Add(("Iterations", typeof(int)));

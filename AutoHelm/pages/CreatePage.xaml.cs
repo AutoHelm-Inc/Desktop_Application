@@ -22,6 +22,7 @@ using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
 using AutoHelm.UserControls.Assistant;
+using AutoHelm.UserControls;
 using Automation_Project.src.parser;
 using System.Net.Http;
 
@@ -223,14 +224,30 @@ namespace AutoHelm.pages
 
             }
 
-            program.execute();
+            /* Execute automation asynchronously and return a Task handle*/
+            Task<AutomationProcessResult> automationProcess = program.execute();
 
-            //Remove Borders After Execution
-            ((Grid)this.Content).Children.RemoveAt(bIndex1);
-            ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+            /* Define a callback to run after automation process completes */
+            Action<Task> onAutomationComplete = new Action<Task>(_ => {
+                AutomationProcessResult result = automationProcess.Result;
+                string errors = result.errors;
 
-            //Remove Tray Icon After Execution
-            ni.Visible = false;
+                if (errors != "")
+                {
+                    ReusableDialog dialog = new ReusableDialog("Errors occured while running the workflow:\n" + errors);
+                    dialog.ShowDialog();
+                }
+
+                //Remove Borders After Execution
+                ((Grid)this.Content).Children.RemoveAt(bIndex1);
+                ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+
+                //Remove Tray Icon After Execution
+                ni.Visible = false;
+            });
+
+            /* Register callback */
+            automationProcess.ContinueWith(onAutomationComplete, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void CycleStatementsButtonsNext(object sender, RoutedEventArgs routedEventArgs)
