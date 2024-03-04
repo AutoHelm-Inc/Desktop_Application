@@ -22,6 +22,9 @@ using Automation_Project.src.ast;
 using Automation_Project.src.automation;
 using System.Threading;
 using AutoHelm.UserControls.Assistant;
+using AutoHelm.UserControls;
+using Automation_Project.src.parser;
+using System.Net.Http;
 
 namespace AutoHelm.pages
 {
@@ -36,6 +39,7 @@ namespace AutoHelm.pages
         private int numBlocksPerCycle;
         private AHILProgram program;
         private static GlobalShortcut? killWorkflowShortcut;
+        private static readonly HttpClient httpClient = new HttpClient();
 
         public delegate void MyEventHandler(object source, EventArgs e, CreatePage p);
         public static event MyEventHandler OpenNewCreatePageEvent;
@@ -142,18 +146,44 @@ namespace AutoHelm.pages
             program.killRunningProgram();
         }
 
-        private void assistantButtonClick(object sender, RoutedEventArgs e)
+        private async void assistantButtonClick(object sender, RoutedEventArgs e)
         {
             AssistantWindow window = new AssistantWindow();
+            AssistantResponseLoading loading = new AssistantResponseLoading();
             window.ShowDialog();
 
-            // window.text is empty when user closes the assistant popup instead of submitting it, so return
+            /* window.text is empty when user closes the assistant popup instead of submitting it, so return */
             if (window.text == String.Empty) return;
 
-            //todo: send window.text as prompt for ai assistant
-            AHILProgram newProgram = new AHILProgram();
-            CreatePage page = new CreatePage(newProgram);
-            OpenNewCreatePage(sender, e, page);
+            /* send window.text as prompt for ai assistant with a GET request */
+            string serverAddress = "72.141.46.234:3000";
+            string request = $"http://{serverAddress}/execute?command={window.text}";
+            loading.Show(); // show a loading gif
+            string assistantResponse = "";
+            try
+            {
+                assistantResponse = await httpClient.GetStringAsync(request);
+                loading.Close();
+            } catch (Exception ex)
+            {
+                loading.Close();
+                ReusableDialog dialog = new ReusableDialog("Cannot connect to Ubuntu AI server");
+                dialog.ShowDialog();
+            }
+
+            Console.WriteLine(assistantResponse);
+
+            /* Parse the AI generated AHIL code and generate a new AHILProgram from it */
+            try
+            {
+                Parser parser = Parser.fromAHILCode(assistantResponse);
+                AHILProgram newProgram = parser.parse();
+                CreatePage page = new CreatePage(newProgram);
+                OpenNewCreatePage(sender, e, page);
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void OpenNewCreatePage(object sender, RoutedEventArgs e, CreatePage p)
@@ -203,14 +233,30 @@ namespace AutoHelm.pages
 
             }
 
-            program.execute();
+            /* Execute automation asynchronously and return a Task handle*/
+            Task<AutomationProcessResult> automationProcess = program.execute();
 
-            //Remove Borders After Execution
-            ((Grid)this.Content).Children.RemoveAt(bIndex1);
-            ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+            /* Define a callback to run after automation process completes */
+            Action<Task> onAutomationComplete = new Action<Task>(_ => {
+                AutomationProcessResult result = automationProcess.Result;
+                string errors = result.errors;
 
-            //Remove Tray Icon After Execution
-            ni.Visible = false;
+                if (errors != "")
+                {
+                    ReusableDialog dialog = new ReusableDialog("Errors occured while running the workflow:\n" + errors);
+                    dialog.ShowDialog();
+                }
+
+                //Remove Borders After Execution
+                ((Grid)this.Content).Children.RemoveAt(bIndex1);
+                ((Grid)TopBar.self.Content).Children.RemoveAt(bIndex2);
+
+                //Remove Tray Icon After Execution
+                ni.Visible = false;
+            });
+
+            /* Register callback */
+            automationProcess.ContinueWith(onAutomationComplete, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void CycleStatementsButtonsNext(object sender, RoutedEventArgs routedEventArgs)

@@ -14,6 +14,8 @@
     <None Remove="Assets\arrow.png" />
     <None Remove="Assets\AutoHelm_Logo.ico" />
     <None Remove="Assets\AutoHelm_Logo.png" />
+    <None Remove="Assets\loading.gif" />
+    <None Remove="Assets\wheel-loading.gif" />
     <None Remove="pages\assistant-2.png" />
     <None Remove="pages\assistant.png" />
     <None Remove="pages\background.png" />
@@ -56,6 +58,7 @@
     <PackageReference Include="FireSharp" Version="2.0.4" />
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +66,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\loading.gif" />
+    <Resource Include="Assets\wheel-loading.gif" />
     <Resource Include="Assets\arrow-2.png" />
     <Resource Include="Assets\arrow.png" />
     <Resource Include="Assets\assistant-2.png" />
