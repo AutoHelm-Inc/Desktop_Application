@@ -37,8 +37,8 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>-->
-            <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <TextBlock x:Name="dialogBody" Margin="30,30,30,30" Background="Transparent" TextWrapping="Wrap" FontSize="20" Foreground="{DynamicResource BlueAccent}" FontWeight="DemiBold">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="30,30,30,60">
+                <TextBlock x:Name="dialogBody" Background="Transparent" TextWrapping="Wrap" FontSize="20" Foreground="{DynamicResource BlueAccent}" FontWeight="DemiBold">
                 
                 </TextBlock>
             </ScrollViewer>
@@ -59,6 +59,16 @@
                 </Button.Style>
                 <Image Source="/UserControls/Assistant/close.png" />
             </Button>
+
+            <Grid VerticalAlignment="Bottom" Height="50">
+                <StackPanel Name="buttonsStackPanel"  Width="auto" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <!--<Grid>-->
+                        <!--<Button HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
+                            <TextBlock FontSize="20" Foreground="{DynamicResource BlueAccent}" FontWeight="DemiBold">OK</TextBlock>
+                        </Button>
+                    </Grid>-->
+                </StackPanel>
+            </Grid>
         </Grid>
     </Border>
 </Window>
