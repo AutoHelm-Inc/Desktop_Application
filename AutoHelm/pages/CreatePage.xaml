@@ -46,7 +46,7 @@
             <Image Source="/pages/run.png"></Image>
         </Button>
 
-        <Button Name="assistantButton" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="30" Margin="195,0,0,5" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" ToolTip="Assistant">
+        <Button Name="assistantButton" Click="assistantButtonClick"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="30" Margin="195,0,0,5" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" ToolTip="Assistant">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">

@@ -487,7 +487,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             editButton.Width = 34;
             editButton.Height = 34;
             editButton.VerticalAlignment = VerticalAlignment.Top;
-            editButton.HorizontalAlignment = HorizontalAlignment.Right;
+            editButton.HorizontalAlignment = HorizontalAlignment.Left;
             editButton.Margin = new Thickness(0, 10, 0, 0);
             Image editButtonImage = new Image();
             //editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));

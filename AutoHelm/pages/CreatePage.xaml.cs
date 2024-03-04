@@ -159,10 +159,19 @@ namespace AutoHelm.pages
             string serverAddress = "72.141.46.234:3000";
             string request = $"http://{serverAddress}/execute?command={window.text}";
             loading.Show(); // show a loading gif
-            string assistantResponse = await httpClient.GetStringAsync(request);
-            loading.Close();
+            string assistantResponse = "";
+            try
+            {
+                assistantResponse = await httpClient.GetStringAsync(request);
+                loading.Close();
+            } catch (Exception ex)
+            {
+                loading.Close();
+                ReusableDialog dialog = new ReusableDialog("Cannot connect to Ubuntu AI server");
+                dialog.ShowDialog();
+            }
 
-            //Console.WriteLine(assistantResponse);
+            Console.WriteLine(assistantResponse);
 
             /* Parse the AI generated AHIL code and generate a new AHILProgram from it */
             try
