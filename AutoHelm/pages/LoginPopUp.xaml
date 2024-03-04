@@ -6,17 +6,25 @@
         mc:Ignorable="d"
         Title="LoginView">
 
-    <Border CornerRadius="12">
-        <Border CornerRadius="10" Height="Auto"                    
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Colours.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Border>
+        <Border Height="Auto"                    
             BorderThickness="5"
             Opacity="0.95">
 
-            <Border.BorderBrush>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <!--<Border.BorderBrush>-->
+                <!--<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="#5298FA" Offset="0"/>
                     <GradientStop Color="#3486DF" Offset="1"/>
                 </LinearGradientBrush>
-            </Border.BorderBrush>
+            </Border.BorderBrush>-->
 
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
@@ -40,13 +48,13 @@
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="LOG IN"
-                               Foreground="DarkGray"
+                    <!--<TextBlock Text="LOG IN"-->
+                               <!--Foreground="DarkGray"
                                FontSize="12"
                                FontFamily="Montserrat"
                                Grid.Column="0"
                                VerticalAlignment="Center"
-                               Margin="10,0,0,0"/>
+                               Margin="10,0,0,0"/>-->
 
                 </Grid>
 
@@ -142,10 +150,10 @@
 
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#5298FA"/>
+                                <Setter Property="Background" Value="{DynamicResource BlueAlternateAccent}"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#303034"/>
+                                        <Setter Property="Background" Value="{DynamicResource TwoLighterThanPrimary}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -175,10 +183,10 @@
 
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#5298FA"/>
+                                <Setter Property="Background" Value="{DynamicResource BlueAlternateAccent}"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#303034"/>
+                                        <Setter Property="Background" Value="{DynamicResource TwoLighterThanPrimary}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -203,15 +211,15 @@
                            FontSize="12"
                            FontFamily="Montserrat"
                            Cursor="Hand"                           
-                           Margin="0,15,0,0"
+                           Margin="0,25,0,0"
                            Click="btnGuest_Click">
 
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#5298FA"/>
+                                <Setter Property="Background" Value="{DynamicResource BlueAlternateAccent}"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#303034"/>
+                                        <Setter Property="Background" Value="{DynamicResource TwoLighterThanPrimary}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
