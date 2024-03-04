@@ -29,22 +29,7 @@ namespace AutoHelm.pages.MainWindow
         public MainWindow()
         {
             InitializeComponent();
-
-            Window virtualWindow = new Window();
-            //create a test window to see screen resolution
-            virtualWindow.Show();
-            virtualWindow.Opacity = 0;
-            virtualWindow.WindowState = WindowState.Maximized;
-            double returnHeight = virtualWindow.Height;
-            double returnWidth = virtualWindow.Width;
-            virtualWindow.Close();
-            //Change the UI window to the above-fetched size to prevent covering of the taskbar
-            this.WindowState = WindowState.Maximized;
-            this.MaxHeight = returnHeight;
-            this.MaxWidth = returnWidth;
-            this.ResizeMode = ResizeMode.CanMinimize;
-
-
+            WindowSetup();
             getPathsFromFile();
 
             LoadingPageAnimation();
@@ -66,6 +51,23 @@ namespace AutoHelm.pages.MainWindow
 
             //Setup global shortcut manager
             ShortcutManager.systemHookSetup();
+        }
+
+        private void WindowSetup()
+        {
+            Window virtualWindow = new Window();
+            //create a test window to see screen resolution
+            virtualWindow.Show();
+            virtualWindow.Opacity = 0;
+            virtualWindow.WindowState = WindowState.Maximized;
+            double returnHeight = virtualWindow.Height;
+            double returnWidth = virtualWindow.Width;
+            virtualWindow.Close();
+            //Change the UI window to the above-fetched size to prevent covering of the taskbar
+            this.WindowState = WindowState.Maximized;
+            this.MaxHeight = returnHeight;
+            this.MaxWidth = returnWidth;
+            this.ResizeMode = ResizeMode.CanMinimize;
         }
 
         private void LoadingPageAnimation()

@@ -3,9 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AutoHelm.UserControls.DragAndDrop"
+        xmlns:local="clr-namespace:AutoHelm.UserControls.Assistant"
         mc:Ignorable="d"
-        Title="Input Parameters" Height="430" Width="300">
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Height="300" Width="450"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -15,18 +19,35 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Background="{DynamicResource OneDarkerThanPrimary}">
-        <StackPanel Height="400">
-            <Label x:Name="paramWindowTitle" FontSize="25" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,15,0,0">
-                Title
-            </Label>
-
-            <StackPanel x:Name="InputParamsPanel" Height="270" Background="{DynamicResource OneDarkerThanPrimary}">
-
-            </StackPanel>
-            <Button x:Name="SubmitButton" Click="saveButtonClick" Background="{DynamicResource BlueAccent}" Width="200" VerticalAlignment="Bottom" Cursor="Hand">
-                <Label FontSize="16" FontWeight="Bold" Foreground="White" Content="Save"/>
+    <Border CornerRadius="10" BorderBrush="{DynamicResource OneDarkerThanPrimary}" BorderThickness="3" Background="{DynamicResource OneLighterThanPrimary}">
+        <Grid>
+            <Button Click="closeButtonClick" Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,10" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <Image Source="/UserControls/Assistant/close.png" />
             </Button>
-        </StackPanel>
-    </Grid>
+            <StackPanel Height="400" Margin="5,5">
+                <Label x:Name="paramWindowTitle" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource BlueAccent}"  HorizontalAlignment="Center" Margin="0,15,0,0">
+                    Title
+                </Label>
+
+                <StackPanel x:Name="InputParamsPanel" Height="175" Width="250" Background="{DynamicResource OneLighterThanPrimary}" >
+                </StackPanel>
+                <Button x:Name="SubmitButton" Click="saveButtonClick" Background="{DynamicResource BlueAccent}" Width="200" VerticalAlignment="Bottom" Cursor="Hand">
+                    <Label FontSize="16" FontWeight="Bold" Foreground="White" Content="Save"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

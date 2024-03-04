@@ -59,6 +59,11 @@ namespace AutoHelm.UserControls.DragAndDrop
             paramWindowTitle.Content = keyword.ToString();
         }
 
+        private void closeButtonClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         public ParameterInputWindow(MacroKeyword? blockKeyword, Statement statement)
         {
             InitializeComponent();
@@ -107,7 +112,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     ((SimpleStatement)_statement).addArgument(child.InputField.Text);
                 }
             }
-            this.Close();
+            Close();
         }
 
         public List<(string, Type)> getParamListForFunc(dynamic? funcOrKeyword)
