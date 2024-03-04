@@ -59,6 +59,11 @@ namespace AutoHelm.UserControls.DragAndDrop
             paramWindowTitle.Content = keyword.ToString();
         }
 
+        private void closeButtonClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         public ParameterInputWindow(MacroKeyword? blockKeyword, Statement statement)
         {
             InitializeComponent();
@@ -107,7 +112,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     ((SimpleStatement)_statement).addArgument(child.InputField.Text);
                 }
             }
-            this.Close();
+            Close();
         }
 
         public List<(string, Type)> getParamListForFunc(dynamic? funcOrKeyword)
@@ -159,14 +164,6 @@ namespace AutoHelm.UserControls.DragAndDrop
                 {
                     paramsList.Add(("Keys", typeof(string)));
                 }
-                else if ((Functions)funcOrKeyword == Functions.EmailsGet)
-                {
-                    paramsList.Add(("Email Address", typeof(string)));
-                }
-                else if ((Functions)funcOrKeyword == Functions.FilesGet)
-                {
-                    paramsList.Add(("Folder Path", typeof(string)));
-                }
                 else if ((Functions)funcOrKeyword == Functions.MouseMove) {
                     paramsList.Add(("X", typeof(int)));
                     paramsList.Add(("Y", typeof(int)));
@@ -192,15 +189,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             }
             else if (funcOrKeyword is Keywords)
             {
-                if ((Keywords)funcOrKeyword == Keywords.If)
-                {
-                    paramsList.Add(("Condition", typeof(string)));
-                }
-                else if ((Keywords)funcOrKeyword == Keywords.Elif)
-                {
-                    paramsList.Add(("Condition", typeof(string)));
-                }
-                else if ((Keywords)funcOrKeyword == Keywords.For)
+                if ((Keywords)funcOrKeyword == Keywords.For)
                 {
                     paramsList.Add(("Iterations", typeof(int)));
                 }
