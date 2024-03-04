@@ -85,6 +85,7 @@ namespace AutoHelm.pages
             string email = txtUser.Text;
             string password = txtPass.Password;
             AutoHelm.pages.MainWindow.usernameTopLevel.email = email;
+            AutoHelm.pages.MainWindow.usernameTopLevel.password = password;
             tryLogin(email, password);
         }
         private void btnRegis_Click(object sender, RoutedEventArgs e)

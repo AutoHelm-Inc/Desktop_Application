@@ -23,6 +23,7 @@ namespace AutoHelm.pages.MainWindow
     public static class usernameTopLevel
     {
         public static String email = "";
+        public static String password = "";
     }
     public partial class MainWindow : Window
     {
@@ -141,7 +142,8 @@ namespace AutoHelm.pages.MainWindow
                     int index = filePaths.IndexOf(filePath);
                     List<string> displayNames = cache["displayName"] as List<string>;
                     List<string> descriptions = cache["description"] as List<string>;
-                    SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayNames[index], descriptions[index]);
+                    List<bool> isPrivateStatus = cache["isPrivate"] as List<bool>;
+                    SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayNames[index], descriptions[index], isPrivateStatus[index]);
                     Load_Saved_Page(this, savedArgs);
                 }
                 else
@@ -149,9 +151,10 @@ namespace AutoHelm.pages.MainWindow
                     // This all should change to reading from something
                     string displayName = System.IO.Path.GetFileNameWithoutExtension(filePath);
                     string description = "";
+                    bool isPrivate = false;
 
-                    saveToCache(filePath, displayName, description);
-                    SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayName, description);
+                    saveToCache(filePath, displayName, description, isPrivate);
+                    SavedEventArgs savedArgs = new SavedEventArgs(filePath, displayName, description, isPrivate);
                     Load_Saved_Page(this, savedArgs);
                 }
 
@@ -168,6 +171,7 @@ namespace AutoHelm.pages.MainWindow
             string filePath = savedArgs.getfilePath;
             string displayName = savedArgs.getDisplayName;
             string description = savedArgs.getDescription;
+            bool isPrivate = savedArgs.getPrivate;
 
             if (!File.Exists(filePath)) {
                 MessageBox.Show("File was either Deleted or Corrupted", "Opening Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -186,10 +190,14 @@ namespace AutoHelm.pages.MainWindow
             TextBox textBox = (TextBox)grid.FindName("createTitle");
             TextBlock textBlock = (TextBlock)grid.FindName("createPath");
             TextBox textBox1 = (TextBox)grid.FindName("createDescription");
+            CheckBox isPrivateCheckbox = (CheckBox)grid.FindName("isPrivate");
+
             textBlock.Text = filePath;
             textBox.Text = displayName;
             textBox1.Text = description;
-            
+            isPrivateCheckbox.IsChecked = isPrivate;
+
+
         }
         private void SaveAs_Click(object source, EventArgs e)
         {
@@ -210,13 +218,16 @@ namespace AutoHelm.pages.MainWindow
                     TextBlock textBlock = (TextBlock)grid.FindName("createPath");
                     TextBox textBox = (TextBox)grid.FindName("createTitle");
                     TextBox textBox1 = (TextBox)grid.FindName("createDescription");
+                    CheckBox isPrivateCheckbox = (CheckBox)grid.FindName("isPrivate");
+
                     textBlock.Text = filePath;
                     string displayName = textBox.Text;
                     string description = textBox1.Text;
+                    bool isPrivate = isPrivateCheckbox.IsChecked == true ? true : false;
 
                     File.WriteAllText(filePath, createPage.GetProgram().generateProgramAHILCode());
 
-                    saveToCache(filePath, displayName, description);
+                    saveToCache(filePath, displayName, description, isPrivate);
                 }
             }
         }
@@ -230,15 +241,18 @@ namespace AutoHelm.pages.MainWindow
                 TextBlock textBlock = (TextBlock)grid.FindName("createPath");
                 TextBox textBox = (TextBox)grid.FindName("createTitle");
                 TextBox textBox1 = (TextBox)grid.FindName("createDescription");
+                CheckBox isPrivateCheckbox = (CheckBox)grid.FindName("isPrivate");
+
                 string filePath = textBlock.Text;
                 string displayName = textBox.Text;
                 string description = textBox1.Text;
+                bool isPrivate = isPrivateCheckbox.IsChecked == true ? true : false;
 
                 if (File.Exists(filePath))
                 {
 
                     File.WriteAllText(filePath, createPage.GetProgram().generateProgramAHILCode());
-                    saveToCache(filePath, displayName, description);
+                    saveToCache(filePath, displayName, description, isPrivate);
                 }
                 else
                 {
@@ -246,26 +260,31 @@ namespace AutoHelm.pages.MainWindow
                 }
             }
         }
-        private void saveToCache(string filePath, string displayName, string description)
+        private void saveToCache(string filePath, string displayName, string description, bool isPrivate)
         {
             ObjectCache cache = MemoryCache.Default;
             List<string> filePaths = cache["path"] as List<string>;
             List<string> displayNames = cache["displayName"] as List<string>;
             List<string> descriptions = cache["description"] as List<string>;
+            List<bool> isPrivateStatus = cache["isPrivate"] as List<bool>;
 
             if (filePaths == null) { 
                 filePaths = new List<string>();
                 displayNames = new List<string>();
                 descriptions = new List<string>();
+                isPrivateStatus = new List<bool>();
+
                 CacheItemPolicy policy = new CacheItemPolicy();
                 cache.Set("path", filePaths, policy);
                 cache.Set("displayName", displayNames, policy);
                 cache.Set("description", descriptions, policy);
+                cache.Set("isPrivate", isPrivateStatus, policy);
             }
             if (!filePaths.Contains(filePath)){
                 filePaths.Add(filePath);
                 displayNames.Add(displayName);
                 descriptions.Add(description);
+                isPrivateStatus.Add(isPrivate);
                 Console.WriteLine(descriptions[0]);
             }
             else
@@ -274,9 +293,11 @@ namespace AutoHelm.pages.MainWindow
                 filePaths.RemoveAt(indexOfRecentFile);
                 displayNames.RemoveAt(indexOfRecentFile);
                 descriptions.RemoveAt(indexOfRecentFile);
+                isPrivateStatus.RemoveAt(indexOfRecentFile);
                 filePaths.Add(filePath);
                 displayNames.Add(displayName);
                 descriptions.Add(description);
+                isPrivateStatus.Add(isPrivate);
             }
 
         }
@@ -285,6 +306,8 @@ namespace AutoHelm.pages.MainWindow
             List<string> filePaths = new List<string>();
             List<string> displayNames = new List<string>();
             List<string> descriptions = new List<string>();
+            List<bool> isPrivateStatus = new List<bool>();
+
             bool exists = Directory.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm"));
 
             if (!exists)
@@ -328,23 +351,31 @@ namespace AutoHelm.pages.MainWindow
                             string line;
                             string des = "";
                             bool dis = true;
+                            bool priv = false;
                             while ((line = streamReader.ReadLine()) != null)
-                            {
+                            { 
                                 if (dis)
                                 {
                                     displayNames.Add(line);
+                                    dis = false;
+                                    priv = true;
+                                }
+                                else if (priv)
+                                {
+                                    bool isPrivate = line.Equals("True") ? true : false;
+                                    isPrivateStatus.Add(isPrivate);
+                                    priv = false;
                                 }
                                 else
                                 {
                                     des += line + "\n";
                                 }
-                                dis = false;
                             }
                             Console.WriteLine(des);
                             descriptions.Add(des);
                         }
 
-                        saveToCache(filePaths[i], displayNames[i], descriptions[i]);
+                        saveToCache(filePaths[i], displayNames[i], descriptions[i], isPrivateStatus[i]);
                     }
                 }
 
@@ -366,6 +397,7 @@ namespace AutoHelm.pages.MainWindow
             List<string> filePaths = cache["path"] as List<string>;
             List<string> displayNames = cache["displayName"] as List<string>;
             List<string> descriptions = cache["description"] as List<string>;
+            List<bool> isPrivateStatus = cache["isPrivate"] as List<bool>;
 
             var filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoHelm/cachedPaths.xml");
 
@@ -386,6 +418,7 @@ namespace AutoHelm.pages.MainWindow
                 using (StreamWriter writetext = new StreamWriter(filePath))
                 {
                     writetext.WriteLine(displayNames[i]);
+                    writetext.WriteLine(isPrivateStatus[i]);
                     writetext.WriteLine(descriptions[i]);
                 }
             }
