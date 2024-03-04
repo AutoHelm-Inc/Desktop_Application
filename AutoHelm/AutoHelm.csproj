@@ -10,13 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\arrow-2.png" />
+    <None Remove="Assets\arrow.png" />
     <None Remove="Assets\AutoHelm_Logo.ico" />
     <None Remove="Assets\AutoHelm_Logo.png" />
+    <None Remove="pages\assistant-2.png" />
     <None Remove="pages\assistant.png" />
     <None Remove="pages\background.png" />
     <None Remove="pages\key-icon.png" />
     <None Remove="pages\dots-not-grid.png" />
     <None Remove="pages\dots.png" />
+    <None Remove="pages\grid-png-43579.png" />
     <None Remove="pages\MainWindow\autohelm_logo.ico" />
     <None Remove="pages\MainWindow\autohelm_logo.png" />
     <None Remove="pages\open-folder.png" />
@@ -59,11 +63,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\arrow-2.png" />
+    <Resource Include="Assets\arrow.png" />
+    <Resource Include="Assets\assistant-2.png" />
     <Resource Include="pages\assistant.png" />
     <Resource Include="pages\background.png" />
     <Resource Include="pages\key-icon.png" />
     <Resource Include="pages\dots-not-grid.png" />
     <Resource Include="pages\dots.png" />
+    <Resource Include="pages\grid-png-43579.png" />
     <Resource Include="pages\MainWindow\autohelm_logo.ico" />
     <Resource Include="pages\MainWindow\autohelm_logo.png" />
     <Resource Include="pages\open-folder.png" />

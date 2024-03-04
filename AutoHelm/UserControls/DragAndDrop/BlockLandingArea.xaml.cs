@@ -1,4 +1,4 @@
-﻿using Automation_Project.src.ast;
+using Automation_Project.src.ast;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 using System.IO;
 using static AutoHelm.UserControls.DragAndDrop.DraggingStatementBlock;
 using System.Configuration.Internal;
-using Microsoft.VisualBasic;
+using System.Xml.Linq;
 
 namespace AutoHelm.UserControls.DragAndDrop
 {
@@ -42,7 +42,6 @@ namespace AutoHelm.UserControls.DragAndDrop
             depth = 0;
             BlockLandingArea.program = program;
             numNestableChildBlocks = 0;
-
             InitializeComponent();
         }
 
@@ -65,16 +64,15 @@ namespace AutoHelm.UserControls.DragAndDrop
             this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
-            this.depth = depth;
+            this.depth = 0;
             numNestableChildBlocks = 0;
             InitializeComponent();
         }
-
         public BlockLandingArea(Functions? function, Keywords? keyword, MacroKeyword? macro, BlockLandingArea? parentBlock)
         {
             this.function = function;
             this.keyword = keyword;
-            this.macro = macro;
+            this.macro = null;
             this.AllowDrop = true;
             this.parentBlock = parentBlock;
             this.depth = 0;
@@ -88,6 +86,32 @@ namespace AutoHelm.UserControls.DragAndDrop
             set { this.dropabble = value; }
         }
 
+        public static String? fromEnum(Functions? @enum)
+        {
+            return @enum switch
+            {
+                Functions.Run => "Run Program",
+                Functions.SwitchWindow => "Switch Window",
+                Functions.Close => "Close Window",
+                Functions.FileCreate => "Create File",
+                Functions.DirCreate => "Create Folder",
+                Functions.Save => "Save File",
+                Functions.Move => "Move File/Folder",
+                Functions.Del => "Delete File/Folder",
+                Functions.WriteLine => "Write with New Line",
+                Functions.Write => "Write",
+                Functions.PressKey => "Press Key",
+                //Functions.EmailsGet => _emailsGetInstance,
+                //Functions.FilesGet => _filesGetInstance,
+                Functions.MouseMove => "Move Mouse",
+                Functions.Click => "Click Mouse",
+                Functions.SaveAs => "Save As",
+                Functions.Sleep => "Delay",
+                Functions.MouseToWord => "Move Mouse to Word",
+                _ => null,
+            };
+        }
+
         private void UserControl_Drop(object sender, DragEventArgs dragEventData)
         {
             if (this.AllowDrop)
@@ -99,7 +123,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                 borderRect.Fill = (Brush)blockDataFromDrag.backgroundColor;
                 if(blockDataFromDrag.function != null)
                 {
-                    dropZoneLabel.Content = blockDataFromDrag.function.ToString();
+                    dropZoneLabel.Content = fromEnum(blockDataFromDrag.function);
                     this.function = blockDataFromDrag.function;
                     this.keyword = null;
                     this.macro = null;
@@ -115,7 +139,15 @@ namespace AutoHelm.UserControls.DragAndDrop
                 }
                 else if (blockDataFromDrag.keyword != null)
                 {
-                    dropZoneLabel.Content = blockDataFromDrag.keyword.ToString();
+                    //Set the block label for keyword
+                    if (blockDataFromDrag.keyword.ToString() == "For")
+                    {
+                        dropZoneLabel.Content = "Loop";
+                    }
+                    else
+                    {
+                        dropZoneLabel.Content = keyword.ToString();
+                    }
                     this.keyword = blockDataFromDrag.keyword;
                     this.function = null;
                     this.macro = null;
@@ -134,7 +166,15 @@ namespace AutoHelm.UserControls.DragAndDrop
                 }
                 else
                 {
-                    dropZoneLabel.Content = blockDataFromDrag.macro.ToString();
+                    //Set the block label for keyword
+                    if (blockDataFromDrag.macro.ToString() == "GlobalDelay")
+                    {
+                        dropZoneLabel.Content = "Global Delay";
+                    }
+                    else
+                    {
+                        dropZoneLabel.Content = keyword.ToString();
+                    }
                     this.macro = blockDataFromDrag.macro;
                     this.keyword = null;
                     this.function = null;
@@ -145,12 +185,21 @@ namespace AutoHelm.UserControls.DragAndDrop
                         _statement = statement;
                     }
                 }
-                Console.WriteLine(program.generateProgramAHILCode());
 
                 dropZoneLabel.Foreground = blockDataFromDrag.labelColor;
 
                 borderRect.StrokeDashArray = null;
                 borderRect.Stroke = Brushes.Black;
+
+                Style style = new Style(typeof(Button));
+                ControlTemplate controlTemplate = new ControlTemplate(typeof(Button));
+                FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
+                borderFactory.SetValue(Border.BackgroundProperty, Brushes.Transparent);
+                FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+                borderFactory.AppendChild(contentPresenterFactory);
+                controlTemplate.VisualTree = borderFactory;
+                Setter setter = new Setter(Control.TemplateProperty, controlTemplate);
+                style.Setters.Add(setter);
 
                 //Make delete button and set styling
                 Button deleteButton = new Button();
@@ -161,10 +210,13 @@ namespace AutoHelm.UserControls.DragAndDrop
                 deleteButton.VerticalAlignment = VerticalAlignment.Top;
                 deleteButton.HorizontalAlignment = HorizontalAlignment.Right;
                 deleteButton.Margin = new Thickness(10);
-                deleteButton.Content = "X";
-                deleteButton.FontSize = 18;
-                deleteButton.FontWeight = FontWeights.Bold;
-                deleteButton.Foreground = new SolidColorBrush(Colors.PaleVioletRed);
+                Image deleteButtonImage = new Image();
+                deleteButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/close2.png")));
+                deleteButtonImage.Width = 17;
+                deleteButtonImage.Height = 17;
+                deleteButton.Content = deleteButtonImage;
+                deleteButton.Cursor = Cursors.Hand;
+                deleteButton.Style = style;
                 deleteButton.Click += new RoutedEventHandler(DeleteStatementButton);
 
                 //Make edit button and set styling
@@ -173,9 +225,9 @@ namespace AutoHelm.UserControls.DragAndDrop
                 editButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
                 editButton.Width = 34;
                 editButton.Height = 34;
-                editButton.VerticalAlignment = VerticalAlignment.Bottom;
-                editButton.HorizontalAlignment = HorizontalAlignment.Right;
-                editButton.Margin = new Thickness(10);
+                editButton.VerticalAlignment = VerticalAlignment.Top;
+                editButton.HorizontalAlignment = HorizontalAlignment.Left;
+                editButton.Margin = new Thickness(0, 10, 0, 0);
                 Image editButtonImage = new Image();
                 //editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));
                 editButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/gear.png")));
@@ -183,7 +235,28 @@ namespace AutoHelm.UserControls.DragAndDrop
                 editButtonImage.Width = 18;
                 editButtonImage.Height = 18;
                 editButton.Content = editButtonImage;
+                editButton.Cursor = Cursors.Hand;
+                editButton.Style = style;
                 editButton.Click += new RoutedEventHandler(EditStatementButton);
+
+                //Add Block Icon
+                dragBlockIcon.Margin = new Thickness(0, 35, 0, 0);
+                dragBlockIcon.Width = 50;
+                dragBlockIcon.Height = 50;
+                dropZoneLabel.Margin = new Thickness(0, 0, 0, 0);
+
+                if (function != null)
+                {
+                    dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + function.ToString() + ".png")));
+                }
+                else if (keyword != null)
+                {
+                    dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + keyword.ToString() + ".png")));
+                }
+                else
+                {
+                    dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + macro.ToString() + ".png")));
+                }
 
                 landingAreaGrid.Children.Add(editButton);
                 landingAreaGrid.Children.Add(deleteButton);
@@ -200,7 +273,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                         NestedStatemetnsPanel.Children.Add(new BlockLandingArea(this));
                     }
                     updateDepth(1);
-                    //changeParentWidth(1);
+                    //changeParentDimensions(1);
                         
                     
                     parentStackPanel.Children.Add(new BlockLandingArea(parentBlock));
@@ -217,16 +290,22 @@ namespace AutoHelm.UserControls.DragAndDrop
         }
 
         private void updateDepth(int factor )
+        private void updateDepth(int factor )
+        {
         {
             BlockLandingArea? tempParentBlock = this.parentBlock;
+            BlockLandingArea? temp = this.parentBlock;
             BlockLandingArea? tempChildBlock = this;
+            while (temp != null)
             Boolean widthMustIncrease = false;
-
             if (tempParentBlock != null && this.keyword == Keywords.For && factor < 0)
             {
+            {
                 tempParentBlock.numNestableChildBlocks = tempParentBlock.numNestableChildBlocks - 1;
+                temp.depth += factor;
+                temp = temp.parentBlock;
             }
-
+            }
             
             while (tempParentBlock != null)
             {
@@ -242,12 +321,10 @@ namespace AutoHelm.UserControls.DragAndDrop
                             Console.WriteLine("depth after " + tempParentBlock.depth);
                             changeParentWidth(Math.Abs(factor) / factor, tempParentBlock);
                         }
-
                         if(tempParentBlock.borderRect.Width == originalWidth + 35)
                         {
                             changeParentWidthWithCustomDepth(Math.Abs(factor) / factor, tempParentBlock, 0);
                         }
-
                         
                     }
                     else if (factor > 0 && tempParentBlock.numNestableChildBlocks == 0 || widthMustIncrease)
@@ -255,7 +332,6 @@ namespace AutoHelm.UserControls.DragAndDrop
                         Console.WriteLine("depth before " + tempParentBlock.depth);
                         tempParentBlock.depth += factor;
                         Console.WriteLine("depth after " + tempParentBlock.depth);
-
                         changeParentWidth(Math.Abs(factor) / factor, tempParentBlock);
                         widthMustIncrease = true;
                     }
@@ -263,40 +339,52 @@ namespace AutoHelm.UserControls.DragAndDrop
                 //tempChildBlock = tempParentBlock;
                 tempParentBlock = tempParentBlock.parentBlock;
             }
-
             tempParentBlock = this.parentBlock;
             if (tempParentBlock != null && this.keyword == Keywords.For && factor > 0)
             {
                 tempParentBlock.numNestableChildBlocks = tempParentBlock.numNestableChildBlocks + 1;
             }
             //Console.WriteLine(tempParentBlock.numNestableChildBlocks);
-
         }
-
+        }
         private void changeParentWidth(int factor, BlockLandingArea? tempParentBlock)
+        private void changeParentDimensions(int factor)
+        {
         {
             if(tempParentBlock != null)
+            if(this.parentBlock != null)
             {
+            {
+                BlockLandingArea? tempParentBlock = this.parentBlock;
+                Rectangle? tempRect = tempParentBlock.borderRect;
                 Rectangle? tempRect = tempParentBlock.borderRect;
                 Grid? tempGrid = tempParentBlock.landingAreaGrid;
-
+                Grid? tempGrid = tempParentBlock.landingAreaGrid;
                 if (this.keyword == Keywords.For )
+                do
+                {
                 {
                     tempGrid.Width = tempGrid.Width + 35 * factor * (depth + 1);
+                    if (this.keyword == Keywords.For)
                     Console.WriteLine("before W " + tempRect.Width);
                     tempRect.Width = tempRect.Width + 35 * factor * (depth + 1);
                     Console.WriteLine("after W " + tempRect.Width);
                 }
+                    {
             }
         }
-
         private void changeParentWidthWithCustomDepth(int factor, BlockLandingArea? tempParentBlock, int customDepth)
+                        tempGrid.Width = tempGrid.Width + 35 * factor * (depth + 1);
+                        tempRect.Width = tempRect.Width + 35 * factor * (depth + 1);
         {
+                        
             if (tempParentBlock != null)
+                        
             {
+                    }
                 Rectangle? tempRect = tempParentBlock.borderRect;
+                    tempRect.Height = tempRect.Height + (borderRect.Height+25)*factor;
                 Grid? tempGrid = tempParentBlock.landingAreaGrid;
-
                 if (this.keyword == Keywords.For)
                 {
                     tempGrid.Width = tempGrid.Width + 35 * factor * (customDepth + 1);
@@ -306,18 +394,24 @@ namespace AutoHelm.UserControls.DragAndDrop
                 }
             }
         }
-
         private void changeParentHeight(int factor, BlockLandingArea? tempChildBlock, BlockLandingArea? tempParentBlock)
+                    tempParentBlock = tempParentBlock.parentBlock;
         {
             if (tempParentBlock != null)
+                    if(tempParentBlock != null)
             {
+                    {
                 Rectangle? tempRect = tempParentBlock.borderRect;
+                        tempRect = tempParentBlock.borderRect;
                 Rectangle? tempChildRect = tempChildBlock.borderRect;
                 Grid? tempGrid = tempParentBlock.landingAreaGrid;
-
+                        tempGrid = tempParentBlock.landingAreaGrid;
+                    }
                 Console.WriteLine("before H " + tempRect.Height);
+                } while (tempParentBlock != null);
                 tempRect.Height = tempRect.Height + (tempChildRect.Height + 25) * factor;
                 Console.WriteLine("after H " + tempRect.Height);
+            }
             }
         }
 
@@ -348,7 +442,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             StackPanel parentStackPanel = this.Parent as StackPanel;
             parentStackPanel.Children.Remove(this);
             updateDepth(-1*(depth+1));
-            //changeParentWidth(-1);
+            //changeParentDimensions(-1);
             Console.WriteLine(program.generateProgramAHILCode());
         }
 
@@ -388,7 +482,7 @@ namespace AutoHelm.UserControls.DragAndDrop
             {
                 if (func == this.function)
                 {
-                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex).ToString()));
                 }
                 colorIndex++;
             }
@@ -397,11 +491,11 @@ namespace AutoHelm.UserControls.DragAndDrop
             {
                 if (keyWord == this.keyword)
                 {
-                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex / numBlocksPerCycle).ToString()));
+                    borderRect.Fill = (Brush)(SolidColorBrush)(FindResource("BlockColor" + (colorIndex).ToString()));
                 }
                 colorIndex++;
             }
-
+            
             foreach (MacroKeyword macro in Enum.GetValues(typeof(MacroKeyword)))
             {
                 if (macro == this.macro)
@@ -411,27 +505,48 @@ namespace AutoHelm.UserControls.DragAndDrop
                 colorIndex++;
             }
 
-
             if (this.function != null)
             {
                 //Set the block label for function
-                dropZoneLabel.Content = this.function.ToString();
+                dropZoneLabel.Content = fromEnum(function);
 
             }
             else if (this.keyword != null) 
             {
                 //Set the block label for keyword
-                dropZoneLabel.Content = this.keyword.ToString();
-            }
-            else
-            {
-                dropZoneLabel.Content = this.macro.ToString();
+                if (keyword.ToString() == "For")
+                {
+                    dropZoneLabel.Content = "Loop";
+                }
+                else
+                {
+                    dropZoneLabel.Content = keyword.ToString();
+                }
+            }else{
+                if (macro.ToString() == "GlobalDelay")
+                {
+                    dropZoneLabel.Content = "Global Delay";
+                }
+                else
+                {
+                    dropZoneLabel.Content = keyword.ToString();
+                }
             }
 
             //Label colors are always white
             dropZoneLabel.Foreground = new SolidColorBrush(Colors.White);
             borderRect.StrokeDashArray = null;
             borderRect.Stroke = Brushes.Black;
+
+            Style style = new Style(typeof(Button));
+            ControlTemplate controlTemplate = new ControlTemplate(typeof(Button));
+            FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
+            borderFactory.SetValue(Border.BackgroundProperty, Brushes.Transparent);
+            FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+            borderFactory.AppendChild(contentPresenterFactory);
+            controlTemplate.VisualTree = borderFactory;
+            Setter setter = new Setter(Control.TemplateProperty, controlTemplate);
+            style.Setters.Add(setter);
 
             //Make delete button and set styling
             Button deleteButton = new Button();
@@ -442,10 +557,15 @@ namespace AutoHelm.UserControls.DragAndDrop
             deleteButton.VerticalAlignment = VerticalAlignment.Top;
             deleteButton.HorizontalAlignment = HorizontalAlignment.Right;
             deleteButton.Margin = new Thickness(10);
-            deleteButton.Content = "X";
-            deleteButton.FontSize = 18;
-            deleteButton.FontWeight = FontWeights.Bold;
-            deleteButton.Foreground = new SolidColorBrush(Colors.PaleVioletRed);
+
+            Image deleteButtonImage = new Image();
+            deleteButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/close2.png")));
+            deleteButtonImage.Width = 17;
+            deleteButtonImage.Height = 17;
+            deleteButton.Content = deleteButtonImage;
+
+            deleteButton.Cursor = Cursors.Hand;
+            deleteButton.Style = style;
             deleteButton.Click += new RoutedEventHandler(DeleteStatementButton);
 
             //Make edit button and set styling
@@ -454,9 +574,9 @@ namespace AutoHelm.UserControls.DragAndDrop
             editButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
             editButton.Width = 34;
             editButton.Height = 34;
-            editButton.VerticalAlignment = VerticalAlignment.Bottom;
+            editButton.VerticalAlignment = VerticalAlignment.Top;
             editButton.HorizontalAlignment = HorizontalAlignment.Right;
-            editButton.Margin = new Thickness(10);
+            editButton.Margin = new Thickness(0, 10, 0, 0);
             Image editButtonImage = new Image();
             //editButtonImage.Source = new BitmapImage(new Uri("C:\\Users\\zaidl\\Documents\\School\\Year 4\\ECE 498A\\AutoHelm\\Desktop_Application\\AutoHelm\\Assets\\gear.png"));
             editButtonImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/gear.png")));
@@ -464,7 +584,27 @@ namespace AutoHelm.UserControls.DragAndDrop
             editButtonImage.Width = 18;
             editButtonImage.Height = 18;
             editButton.Content = editButtonImage;
+            editButton.Cursor = Cursors.Hand;
+            editButton.Style = style;
             editButton.Click += new RoutedEventHandler(EditStatementButton);
+
+            //Add Block Icon
+            dragBlockIcon.Margin = new Thickness(0, 35, 0, 0);
+            dragBlockIcon.Width = 50;
+            dragBlockIcon.Height = 50;
+            dropZoneLabel.Margin = new Thickness(0, 0, 0, 0);
+
+            if (function != null)
+            {
+                dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + function.ToString() + ".png")));
+            }
+            else if (this.keyword != null) 
+            {
+                dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + keyword.ToString() + ".png")));
+            }else
+            {
+                dragBlockIcon.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../../Assets/BlockIcons/" + macro.ToString() + ".png")));
+            }
 
             landingAreaGrid.Children.Add(editButton);
             landingAreaGrid.Children.Add(deleteButton);
@@ -485,7 +625,7 @@ namespace AutoHelm.UserControls.DragAndDrop
                     //NestedStatementsPanel.Children.Add(new BlockLandingArea(this)); //typically blank, need to replace it with all children
                 }
                 updateDepth(1);
-                //changeParentWidth(1);
+                //changeParentDimensions(1);
                 parentStackPanel.Children.Add(this);
                 return NestedStatemetnsPanel;
 

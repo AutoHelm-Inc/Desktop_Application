@@ -8,11 +8,27 @@
     <SolidColorBrush x:Key="BlueAccent" Color="#5298FA" />
     <SolidColorBrush x:Key="BlueAlternateAccent" Color="#3486DF" />
 
-    <SolidColorBrush x:Key="BlockColor0" Color="#2D6A4F" />
-    <SolidColorBrush x:Key="BlockColor1" Color="#066496" />
-    <SolidColorBrush x:Key="BlockColor2" Color="#A71E34" />
-    <SolidColorBrush x:Key="BlockColor3" Color="#5A189A" />
-    <SolidColorBrush x:Key="BlockColor4" Color="#deb564" />
-    <SolidColorBrush x:Key="BlockColor5" Color="#78b09b" />
+    <SolidColorBrush x:Key="BlockColor0" Color="#5F1DAF" />
+    <SolidColorBrush x:Key="BlockColor1" Color="#7222D3" />
+    <SolidColorBrush x:Key="BlockColor2" Color="#873EE0" />
+    <SolidColorBrush x:Key="BlockColor3" Color="#9b5de5" />
+    <SolidColorBrush x:Key="BlockColor4" Color="#B284EB" />
+    
+    <SolidColorBrush x:Key="BlockColor5" Color="#2c699a" />
+    <SolidColorBrush x:Key="BlockColor6" Color="#048ba8" />
+    <SolidColorBrush x:Key="BlockColor7" Color="#0db39e" />
+    <SolidColorBrush x:Key="BlockColor8" Color="#11C698" />
+    <SolidColorBrush x:Key="BlockColor9" Color="#76E39C" />
+
+    <SolidColorBrush x:Key="BlockColor10" Color="#F28552" />
+    <SolidColorBrush x:Key="BlockColor11" Color="#F29E4C" />
+    <SolidColorBrush x:Key="BlockColor12" Color="#F2B052" />
+    <SolidColorBrush x:Key="BlockColor13" Color="#F2BF53" />
+    <SolidColorBrush x:Key="BlockColor14" Color="#FDD161" />
+
+    <SolidColorBrush x:Key="BlockColor15" Color="#C43939" />
+    <SolidColorBrush x:Key="BlockColor16" Color="#e15554" />
+    <SolidColorBrush x:Key="BlockColor17" Color="#f77976" />
+    
 
 </ResourceDictionary>
