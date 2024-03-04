@@ -20,26 +20,11 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border BorderBrush="{DynamicResource OneDarkerThanPrimary}" BorderThickness="3" Background="{DynamicResource OneLighterThanPrimary}">
+    <Border CornerRadius="10" BorderBrush="{DynamicResource OneDarkerThanPrimary}" BorderThickness="3" Background="{DynamicResource OneLighterThanPrimary}">
         <Grid>
-            <!--<TextBlock IsHitTestVisible="False" Margin="35,30,30,30" FontSize="20" Foreground="DimGray" FontWeight="DemiBold">
-                <TextBlock>
-                    Describe your workflow..
-                </TextBlock>
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Text, ElementName=assistantTextBox}" Value="">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>-->
-            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="30,30,30,60">
-                <TextBlock x:Name="dialogBody" Background="Transparent" TextWrapping="Wrap" FontSize="20" Foreground="{DynamicResource BlueAccent}" FontWeight="DemiBold">
-                
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="30,50,30,60">
+                <TextBlock x:Name="dialogBody" Background="Transparent" TextWrapping="Wrap" FontSize="20" Foreground="LightGray" FontWeight="DemiBold">
+                    
                 </TextBlock>
             </ScrollViewer>
 

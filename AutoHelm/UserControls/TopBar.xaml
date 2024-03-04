@@ -18,22 +18,27 @@
     <!-- These buttons will be changed to Menu Items if they ever need drop downs, this will also fix that OverFlow on the right (there is no actual way to remove it)-->
 
     <Grid Background="{StaticResource PrimaryBackgroundColor}">
-        <ToolBarPanel>
-            <ToolBarTray DockPanel.Dock="Top" Background="{StaticResource OneDarkerThanPrimary}">
-                <ToolBar ToolBarTray.IsLocked="True" Name="MyToolbar" Width="2000" Height="30" Background="{x:Null}"     >
-                    <!--<TextBox Text="Dev Mode:" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Aqua"/>-->
-                    <Button Content="Home" Name="HomeButton" Click="HomeButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" Cursor="Hand" />
-                    <!--<Button Content="Create" Name="CreateButton" Click="CreateButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" />
+        <Border>
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.1"/>
+            </Border.Effect>
+            <ToolBarPanel>
+                <ToolBarTray DockPanel.Dock="Top" Background="{StaticResource OneDarkerThanPrimary}">
+                    <ToolBar ToolBarTray.IsLocked="True" Name="MyToolbar" Width="2000" Height="30" Background="{x:Null}"     >
+                        <!--<TextBox Text="Dev Mode:" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Aqua"/>-->
+                        <Button Content="Home" Name="HomeButton" Click="HomeButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" Cursor="Hand" />
+                        <!--<Button Content="Create" Name="CreateButton" Click="CreateButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" />
                     <Button Content="Execute" Name="ExecuteButton" Click="ExecuteButton_Click" Foreground="{DynamicResource BlueAlternateAccent}" />
                     <TextBox Text="Actual: " Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Aqua"/>-->
-                    <Menu Background="{x:Null}" Cursor="Hand">
-                        <MenuItem Header="_File" Foreground="{DynamicResource BlueAlternateAccent}" Background="{x:Null}">
-                            <MenuItem Header="_Save" Click="SaveFile_Click"/>
-                            <MenuItem Header="_Save As" Click="SaveFileAs_Click"/>
-                        </MenuItem>
-                    </Menu>
-                </ToolBar>
-            </ToolBarTray>
-        </ToolBarPanel>
+                        <Menu Background="{x:Null}" Cursor="Hand">
+                            <MenuItem Header="_File" Foreground="{DynamicResource BlueAlternateAccent}" Background="{x:Null}">
+                                <MenuItem Header="_Save" Click="SaveFile_Click"/>
+                                <MenuItem Header="_Save As" Click="SaveFileAs_Click"/>
+                            </MenuItem>
+                        </Menu>
+                    </ToolBar>
+                </ToolBarTray>
+            </ToolBarPanel>
+        </Border>
     </Grid>
 </UserControl>

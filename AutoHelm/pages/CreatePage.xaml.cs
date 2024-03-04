@@ -225,11 +225,11 @@ namespace AutoHelm.pages
 
                 //Apply Borders to TopBar and CreatePage Before Execution
                 Border b1 = new Border();
-                b1.BorderBrush = Brushes.Red;
+                b1.BorderBrush = (Brush)(new BrushConverter().ConvertFromString("#f25252") ?? throw new Exception(""));
                 b1.BorderThickness = new Thickness(5, 0, 5, 5);
 
                 Border b2 = new Border();
-                b2.BorderBrush = Brushes.Red;
+                b2.BorderBrush = (Brush)(new BrushConverter().ConvertFromString("#f25252") ?? throw new Exception(""));
                 b2.BorderThickness = new Thickness(5, 5, 5, 0);
 
                 bIndex1 = ((Grid)this.Content).Children.Add(b1);
@@ -433,6 +433,11 @@ namespace AutoHelm.pages
                     Canvas.SetTop(pixel, i * (dotSize + spacing));
                 }
             }
+        }
+
+        private void createTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
