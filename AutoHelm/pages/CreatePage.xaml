@@ -86,7 +86,7 @@
             </Border.Effect>
             <StackPanel Background="{DynamicResource OneDarkerThanPrimary}" x:Name="createFieldPanel" >
                 <TextBox Text="Untitled Project" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0.5" BorderBrush="Transparent" FontSize="30" Foreground="{DynamicResource BlueAccent}" Margin="0,50,0,0" CaretBrush="{DynamicResource BlueAlternateAccent}" MaxLength="60" TextWrapping="Wrap" x:Name="createTitle" TextChanged="createTitle_TextChanged"/>
-                <TextBlock x:Name="createPath" TextWrapping="Wrap" HorizontalAlignment="Center" Background="Transparent" FontSize="14" Foreground="{DynamicResource BlueAccent}" Margin="0,20,0,0"><Italic>path</Italic></TextBlock>
+                <TextBlock x:Name="createPath" TextWrapping="Wrap" HorizontalAlignment="Center" Background="Transparent" FontSize="14" Foreground="{DynamicResource BlueAccent}" Margin="10,20,10,0"><Italic>path</Italic></TextBlock>
                 <CheckBox Name="isPrivate" FontSize="13" Foreground="{DynamicResource BlueAccent}" Content="Private?" HorizontalAlignment="Center" Margin="0, 25,0,0" />
                 <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource BlueAccent}" FontFamily="Arial Black" FontSize="28" Margin="0,100,0,25">
                     <TextBlock.Text>
